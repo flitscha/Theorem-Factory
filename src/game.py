@@ -1,6 +1,7 @@
 import pygame
 
 from settings import *
+from grid import Grid
 
 class Game():
     def __init__(self):
@@ -10,7 +11,10 @@ class Game():
         self.clock = pygame.time.Clock()
         self.running = True
         
+        self.grid = Grid()
+        self.camera_offset = [0, 0]
 
+    
     def run(self):
         
         while self.running:
@@ -19,6 +23,9 @@ class Game():
                     self.running = False
 
             self.screen.fill((0, 0, 0))
+
+            self.grid.draw_grid_lines(self.screen, self.camera_offset)
             pygame.display.flip()
+
 
         pygame.quit()
