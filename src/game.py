@@ -3,6 +3,7 @@ import pygame
 from settings import *
 from grid import Grid
 from camera import Camera
+from debug import Debug
 
 class Game():
     def __init__(self):
@@ -15,11 +16,10 @@ class Game():
         self.grid = Grid()
         self.camera = Camera()
 
-        self.last_mouse_pos = (0, 0) # mouse position, one frame before
-        self.mouse_pos = pygame.mouse.get_pos()
         self.mouse_wheel_dir = 0 # 0 for no scroll, positive for scroll up, negative for scroll down
-
         self.is_dragging = False
+
+        self.debug = Debug() # debug overlay
 
 
     def handle_events(self):
@@ -49,13 +49,12 @@ class Game():
 
             self.screen.fill((0, 0, 0))
 
-            self.last_mouse_pos = self.mouse_pos
-            self.mouse_pos = pygame.mouse.get_pos()
-            self.camera.update(keys, self.mouse_wheel_dir, self.mouse_pos, self.last_mouse_pos, self.is_dragging)
+            self.camera.update(keys, self.mouse_wheel_dir, self.is_dragging)
             self.grid.draw_grid_lines(self.screen, self.camera.offset_x, self.camera.offset_y, self.camera.zoom)
 
+            self.debug.draw(self.screen, self.camera, self.clock)
+
             self.clock.tick(60)
-            #print(f"FPS: {self.clock.get_fps():.2f}")
             pygame.display.flip()
 
 

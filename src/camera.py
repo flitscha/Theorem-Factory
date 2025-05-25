@@ -1,7 +1,7 @@
 import pygame
 
 from settings import *
-from utils import screen_to_world, world_to_screen
+from utils import screen_to_world, get_mouse_world_pos
 
 class Camera():
     def __init__(self):
@@ -9,14 +9,17 @@ class Camera():
         self.offset_x = 0
         self.offset_y = 0
         self.zoom = 1.0
+
+        self.mouse_pos = pygame.mouse.get_pos()
+        self.last_mouse_pos = (0, 0) # mouse-position, one frame before. (needed for drag-and-drop-feature)
     
     def move(self, dx, dy):
         self.offset_x += dx
         self.offset_y += dy
     
 
-    def change_zoom(self, zoom_dir, mouse_pos):
-        mouse_world_x, mouse_world_y = screen_to_world(*mouse_pos, self.offset_x, self.offset_y, self.zoom)
+    def change_zoom(self, zoom_dir):
+        mouse_world_x, mouse_world_y = get_mouse_world_pos(self)
 
         if zoom_dir > 0:  # Zoom in
             self.zoom *= (1 + CAMERA_ZOOM_FACTOR)
@@ -27,11 +30,13 @@ class Camera():
         self.zoom = max(CAMERA_MIN_ZOOM, min(self.zoom, CAMERA_MAX_ZOOM))
 
         # calculate new offset, such that the mouse position remains the same in world coordinates
-        self.offset_x = mouse_world_x - (mouse_pos[0] / self.zoom)
-        self.offset_y = mouse_world_y - (mouse_pos[1] / self.zoom)
+        self.offset_x = mouse_world_x - (self.mouse_pos[0] / self.zoom)
+        self.offset_y = mouse_world_y - (self.mouse_pos[1] / self.zoom)
 
 
-    def update(self, keys, zoom_dir, mouse_pos, last_mouse_pos, is_dragging):
+    def update(self, keys, zoom_dir, is_dragging):
+        self.last_mouse_pos = self.mouse_pos
+        self.mouse_pos = pygame.mouse.get_pos()
         move_x = 0
         move_y = 0
 
@@ -52,14 +57,14 @@ class Camera():
         
         # Maus-Drag movement
         if is_dragging:
-            dx = mouse_pos[0] - last_mouse_pos[0]
-            dy = mouse_pos[1] - last_mouse_pos[1]
+            dx = self.mouse_pos[0] - self.last_mouse_pos[0]
+            dy = self.mouse_pos[1] - self.last_mouse_pos[1]
 
             self.offset_x -= dx / self.zoom
             self.offset_y -= dy / self.zoom
 
         # zoom with mouse wheel
-        if zoom_dir != 0 and mouse_pos is not None:
-            self.change_zoom(zoom_dir, mouse_pos)
+        if zoom_dir != 0 and self.mouse_pos is not None:
+            self.change_zoom(zoom_dir)
 
         self.move(move_x, move_y)
