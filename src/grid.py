@@ -10,11 +10,11 @@ class Grid():
         # x and y are snapped to the world grid
         self.blocks = {}
 
-    def screen_to_world(self, screen_x, screen_y, camera_offset):
+    def screen_to_world(self, screen_x, screen_y, camera_offset_x, camera_offset_y):
         """Convert screen coordinates to world coordinates based on camera offset."""
         # TODO: Implement zoom functionality
-        world_x = (screen_x + camera_offset[0])
-        world_y = (screen_y + camera_offset[1])
+        world_x = (screen_x + camera_offset_x)
+        world_y = (screen_y + camera_offset_y)
         return world_x, world_y
 
     def snap_to_grid(self, world_x, world_y):
@@ -39,10 +39,10 @@ class Grid():
         return self.blocks.get((grid_x, grid_y), None)
     
 
-    def draw_grid_lines(self, screen, camera_offset):
+    def draw_grid_lines(self, screen, camera_offset_x, camera_offset_y):
         screen_width, screen_height = screen.get_size()
-        start_x = -camera_offset[0] % TILE_SIZE
-        start_y = -camera_offset[1] % TILE_SIZE
+        start_x = -camera_offset_x % TILE_SIZE
+        start_y = -camera_offset_y % TILE_SIZE
 
         # vertical lines
         x = start_x

@@ -2,6 +2,7 @@ import pygame
 
 from settings import *
 from grid import Grid
+from camera import Camera
 
 class Game():
     def __init__(self):
@@ -12,7 +13,7 @@ class Game():
         self.running = True
         
         self.grid = Grid()
-        self.camera_offset = [0, 0]
+        self.camera = Camera()
 
     
     def run(self):
@@ -22,9 +23,16 @@ class Game():
                 if event.type == pygame.QUIT:
                     self.running = False
 
+            keys = pygame.key.get_pressed()
+
             self.screen.fill((0, 0, 0))
 
-            self.grid.draw_grid_lines(self.screen, self.camera_offset)
+            self.camera.update(keys)
+
+            self.grid.draw_grid_lines(self.screen, self.camera.offset_x, self.camera.offset_y)
+
+            self.clock.tick(60)
+            #print(f"FPS: {self.clock.get_fps():.2f}")
             pygame.display.flip()
 
 
