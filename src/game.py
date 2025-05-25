@@ -15,8 +15,11 @@ class Game():
         self.grid = Grid()
         self.camera = Camera()
 
+        self.last_mouse_pos = (0, 0) # mouse position, one frame before
         self.mouse_pos = pygame.mouse.get_pos()
         self.mouse_wheel_dir = 0 # 0 for no scroll, positive for scroll up, negative for scroll down
+
+        self.is_dragging = False
 
 
     def handle_events(self):
@@ -28,6 +31,14 @@ class Game():
             # mouse events
             if event.type == pygame.MOUSEWHEEL:
                 self.mouse_wheel_dir = event.y
+
+            # right mousebutton
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 3:
+                    self.is_dragging = True
+            elif event.type == pygame.MOUSEBUTTONUP:
+                if event.button == 3:
+                    self.is_dragging = False
     
 
     def run(self):
@@ -38,8 +49,9 @@ class Game():
 
             self.screen.fill((0, 0, 0))
 
+            self.last_mouse_pos = self.mouse_pos
             self.mouse_pos = pygame.mouse.get_pos()
-            self.camera.update(keys, self.mouse_wheel_dir, self.mouse_pos)
+            self.camera.update(keys, self.mouse_wheel_dir, self.mouse_pos, self.last_mouse_pos, self.is_dragging)
             self.grid.draw_grid_lines(self.screen, self.camera.offset_x, self.camera.offset_y, self.camera.zoom)
 
             self.clock.tick(60)

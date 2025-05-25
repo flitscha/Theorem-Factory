@@ -31,7 +31,7 @@ class Camera():
         self.offset_y = mouse_world_y - (mouse_pos[1] / self.zoom)
 
 
-    def update(self, keys, zoom_dir, mouse_pos):
+    def update(self, keys, zoom_dir, mouse_pos, last_mouse_pos, is_dragging):
         move_x = 0
         move_y = 0
 
@@ -49,6 +49,14 @@ class Camera():
         if move_x != 0 and move_y != 0:
             move_x /= 2**0.5
             move_y /= 2**0.5
+        
+        # Maus-Drag movement
+        if is_dragging:
+            dx = mouse_pos[0] - last_mouse_pos[0]
+            dy = mouse_pos[1] - last_mouse_pos[1]
+
+            self.offset_x -= dx / self.zoom
+            self.offset_y -= dy / self.zoom
 
         # zoom with mouse wheel
         if zoom_dir != 0 and mouse_pos is not None:
