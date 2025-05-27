@@ -11,16 +11,9 @@ class Grid():
         self.blocks = {}
 
 
-    def snap_to_grid(self, world_x, world_y):
-        """Snap world coordinates to the grid."""
-        snapped_x = (world_x // TILE_SIZE) * TILE_SIZE
-        snapped_y = (world_y // TILE_SIZE) * TILE_SIZE
-        return snapped_x, snapped_y
-    
-
     def add_block(self, grid_x, grid_y, block):
         """Add a block to the grid at position (grid_x, grid_y).
-        grid_x and grid_y are the snapped world coordinates."""
+        grid_x and grid_y are grid-koordinates. (distance 1, is TILE_SIZE in Woorld-coordinates)"""
         self.blocks[(grid_x, grid_y)] = block
     
     def remove_block(self, grid_x, grid_y):
@@ -49,4 +42,10 @@ class Grid():
         while y < screen_height:
             pygame.draw.line(screen, GRID_COLOR, (0, y), (screen_width, y))
             y += TILE_SIZE * camera_zoom
+
+
+    def draw_blocks(self, screen, camera):
+        # TODO: only draw blocks, that are visible on the screen
+        for (tile_x, tile_y), block in self.blocks.items():
+            block.draw(screen, camera, tile_x, tile_y)
 

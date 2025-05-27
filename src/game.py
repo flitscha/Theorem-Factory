@@ -1,9 +1,11 @@
 import pygame
+import random
 
 from settings import *
 from grid import Grid
 from camera import Camera
 from debug import Debug
+from machines.machine import Machine
 
 class Game():
     def __init__(self):
@@ -42,6 +44,13 @@ class Game():
     
 
     def run(self):
+        machine = Machine()
+        self.grid.add_block(0, 0, machine)
+
+        for i in range(100):
+            machine = Machine(TILE_SIZE, (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)))
+            self.grid.add_block(random.randint(-100, 100), random.randint(-100, 100), machine)
+            
         
         while self.running:
             self.handle_events()
@@ -51,6 +60,7 @@ class Game():
 
             self.camera.update(keys, self.mouse_wheel_dir, self.is_dragging)
             self.grid.draw_grid_lines(self.screen, self.camera.offset_x, self.camera.offset_y, self.camera.zoom)
+            self.grid.draw_blocks(self.screen, self.camera)
 
             self.debug.draw(self.screen, self.camera, self.clock)
 
