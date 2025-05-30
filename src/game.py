@@ -6,6 +6,7 @@ from grid import Grid
 from camera import Camera
 from debug import Debug
 from machines.machine import Machine
+from machines.generator import Generator
 
 class Game():
     def __init__(self):
@@ -44,12 +45,10 @@ class Game():
     
 
     def run(self):
-        machine = Machine()
-        self.grid.add_block(0, 0, machine)
-
+        
         for i in range(100):
-            machine = Machine(TILE_SIZE, (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)))
-            self.grid.add_block(random.randint(-100, 100), random.randint(-100, 100), machine)
+            machine = Generator()
+            self.grid.add_block(random.randint(-50, 50), random.randint(-50, 50), machine)
             
         
         while self.running:
