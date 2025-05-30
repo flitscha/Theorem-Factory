@@ -4,13 +4,20 @@ from utils import world_to_screen
 from settings import TILE_SIZE
 
 class Machine:
-    def __init__(self, size=1, color=(200, 200, 200), image=None):
+    def __init__(self, size=1, color=(200, 200, 200), image=None, rotation=0):
         self.size = size # size in grid tiles
         self.color = color
         self.image = image
+        self.rotate_image(rotation)
 
     def update(self):
         pass
+
+
+    def rotate_image(self, n):
+        if self.image:
+            self.image = pygame.transform.rotate(self.image, 90 * n)
+
     
     def draw(self, screen, camera, grid_x, grid_y):
         screen_x, screen_y = world_to_screen(
