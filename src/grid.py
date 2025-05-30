@@ -9,21 +9,44 @@ class Grid():
         # x and y are the world coordinates of the block (not screen coordinates)
         # x and y are snapped to the world grid
         self.blocks = {}
+        self.occupied_tiles = {} # Set to keep track of occupied tiles for quick lookup
 
 
     def add_block(self, grid_x, grid_y, block):
         """Add a block to the grid at position (grid_x, grid_y).
         grid_x and grid_y are grid-koordinates. (distance 1, is TILE_SIZE in Woorld-coordinates)"""
+
         self.blocks[(grid_x, grid_y)] = block
+
+        # Add the block to the occupied tiles set
+        for x in range(grid_x, grid_x + block.size[0]):
+            for y in range(grid_y, grid_y + block.size[1]):
+                self.occupied_tiles[(x, y)] = block
     
+
     def remove_block(self, grid_x, grid_y):
         """Remove the block from the grid at position (grid_x, grid_y), if it exists."""
         if (grid_x, grid_y) in self.blocks:
             del self.blocks[(grid_x, grid_y)]
+        
+            # Remove the block from the occupied tiles set
+            for x in range(grid_x, grid_x + 1):
+                for y in range(grid_y, grid_y + 1):
+                    del self.occupied_tiles[(x, y)]
     
+
     def get_block(self, grid_x, grid_y):
         """Get the block at position (x, y). Returns None if no block exists."""
-        return self.blocks.get((grid_x, grid_y), None)
+        return self.occupied_tiles.get((grid_x, grid_y))
+
+
+    def is_empty(self, grid_x, grid_y, size=(1, 1)):
+        """Check if the grid area defined by (grid_x, grid_y) and size is empty."""
+        for x in range(grid_x, grid_x + size[0]):
+            for y in range(grid_y, grid_y + size[1]):
+                if self.occupied_tiles.get((x, y)):
+                    return False
+        return True
     
 
     def draw_grid_lines(self, screen, camera_offset_x, camera_offset_y, camera_zoom):

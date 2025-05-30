@@ -8,7 +8,7 @@ class Generator(Machine):
         self.produced_letter=None
         self.image = pygame.image.load("assets/sprites/generator.png").convert_alpha()
 
-        super().__init__(size = 2, image = self.image, rotation=rotation)
+        super().__init__(size=(2, 2), image=self.image, rotation=rotation)
     
 
     def change_letter(self, new_letter):
