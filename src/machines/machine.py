@@ -20,13 +20,7 @@ class Machine:
 
     
     def draw(self, screen, camera, grid_x, grid_y):
-        screen_x, screen_y = world_to_screen(
-            grid_x * TILE_SIZE,
-            grid_y * TILE_SIZE,
-            camera.offset_x,
-            camera.offset_y,
-            camera.zoom
-        )
+        screen_x, screen_y = world_to_screen(grid_x * TILE_SIZE, grid_y * TILE_SIZE, camera)
 
         # draw the image of the machine, if it exists
         if self.image:
