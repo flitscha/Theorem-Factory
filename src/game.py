@@ -1,12 +1,13 @@
 import pygame
-import random
 
 from settings import *
 from grid import Grid
 from camera import Camera
 from debug import Debug
-from utils import get_mouse_world_pos
+from utils import get_mouse_world_pos, get_grid_coordinates_when_placing_machine
 from machines.generator import Generator
+from grid_highlighter import GridHighlighter
+from machine_data import database as machine_data
 
 class Game():
     def __init__(self):
@@ -15,6 +16,10 @@ class Game():
         pygame.display.set_caption(GAME_NAME)
         self.clock = pygame.time.Clock()
         self.running = True
+
+        # load machine images
+        for machine in machine_data.machines.values():
+            machine.load_image()
         
         self.grid = Grid()
         self.camera = Camera()
@@ -24,6 +29,9 @@ class Game():
         self.left_mouse_button_down = False
 
         self.debug = Debug() # debug overlay
+
+        self.grid_highlighter = GridHighlighter(self.screen, self.grid, self.camera, machine_data)
+        self.grid_highlighter.start_preview("generator")  # Start previewing the generator machine
 
 
     def handle_events(self):
@@ -50,14 +58,9 @@ class Game():
 
     def place_machine(self):
         """ If the player clicks on the grid, place a machine at that position. """
-        world_x, world_y = get_mouse_world_pos(self.camera)
-        
         # calculate the grid position based on world coordinates AND the size of the machine 
         machine_size = (2, 2)  # assuming the machine is 2x2 tiles
-        world_x -= (machine_size[0] * TILE_SIZE) / 2
-        world_y -= (machine_size[1] * TILE_SIZE) / 2
-        grid_x = round(world_x / TILE_SIZE)
-        grid_y = round(world_y / TILE_SIZE)
+        grid_x, grid_y = get_grid_coordinates_when_placing_machine(self.camera, machine_size)
 
         # Check if the clicked position is empty
         if self.grid.is_empty(grid_x, grid_y, machine_size):
@@ -82,6 +85,8 @@ class Game():
             if self.left_mouse_button_down:
                 self.place_machine()
                 self.left_mouse_button_down = False
+
+            self.grid_highlighter.draw()
 
             self.clock.tick(60)
             pygame.display.flip()
