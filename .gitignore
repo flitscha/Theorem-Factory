@@ -1,3 +1,5 @@
+gpt_tool.py
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

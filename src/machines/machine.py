@@ -9,6 +9,7 @@ class Machine:
         self.color = color
         self.image = image
         self.rotate_image(rotation)
+        self.origin = None  # will be set on placement
 
     def update(self):
         pass

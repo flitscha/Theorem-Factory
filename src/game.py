@@ -27,6 +27,7 @@ class Game():
         self.mouse_wheel_dir = 0 # 0 for no scroll, positive for scroll up, negative for scroll down
         self.is_dragging = False
         self.left_mouse_button_down = False
+        self.middle_mouse_button_down = False
 
         self.debug = Debug() # debug overlay
 
@@ -50,6 +51,8 @@ class Game():
                     self.is_dragging = True
                 elif event.button == 1: # left mousebutton down
                     self.left_mouse_button_down = True
+                elif event.button == 2:  # middle mousebutton down for testing removal
+                    self.middle_mouse_button_down = True
 
             elif event.type == pygame.MOUSEBUTTONUP:
                 if event.button == 3: # right mousebutton up
@@ -82,9 +85,22 @@ class Game():
 
             self.debug.draw(self.screen, self.camera, self.clock)
 
+            # testing, to place blocks
             if self.left_mouse_button_down:
                 self.place_machine()
                 self.left_mouse_button_down = False
+
+            # testing, to delete blocks
+            # Remove block on middle mouse click
+            if self.middle_mouse_button_down:
+                # Get mouse world position and convert to grid coords
+                mouse_world_x, mouse_world_y = get_mouse_world_pos(self.camera)
+                grid_x = int(mouse_world_x // TILE_SIZE)
+                grid_y = int(mouse_world_y // TILE_SIZE)
+
+                self.grid.remove_block(grid_x, grid_y)
+                self.middle_mouse_button_down = False
+                
 
             self.grid_highlighter.draw()
 

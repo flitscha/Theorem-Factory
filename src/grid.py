@@ -16,6 +16,7 @@ class Grid():
         """Add a block to the grid at position (grid_x, grid_y).
         grid_x and grid_y are grid-koordinates. (distance 1, is TILE_SIZE in Woorld-coordinates)"""
 
+        block.origin = (grid_x, grid_y)
         self.blocks[(grid_x, grid_y)] = block
 
         # Add the block to the occupied tiles set
@@ -26,14 +27,20 @@ class Grid():
 
     def remove_block(self, grid_x, grid_y):
         """Remove the block from the grid at position (grid_x, grid_y), if it exists."""
-        if (grid_x, grid_y) in self.blocks:
-            del self.blocks[(grid_x, grid_y)]
+        block = self.occupied_tiles.get((grid_x, grid_y))
+        if not block:
+            return  # no block here
         
-            # Remove the block from the occupied tiles set
-            for x in range(grid_x, grid_x + 1):
-                for y in range(grid_y, grid_y + 1):
-                    del self.occupied_tiles[(x, y)]
-    
+        origin_x, origin_y = block.origin
+
+        # Remove from blocks dict
+        del self.blocks[(origin_x, origin_y)]
+
+        # Remove all occupied tiles of this block
+        for x in range(origin_x, origin_x + block.size[0]):
+            for y in range(origin_y, origin_y + block.size[1]):
+                del self.occupied_tiles[(x, y)]
+
 
     def get_block(self, grid_x, grid_y):
         """Get the block at position (x, y). Returns None if no block exists."""
