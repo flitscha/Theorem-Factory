@@ -1,7 +1,7 @@
 import pygame
 
-from utils import world_to_screen
-from settings import TILE_SIZE
+from core.utils import world_to_screen
+from config.settings import TILE_SIZE
 
 class Machine:
     def __init__(self, size=(1, 1), color=(200, 200, 200), image=None, rotation=0):

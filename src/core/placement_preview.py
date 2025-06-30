@@ -1,8 +1,8 @@
 import pygame
 
-from settings import TILE_SIZE
-from utils import get_grid_coordinates_when_placing_machine, grid_to_screen_coordinates
-from settings import SCREEN_HEIGHT, MACHINE_SELECTION_GUI_HEIGHT
+from config.settings import TILE_SIZE
+from core.utils import get_grid_coordinates_when_placing_machine, grid_to_screen_coordinates
+from config.settings import SCREEN_HEIGHT, MACHINE_SELECTION_GUI_HEIGHT
 
 class PlacementPreview():
     def __init__(self, screen, grid, camera, machine_database):

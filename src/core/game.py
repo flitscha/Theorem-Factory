@@ -1,12 +1,12 @@
 import pygame
 
-from settings import *
-from grid import Grid
-from camera import Camera
-from debug import Debug
-from utils import get_mouse_world_pos, get_grid_coordinates_when_placing_machine
-from placement_preview import PlacementPreview
-from machine_database import database as machine_data
+from config.settings import *
+from core.grid import Grid
+from core.camera import Camera
+from core.debug import Debug
+from core.utils import get_mouse_world_pos, get_grid_coordinates_when_placing_machine
+from core.placement_preview import PlacementPreview
+from machines.machine_database import database as machine_data
 from gui.machine_selection import MachineSelectionBar
 
 class Game():

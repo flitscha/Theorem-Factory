@@ -1,7 +1,7 @@
 import pygame
 
-from settings import *
-from utils import screen_to_world, get_mouse_world_pos
+from config.settings import *
+from core.utils import get_mouse_world_pos
 
 class Camera():
     def __init__(self):

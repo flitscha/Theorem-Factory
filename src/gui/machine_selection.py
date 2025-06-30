@@ -1,6 +1,6 @@
 import pygame
 
-from settings import MACHINE_SELECTION_GUI_HEIGHT
+from config.settings import MACHINE_SELECTION_GUI_HEIGHT
 
 # the gui-bar at the bottom of the screen, where the player selects the machine, he wants to place.
 class MachineSelectionBar:
