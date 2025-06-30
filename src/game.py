@@ -5,9 +5,9 @@ from grid import Grid
 from camera import Camera
 from debug import Debug
 from utils import get_mouse_world_pos, get_grid_coordinates_when_placing_machine
-from machines.generator import Generator
-from grid_highlighter import GridHighlighter
-from machine_data import database as machine_data
+from placement_preview import PlacementPreview
+from machine_database import database as machine_data
+from gui.machine_selection import MachineSelectionBar
 
 class Game():
     def __init__(self):
@@ -31,8 +31,9 @@ class Game():
 
         self.debug = Debug() # debug overlay
 
-        self.grid_highlighter = GridHighlighter(self.screen, self.grid, self.camera, machine_data)
-        self.grid_highlighter.start_preview("generator")  # Start previewing the generator machine
+        self.placement_preview = PlacementPreview(self.screen, self.grid, self.camera, machine_data)
+
+        self.machine_selection_bar = MachineSelectionBar(self.screen, machine_data)
 
 
     def handle_events(self):
@@ -44,7 +45,7 @@ class Game():
             # key events
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_r:
-                    self.grid_highlighter.rotate_preview()
+                    self.placement_preview.rotate_preview()
 
             # mouse events
             if event.type == pygame.MOUSEWHEEL:
@@ -56,6 +57,10 @@ class Game():
                     self.is_dragging = True
                 elif event.button == 1: # left mousebutton down
                     self.left_mouse_button_down = True
+                    # update the selected machine (using the machine_selection_bar GUI)
+                    selected = self.machine_selection_bar.handle_click(event.pos)
+                    if selected:
+                        self.placement_preview.start_preview(selected)
                 elif event.button == 2:  # middle mousebutton down for testing removal
                     self.middle_mouse_button_down = True
 
@@ -67,15 +72,18 @@ class Game():
     def place_machine(self):
         """ If the player clicks on the grid, place a machine at that position. """
 
-        # Get the machine ID and rotation from the grid_highlighter
-        machine_id = self.grid_highlighter.active_preview
-        rotation = self.grid_highlighter.rotation
+        if pygame.mouse.get_pos()[1] > SCREEN_HEIGHT - MACHINE_SELECTION_GUI_HEIGHT:
+            return
+
+        # Get the machine ID and rotation from the placement_preview
+        machine_id = self.placement_preview.active_preview
+        rotation = self.placement_preview.rotation
 
         if not machine_id:
             return
 
         # Get machine data
-        data = self.grid_highlighter.machine_database.get(machine_id)
+        data = self.placement_preview.machine_database.get(machine_id)
         size = data.size
 
         # Calculate rotated size based on rotation (swap width and height for odd rotations)
@@ -89,7 +97,8 @@ class Game():
 
         # Check if the clicked position is empty
         if self.grid.is_empty(grid_x, grid_y, rotated_size):
-            machine = Generator(machine_data, rotation=rotation)
+            machine = data.cls(data, rotation=rotation)
+            #machine = Generator(machine_data, rotation=rotation)
             self.grid.add_block(grid_x, grid_y, machine)
 
 
@@ -124,8 +133,12 @@ class Game():
                 self.middle_mouse_button_down = False
 
 
-            self.grid_highlighter.draw()
+            self.placement_preview.draw()
 
+            # GUI elements
+            self.machine_selection_bar.draw()
+
+            # set fps and change frame
             self.clock.tick(60)
             pygame.display.flip()
 

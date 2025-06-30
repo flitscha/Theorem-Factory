@@ -3,10 +3,9 @@ import pygame
 from machines.machine import Machine
 
 class Generator(Machine):
-    def __init__(self, machine_database, rotation=0):
-        data = machine_database.get("generator")
-        self.image = data.image
-        self.size = data.size
+    def __init__(self, machine_data, rotation=0):
+        self.image = machine_data.image
+        self.size = machine_data.size
         self.rotation = rotation
         self.produced_letter=None
 

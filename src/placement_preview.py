@@ -2,8 +2,9 @@ import pygame
 
 from settings import TILE_SIZE
 from utils import get_grid_coordinates_when_placing_machine, grid_to_screen_coordinates
+from settings import SCREEN_HEIGHT, MACHINE_SELECTION_GUI_HEIGHT
 
-class GridHighlighter():
+class PlacementPreview():
     def __init__(self, screen, grid, camera, machine_database):
         self.grid = grid
         self.screen = screen
@@ -16,6 +17,7 @@ class GridHighlighter():
 
     def start_preview(self, machine_id):
         self.active_preview = machine_id
+        self.rotation = 0
 
     def stop_preview(self):
         self.active_preview = None
@@ -26,6 +28,9 @@ class GridHighlighter():
             self.rotation = (self.rotation + 1) % 4  # cycle 0->1->2->3->0
 
     def draw(self):
+        if pygame.mouse.get_pos()[1] > SCREEN_HEIGHT - MACHINE_SELECTION_GUI_HEIGHT:
+            return
+        
         if self.active_preview:
             data = self.machine_database.get(self.active_preview)
             image = data.image
