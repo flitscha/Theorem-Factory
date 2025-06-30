@@ -3,12 +3,14 @@ import pygame
 from machines.machine import Machine
 
 class Generator(Machine):
-    def __init__(self, rotation=0):
+    def __init__(self, machine_database, rotation=0):
+        data = machine_database.get("generator")
+        self.image = data.image
+        self.size = data.size
         self.rotation = rotation
         self.produced_letter=None
-        self.image = pygame.image.load("assets/sprites/generator.png").convert_alpha()
 
-        super().__init__(size=(2, 2), image=self.image, rotation=rotation)
+        super().__init__(size=self.size, image=self.image, rotation=rotation)
     
 
     def change_letter(self, new_letter):

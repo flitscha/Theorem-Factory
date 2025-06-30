@@ -41,6 +41,11 @@ class Game():
             if event.type == pygame.QUIT:
                 self.running = False
 
+            # key events
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_r:
+                    self.grid_highlighter.rotate_preview()
+
             # mouse events
             if event.type == pygame.MOUSEWHEEL:
                 self.mouse_wheel_dir = event.y
@@ -61,13 +66,30 @@ class Game():
 
     def place_machine(self):
         """ If the player clicks on the grid, place a machine at that position. """
+
+        # Get the machine ID and rotation from the grid_highlighter
+        machine_id = self.grid_highlighter.active_preview
+        rotation = self.grid_highlighter.rotation
+
+        if not machine_id:
+            return
+
+        # Get machine data
+        data = self.grid_highlighter.machine_database.get(machine_id)
+        size = data.size
+
+        # Calculate rotated size based on rotation (swap width and height for odd rotations)
+        if rotation % 2 == 1:
+            rotated_size = (size[1], size[0])
+        else:
+            rotated_size = size
+
         # calculate the grid position based on world coordinates AND the size of the machine 
-        machine_size = (2, 2)  # assuming the machine is 2x2 tiles
-        grid_x, grid_y = get_grid_coordinates_when_placing_machine(self.camera, machine_size)
+        grid_x, grid_y = get_grid_coordinates_when_placing_machine(self.camera, rotated_size)
 
         # Check if the clicked position is empty
-        if self.grid.is_empty(grid_x, grid_y, machine_size):
-            machine = Generator()
+        if self.grid.is_empty(grid_x, grid_y, rotated_size):
+            machine = Generator(machine_data, rotation=rotation)
             self.grid.add_block(grid_x, grid_y, machine)
 
 
@@ -100,7 +122,7 @@ class Game():
 
                 self.grid.remove_block(grid_x, grid_y)
                 self.middle_mouse_button_down = False
-                
+
 
             self.grid_highlighter.draw()
 

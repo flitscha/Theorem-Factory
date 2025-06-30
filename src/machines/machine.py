@@ -5,19 +5,28 @@ from settings import TILE_SIZE
 
 class Machine:
     def __init__(self, size=(1, 1), color=(200, 200, 200), image=None, rotation=0):
-        self.size = size # size in grid tiles
+        self.base_size = size # size in grid tiles
         self.color = color
         self.image = image
-        self.rotate_image(rotation)
+        self.rotation = rotation
+        self.rotated_size = None
+        self.update_rotated_size()
+        self.rotate_image()
         self.origin = None  # will be set on placement
 
+    def update_rotated_size(self):
+        # rotation 0 or 2 means size stays same, 1 or 3 swaps width/height
+        if self.rotation % 2 == 1:
+            self.rotated_size = (self.base_size[1], self.base_size[0])
+        else:
+            self.rotated_size = self.base_size
+
+    def rotate_image(self):
+        if self.image:
+            self.image = pygame.transform.rotate(self.image, -90 * self.rotation)
+    
     def update(self):
         pass
-
-
-    def rotate_image(self, n):
-        if self.image:
-            self.image = pygame.transform.rotate(self.image, 90 * n)
 
     
     def draw(self, screen, camera, grid_x, grid_y):
@@ -27,7 +36,8 @@ class Machine:
         if self.image:
             scaled_image = pygame.transform.scale(
                 self.image, 
-                (int(self.size[0] * TILE_SIZE * camera.zoom), int(self.size[1] * TILE_SIZE * camera.zoom))
+                (int(self.rotated_size[0] * TILE_SIZE * camera.zoom), 
+                 int(self.rotated_size[1] * TILE_SIZE * camera.zoom))
             )
             screen.blit(scaled_image, (screen_x, screen_y))
         

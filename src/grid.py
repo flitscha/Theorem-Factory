@@ -20,8 +20,8 @@ class Grid():
         self.blocks[(grid_x, grid_y)] = block
 
         # Add the block to the occupied tiles set
-        for x in range(grid_x, grid_x + block.size[0]):
-            for y in range(grid_y, grid_y + block.size[1]):
+        for x in range(grid_x, grid_x + block.rotated_size[0]):
+            for y in range(grid_y, grid_y + block.rotated_size[1]):
                 self.occupied_tiles[(x, y)] = block
     
 
@@ -37,8 +37,8 @@ class Grid():
         del self.blocks[(origin_x, origin_y)]
 
         # Remove all occupied tiles of this block
-        for x in range(origin_x, origin_x + block.size[0]):
-            for y in range(origin_y, origin_y + block.size[1]):
+        for x in range(origin_x, origin_x + block.rotated_size[0]):
+            for y in range(origin_y, origin_y + block.rotated_size[1]):
                 del self.occupied_tiles[(x, y)]
 
 
