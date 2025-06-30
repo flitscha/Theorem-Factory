@@ -24,6 +24,16 @@ class MachineSelectionBar:
         x = self.margin
         y = self.screen.get_height() - self.height + (self.height - self.icon_size) // 2
 
+        # Add empty selection button
+        none_rect = pygame.Rect(x, y, self.icon_size, self.icon_size)
+        buttons.append({
+            "id": None,
+            "image": self.make_empty_icon(),  # helper function below
+            "rect": none_rect
+        })
+        x += self.icon_size + self.margin
+
+        # all other slots: use the database (later we will distinguish between unlocked machines, and not unlocked)
         for machine_id, data in self.machine_database.machines.items():
             rect = pygame.Rect(x, y, self.icon_size, self.icon_size)
             buttons.append({
@@ -34,6 +44,17 @@ class MachineSelectionBar:
             x += self.icon_size + self.margin
 
         return buttons
+
+
+    def make_empty_icon(self):
+        surface = pygame.Surface((self.icon_size, self.icon_size))
+        surface.fill((50, 50, 50))
+
+        # Draw an X to indicate "None"
+        pygame.draw.line(surface, (100, 100, 100), (0, 0), (self.icon_size, self.icon_size), 3)
+        pygame.draw.line(surface, (100, 100, 100), (0, self.icon_size), (self.icon_size, 0), 3)
+
+        return surface
 
 
     def draw(self):
@@ -56,4 +77,4 @@ class MachineSelectionBar:
             if btn["rect"].collidepoint(mouse_pos):
                 self.selected_machine_id = btn["id"]
                 return btn["id"]
-        return None
+        return "MISS" # no icon clicked

@@ -59,7 +59,7 @@ class Game():
                     self.left_mouse_button_down = True
                     # update the selected machine (using the machine_selection_bar GUI)
                     selected = self.machine_selection_bar.handle_click(event.pos)
-                    if selected:
+                    if selected != "MISS":
                         self.placement_preview.start_preview(selected)
                 elif event.button == 2:  # middle mousebutton down for testing removal
                     self.middle_mouse_button_down = True
