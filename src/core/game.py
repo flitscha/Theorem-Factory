@@ -133,7 +133,9 @@ class Game():
 
             self.screen.fill((0, 0, 0))
 
+            dt = self.clock.tick(60) / 1000.0
             self.camera.update(keys, self.mouse_wheel_dir, self.is_dragging)
+            self.grid.update(dt)
             self.grid.draw_grid_lines(self.screen, self.camera.offset_x, self.camera.offset_y, self.camera.zoom)
             self.grid.draw_blocks(self.screen, self.camera)
 

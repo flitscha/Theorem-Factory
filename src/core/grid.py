@@ -10,6 +10,7 @@ class Grid():
         # x and y are snapped to the world grid
         self.blocks = {}
         self.occupied_tiles = {} # Set to keep track of occupied tiles for quick lookup
+        self.items = []
 
 
     def add_block(self, grid_x, grid_y, block):
@@ -74,8 +75,20 @@ class Grid():
             y += TILE_SIZE * camera_zoom
 
 
+    def update(self, dt):
+        # Iterate over all blocks and call their update method if it exists
+        for block in self.blocks.values():
+            if hasattr(block, "update"):
+                item = block.update(dt) # TODO: improve. Where should items be stored? Only on convayor belt?
+                if item:
+                    self.items.append(item)
+
+
     def draw_blocks(self, screen, camera):
         # TODO: only draw blocks, that are visible on the screen
         for (tile_x, tile_y), block in self.blocks.items():
             block.draw(screen, camera, tile_x, tile_y)
+
+        for item in self.items:
+            item.draw(screen, camera)
 
