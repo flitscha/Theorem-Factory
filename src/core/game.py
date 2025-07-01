@@ -121,9 +121,8 @@ class Game():
         block = self.grid.get_block(grid_x, grid_y)
         if block:
             # Open menu for this machine
-            self.active_menu = GeneratorMenu(self.screen, (300, 200), block)
             if isinstance(block, Generator): # TODO: improve this
-                self.active_menu = GeneratorMenu(self.screen, (300, 200), block)
+                self.active_menu = GeneratorMenu(self.screen, (500, 300), block)
 
 
     def run(self):

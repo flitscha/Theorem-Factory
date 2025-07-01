@@ -5,7 +5,7 @@ class AbstractMenu:
     BG_COLOR = (30, 30, 30)
     BORDER_COLOR = (200, 200, 200)
     BORDER_WIDTH = 2
-    CLOSE_BTN_SIZE = 20
+    CLOSE_BTN_SIZE = 30
     CLOSE_BTN_COLOR = (200, 50, 50)
     CLOSE_BTN_HOVER_COLOR = (255, 80, 80)
 
@@ -72,7 +72,3 @@ class AbstractMenu:
 
         pygame.draw.line(self.screen, (255, 255, 255), start_pos1, end_pos1, 2)
         pygame.draw.line(self.screen, (255, 255, 255), start_pos2, end_pos2, 2)
-
-        # Placeholder title
-        title = self.font.render("Base Menu", True, (255, 255, 255))
-        self.screen.blit(title, (self.rect.x + self.PADDING*2 + self.CLOSE_BTN_SIZE, self.rect.y + self.PADDING))
