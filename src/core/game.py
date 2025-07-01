@@ -4,10 +4,12 @@ from config.settings import *
 from core.grid import Grid
 from core.camera import Camera
 from core.debug import Debug
-from core.utils import get_mouse_world_pos, get_grid_coordinates_when_placing_machine
+from core.utils import get_mouse_world_pos, get_grid_coordinates_when_placing_machine, get_mouse_grid_pos
 from core.placement_preview import PlacementPreview
 from machines.machine_database import database as machine_data
 from gui.machine_selection import MachineSelectionBar
+from machines.menu.generator_menu import GeneratorMenu
+from machines.generator import Generator
 
 class Game():
     def __init__(self):
@@ -35,6 +37,8 @@ class Game():
 
         self.machine_selection_bar = MachineSelectionBar(self.screen, machine_data)
 
+        self.active_menu = None
+
 
     def handle_events(self):
         self.mouse_wheel_dir = 0  # Reset mouse wheel direction each frame
@@ -53,6 +57,13 @@ class Game():
 
             # mouse buttons
             elif event.type == pygame.MOUSEBUTTONDOWN:
+                if self.active_menu:
+                    # Forward event to menu
+                    self.active_menu.handle_event(event)
+                    if self.active_menu.closed:
+                        self.active_menu = None
+                    continue
+
                 if event.button == 3: # right mousebutton down
                     self.is_dragging = True
                 elif event.button == 1: # left mousebutton down
@@ -102,6 +113,19 @@ class Game():
             self.grid.add_block(grid_x, grid_y, machine)
 
 
+    def open_machine_menu(self):
+        if self.placement_preview.active_preview:
+            return
+        
+        grid_x, grid_y = get_mouse_grid_pos(self.camera)
+        block = self.grid.get_block(grid_x, grid_y)
+        if block:
+            # Open menu for this machine
+            self.active_menu = GeneratorMenu(self.screen, (300, 200), block)
+            if isinstance(block, Generator): # TODO: improve this
+                self.active_menu = GeneratorMenu(self.screen, (300, 200), block)
+
+
     def run(self):
         
         while self.running:
@@ -119,6 +143,7 @@ class Game():
             # testing, to place blocks
             if self.left_mouse_button_down:
                 self.place_machine()
+                self.open_machine_menu()
                 self.left_mouse_button_down = False
 
             # testing, to delete blocks
@@ -137,6 +162,8 @@ class Game():
 
             # GUI elements
             self.machine_selection_bar.draw()
+            if self.active_menu:
+                self.active_menu.draw()
 
             # set fps and change frame
             self.clock.tick(60)

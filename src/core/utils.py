@@ -20,6 +20,13 @@ def get_mouse_world_pos(camera, mouse_pos=None):
     return mouse_world_x, mouse_world_y
 
 
+def get_mouse_grid_pos(camera, mouse_pos=None):
+    mouse_world_x, mouse_world_y = get_mouse_world_pos(camera, mouse_pos)
+    grid_x = int(mouse_world_x // TILE_SIZE)
+    grid_y = int(mouse_world_y // TILE_SIZE)
+    return grid_x, grid_y
+
+
 def world_to_screen(world_x, world_y, camera):
     """Convert world coordinates to screen coordinates based on camera offset."""
     
