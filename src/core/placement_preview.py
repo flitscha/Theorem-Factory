@@ -59,6 +59,14 @@ class PlacementPreview():
 
             # Semi-transparent machen (alpha)
             overlay_surface = scaled_image.copy()
-            overlay_surface.set_alpha(90)
+
+            overlay_surface.set_alpha(90)  # normal preview alpha
+
+            # if the machine cannot be placed there, the preview is red
+            can_place = self.grid.is_empty(grid_x, grid_y, rotated_size)
+            if not can_place:
+                red_overlay = pygame.Surface(scaled_image.get_size(), pygame.SRCALPHA)
+                red_overlay.fill((255, 0, 0, 120))
+                overlay_surface.blit(red_overlay, (0, 0))
 
             self.screen.blit(overlay_surface, (screen_x, screen_y))
