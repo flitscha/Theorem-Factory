@@ -34,7 +34,7 @@ database = MachineDatabase()
 database.register_machine(MachineData(
     id="generator",
     name="Generator",
-    size=(2, 2),
+    size=(3, 3),
     sprite_path="assets/sprites/generator.png",
     icon_path=None, # add later
     cls=Generator # class

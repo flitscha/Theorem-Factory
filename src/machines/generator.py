@@ -3,6 +3,8 @@ import random
 
 from machines.machine import Machine
 from entities.item import Item
+from core.port import Port, Direction
+
 class Generator(Machine):
     def __init__(self, machine_data, rotation=0):
         self.image = machine_data.image
@@ -15,6 +17,17 @@ class Generator(Machine):
 
         super().__init__(size=self.size, image=self.image, rotation=rotation)
     
+    def init_ports(self):
+        """Initialize ports for the generator"""
+        # Add output port at center of top edge (relative to 3x3 machine)
+        output_port = Port(
+            relative_x=1,  # Center of 3x3 machine
+            relative_y=0,  # Top edge
+            direction=Direction.NORTH,
+            port_type="output"
+        )
+        self.add_port(output_port)
+
 
     def produce_item(self, position=(0, 0)):
         if self.produced_letter is None:
