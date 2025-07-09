@@ -1,6 +1,7 @@
 import pygame
 
 from machines.generator import Generator
+from machines.conveyor_belt import ConveyorBelt
 
 class MachineData:
     def __init__(self, id, name, size, sprite_path, cls, icon_path=None):
@@ -31,6 +32,8 @@ class MachineDatabase:
 
 # create the machine database
 database = MachineDatabase()
+
+# generator
 database.register_machine(MachineData(
     id="generator",
     name="Generator",
@@ -39,6 +42,18 @@ database.register_machine(MachineData(
     icon_path=None, # add later
     cls=Generator # class
 ))
+
+# Conveyor Belt
+database.register_machine(MachineData(
+    id="conveyor",
+    name="Conveyor Belt",
+    size=(1, 1),
+    sprite_path="assets/sprites/conveyor_belt.png",
+    icon_path=None,
+    cls=ConveyorBelt
+))
+
+# test machine
 database.register_machine(MachineData(
     id="machine2",
     name="Machine2",
