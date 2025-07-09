@@ -24,6 +24,9 @@ class Grid():
         for x in range(grid_x, grid_x + block.rotated_size[0]):
             for y in range(grid_y, grid_y + block.rotated_size[1]):
                 self.occupied_tiles[(x, y)] = block
+
+        # Update connections for all machines after placing a new block
+        self.update_all_connections()
     
 
     def remove_block(self, grid_x, grid_y):
@@ -41,6 +44,16 @@ class Grid():
         for x in range(origin_x, origin_x + block.rotated_size[0]):
             for y in range(origin_y, origin_y + block.rotated_size[1]):
                 del self.occupied_tiles[(x, y)]
+        
+        # Update connections for all machines after removing a block
+        self.update_all_connections()
+
+
+    def update_all_connections(self):
+        """Update port connections for all machines in the grid"""
+        for block in self.blocks.values(): # later: chunk system
+            if hasattr(block, 'check_conveyor_connections'):
+                block.check_conveyor_connections(self)
 
 
     def get_block(self, grid_x, grid_y):
@@ -79,9 +92,41 @@ class Grid():
         # Iterate over all blocks and call their update method if it exists
         for block in self.blocks.values():
             if hasattr(block, "update"):
-                item = block.update(dt) # TODO: improve. Where should items be stored? Only on convayor belt?
+                result = block.update(dt)
+                if result:
+                    # For now, if it's an item that couldn't be placed, store it
+                    # This is a fallback - normally items should go directly to conveyors
+                    if hasattr(result, 'formula'):  # It's an item
+                        self.items.append(result)
+        
+        # Update item movement and handle conveyor logic
+        self.update_conveyor_system(dt)
+    
+
+    def update_conveyor_system(self, dt):
+        """Update the conveyor system to move items between belts"""
+        # Get all conveyor belts
+        conveyors = [block for block in self.blocks.values() if hasattr(block, 'try_accept_item')]
+        
+        # Move items that are ready to transfer
+        for conveyor in conveyors:
+            if hasattr(conveyor, 'item_progress') and conveyor.item_progress >= 1.0:
+                item = conveyor.try_output_item()
                 if item:
-                    self.items.append(item)
+                    # Try to pass item to next conveyor or machine
+                    target_pos = conveyor.get_output_position()
+                    target_block = self.get_block(target_pos[0], target_pos[1])
+                    
+                    if target_block and hasattr(target_block, 'try_accept_item'):
+                        # It's another conveyor
+                        if not target_block.try_accept_item(item):
+                            # Target is full, put item back
+                            conveyor.item = item
+                            conveyor.item_progress = 1.0
+                    else:
+                        # No target or target doesn't accept items
+                        # For now, remove item (later we can add logic for machines)
+                        pass
 
 
     def draw_blocks(self, screen, camera):

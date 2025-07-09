@@ -12,7 +12,7 @@ class Generator(Machine):
         self.rotation = rotation
         self.produced_letter=None
 
-        self.production_interval = 1.0  # seconds between productions
+        self.production_interval = 2.0  # seconds between productions
         self.time_since_last_production = 0.0
 
         super().__init__(size=self.size, image=self.image, rotation=rotation)
@@ -29,10 +29,28 @@ class Generator(Machine):
         self.add_port(output_port)
 
 
-    def produce_item(self, position=(0, 0)):
+    def produce_item(self):
+        """Produce an item and try to output it"""
         if self.produced_letter is None:
             return None
-        return Item(formula=self.produced_letter, is_theorem=False, position=position)
+        
+        # Create item at the output port position
+        if self.output_ports:
+            output_port = self.output_ports[0]
+            port_world_x, port_world_y = output_port.get_world_position()
+            
+            # Create item at port position
+            item = Item(
+                formula=self.produced_letter, 
+                is_theorem=False, 
+                position=(port_world_x * 32 + 16, port_world_y * 32 + 16)  # Center of tile
+            )
+            
+            # Try to output the item
+            if output_port.try_output_item(item):
+                return item
+        
+        return None
     
 
     def change_letter(self, new_letter):
@@ -55,9 +73,6 @@ class Generator(Machine):
 
         if self.time_since_last_production >= self.production_interval:
             self.time_since_last_production -= self.production_interval
-
-            # For now, just produce at a random position
-            new_item = self.produce_item(position=(random.randint(0, 1000), random.randint(0, 1000)))
-            return new_item
+            return self.produce_item()
 
         return None
