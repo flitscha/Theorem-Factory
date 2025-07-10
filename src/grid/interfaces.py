@@ -1,46 +1,34 @@
 from abc import ABC, abstractmethod # ABC = Abstract Base classes
 from typing import Optional, Tuple, List
 from entities.item import Item
+from entities.port import Port
 
 class IUpdatable(ABC):
     """Interface for objects that can be updated each frame"""
     @abstractmethod
-    def update(self, dt: float) -> Optional[Item]:
-        """Update the object. Return item if it needs to be handled by grid"""
+    def update(self, dt: float) -> None:
+        """Update the object."""
         pass
 
-class IConveyorNode(ABC):
-    """Interface for objects that can transport items (conveyor belts)"""
+class IProvider(ABC):
+    """Interface for objects that can provide items (machines, etc.)"""
+    output_ports: List[Port] # List of output ports for providing items
+
     @abstractmethod
-    def try_accept_item(self, item: Item) -> bool:
-        """Try to accept an item. Return True if accepted"""
-        pass
-    
-    @abstractmethod
-    def try_output_item(self) -> Optional[Item]:
-        """Try to output an item. Return item if available"""
-        pass
-    
-    @abstractmethod
-    def get_output_position(self) -> Tuple[int, int]:
-        """Get the grid position where this node outputs items"""
-        pass
-    
-    @abstractmethod
-    def is_ready_to_output(self) -> bool:
-        """Check if this node has an item ready to output"""
+    def provide_item_from_port(self, port):
+        """Called when an output port is asked for an item"""
         pass
 
-class IItemAcceptor(ABC):
-    """Interface for machines that can accept items (machines, etc.)"""
     @abstractmethod
-    def try_accept_item(self, item: Item) -> bool:
-        """Try to accept an item. Return True if accepted"""
+    def handle_backpressure(self, item: Item, port: Port):
+        """Handle backpressure when output is blocked"""
         pass
 
-class IItemProducer(ABC):
-    """Interface for machines that can produce items (generators, etc.)"""
+class IReceiver(ABC):
+    """Interface for objects that can receive items (machines, etc.)"""
+    input_ports: List[Port] # List of input ports for receiving items
+
     @abstractmethod
-    def try_produce_item(self) -> Optional[Item]:
-        """Try to produce an item. Return item if produced"""
+    def receive_item_at_port(self, port, item) -> bool:
+        """Called when an input port receives an item"""
         pass

@@ -4,9 +4,8 @@ from config.settings import TILE_SIZE, GRID_COLOR
 class GridRenderer:
     """Handles rendering of the grid and its contents"""
     
-    def __init__(self, grid_manager, conveyor_system):
+    def __init__(self, grid_manager):
         self.grid_manager = grid_manager
-        self.conveyor_system = conveyor_system
     
     def draw_grid_lines(self, screen, camera):
         """Draw the grid lines"""
@@ -32,7 +31,3 @@ class GridRenderer:
         for (tile_x, tile_y), block in self.grid_manager.blocks.items():
             block.draw(screen, camera, tile_x, tile_y)
     
-    def draw_items(self, screen, camera):
-        """Draw all loose items"""
-        for item in self.conveyor_system.get_loose_items():
-            item.draw(screen, camera)

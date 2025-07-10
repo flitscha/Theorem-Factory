@@ -4,6 +4,7 @@ from typing import List, Optional
 from entities.port import Port
 from core.utils import world_to_screen
 from config.settings import TILE_SIZE
+from entities.item import Item
 
 class Machine:
     def __init__(self, size=(1, 1), color=(200, 200, 200), image=None, rotation=0):
@@ -37,40 +38,6 @@ class Machine:
             self.input_ports.append(port)
         elif port.port_type == "output":
             self.output_ports.append(port)
-    
-    def get_port_at_position(self, grid_x: int, grid_y: int) -> Optional[Port]:
-        """Get port at specific grid position"""
-        for port in self.ports:
-            if port.get_world_position() == (grid_x, grid_y):
-                return port
-        return None
-    
-    def check_conveyor_connections(self, grid):
-        """Check and update conveyor connections for all ports"""
-        for port in self.ports:
-            connection_pos = port.get_connection_position()
-            block = grid.get_block(connection_pos[0], connection_pos[1])
-            
-            # Check if there's a conveyor at the connection position
-            if block and hasattr(block, 'try_accept_item'):  # It's a conveyor
-                # Check if conveyor direction matches port
-                if self.is_conveyor_compatible(port, block):
-                    port.connected_conveyor = block
-                else:
-                    port.connected_conveyor = None
-            else:
-                port.connected_conveyor = None
-    
-    def is_conveyor_compatible(self, port: Port, conveyor) -> bool:
-        """Check if conveyor direction is compatible with port"""
-        if port.port_type == "output":
-            # Output port: conveyor should accept items from this direction
-            conveyor_input_pos = conveyor.get_input_position()
-            return conveyor_input_pos == port.get_world_position()
-        else:
-            # Input port: conveyor should output items to this direction
-            conveyor_output_pos = conveyor.get_output_position()
-            return conveyor_output_pos == port.get_world_position()
 
     def update_rotated_size(self):
         # rotation 0 or 2 means size stays same, 1 or 3 swaps width/height
@@ -130,6 +97,6 @@ class Machine:
             pygame.draw.circle(screen, color, (int(port_screen_x), int(port_screen_y)), radius)
             
             # Draw connection indicator
-            if port.connected_conveyor:
+            if port.connected_port:
                 pygame.draw.circle(screen, (255, 255, 255), (int(port_screen_x), int(port_screen_y)), radius + 2, 2)
 

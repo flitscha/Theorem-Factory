@@ -1,7 +1,7 @@
 import pygame
 
 from config.settings import *
-from grid.grid import Grid
+from grid.grid_coordinator import GridCoordinator
 from core.camera import Camera
 from core.debug import Debug
 from core.utils import get_mouse_world_pos, get_grid_coordinates_when_placing_machine, get_mouse_grid_pos
@@ -23,7 +23,8 @@ class Game():
         for machine in machine_data.machines.values():
             machine.load_image()
         
-        self.grid = Grid()
+        #self.grid = Grid()
+        self.grid = GridCoordinator()
         self.camera = Camera()
 
         self.mouse_wheel_dir = 0 # 0 for no scroll, positive for scroll up, negative for scroll down
@@ -136,7 +137,7 @@ class Game():
             dt = self.clock.tick(60) / 1000.0
             self.camera.update(keys, self.mouse_wheel_dir, self.is_dragging)
             self.grid.update(dt)
-            self.grid.draw_grid_lines(self.screen, self.camera.offset_x, self.camera.offset_y, self.camera.zoom)
+            self.grid.draw_grid_lines(self.screen, self.camera)
             self.grid.draw_blocks(self.screen, self.camera)
 
             self.debug.draw(self.screen, self.camera, self.clock)
