@@ -1,7 +1,7 @@
 import pygame
 from typing import List, Optional
 
-from core.port import Port
+from entities.port import Port
 from core.utils import world_to_screen
 from config.settings import TILE_SIZE
 

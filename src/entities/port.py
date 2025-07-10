@@ -3,7 +3,7 @@ from typing import Optional, TYPE_CHECKING
 
 if TYPE_CHECKING:
     from entities.item import Item
-    from machines.machine import Machine
+    from src.machines.base.machine import Machine
 
 class Direction(Enum):
     NORTH = (0, -1)

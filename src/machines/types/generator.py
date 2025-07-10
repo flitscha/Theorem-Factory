@@ -1,9 +1,9 @@
 import pygame
 import random
 
-from machines.machine import Machine
+from machines.base.machine import Machine
 from entities.item import Item
-from core.port import Port, Direction
+from entities.port import Port, Direction
 
 class Generator(Machine):
     def __init__(self, machine_data, rotation=0):

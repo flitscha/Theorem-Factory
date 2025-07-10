@@ -1,15 +1,15 @@
 import pygame
 
 from config.settings import *
-from core.grid import Grid
+from grid.grid import Grid
 from core.camera import Camera
 from core.debug import Debug
 from core.utils import get_mouse_world_pos, get_grid_coordinates_when_placing_machine, get_mouse_grid_pos
-from core.placement_preview import PlacementPreview
-from machines.machine_database import database as machine_data
+from gui.placement_preview import PlacementPreview
+from machines.base.machine_database import database as machine_data
 from gui.machine_selection import MachineSelectionBar
 from machines.menu.generator_menu import GeneratorMenu
-from machines.generator import Generator
+from machines.types.generator import Generator
 
 class Game():
     def __init__(self):

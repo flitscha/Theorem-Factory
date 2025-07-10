@@ -1,8 +1,8 @@
 import pygame
 from typing import Optional
-from machines.machine import Machine
+from machines.base.machine import Machine
 from entities.item import Item
-from core.port import Direction
+from entities.port import Direction
 
 class ConveyorBelt(Machine):
     def __init__(self, machine_data, rotation=0):
