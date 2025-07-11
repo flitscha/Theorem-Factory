@@ -37,6 +37,11 @@ class Machine:
             self.input_ports.append(port)
         elif port.port_type == "output":
             self.output_ports.append(port)
+    
+    def disconnect_all_ports(self):
+        """Disconnect all ports of this machine"""
+        for port in self.ports:
+            port.disconnect()
 
     def update_rotated_size(self):
         # rotation 0 or 2 means size stays same, 1 or 3 swaps width/height

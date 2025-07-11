@@ -24,14 +24,16 @@ class GridManager:
         if not block:
             return None
         
-        origin_x, origin_y = block.origin
-        
+        # disconnect ports
+        block.disconnect_all_ports()
+
         # Remove from blocks dict
+        origin_x, origin_y = block.origin
         del self.blocks[(origin_x, origin_y)]
         
         # Remove from occupied tiles
-        for x in range(origin_x, origin_x + block.rotated_size[0]):
-            for y in range(origin_y, origin_y + block.rotated_size[1]):
+        for x in range(origin_x, origin_x + block.size[0]):
+            for y in range(origin_y, origin_y + block.size[1]):
                 del self.occupied_tiles[(x, y)]
         return block
     
