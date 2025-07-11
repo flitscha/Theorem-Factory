@@ -27,7 +27,14 @@ class GridRenderer:
     
     def draw_blocks(self, screen, camera):
         """Draw all blocks on the grid"""
-        # TODO: Only draw blocks visible on screen (frustum culling)
         for (tile_x, tile_y), block in self.grid_manager.blocks.items():
+            # Check if block is within visible bounds
+            min_x, max_x, min_y, max_y = camera.get_visible_tile_bounds()
+            w, h = block.size
+            if tile_x + w < min_x or tile_x > max_x:
+                continue
+            if tile_y + h < min_y or tile_y > max_y:
+                continue
+
             block.draw(screen, camera, tile_x, tile_y)
     

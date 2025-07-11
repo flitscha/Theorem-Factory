@@ -2,6 +2,7 @@ import pygame
 
 from config.settings import *
 from core.utils import get_mouse_world_pos
+from typing import Tuple
 
 class Camera():
     def __init__(self):
@@ -13,6 +14,14 @@ class Camera():
         self.mouse_pos = pygame.mouse.get_pos()
         self.last_mouse_pos = (0, 0) # mouse-position, one frame before. (needed for drag-and-drop-feature)
     
+    def get_visible_tile_bounds(self) -> Tuple[int, int, int, int]:
+        """Get the bounds of the visible area in tile coordinates"""
+        left = int(self.offset_x // TILE_SIZE)
+        top = int(self.offset_y // TILE_SIZE)
+        right = int((self.offset_x + SCREEN_WIDTH / self.zoom) // TILE_SIZE) + 1
+        bottom = int((self.offset_y + SCREEN_HEIGHT / self.zoom) // TILE_SIZE) + 1
+        return left, right, top, bottom
+
     def move(self, dx, dy):
         self.offset_x += dx
         self.offset_y += dy
