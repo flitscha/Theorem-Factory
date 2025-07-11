@@ -23,7 +23,6 @@ class Game():
         for machine in machine_data.machines.values():
             machine.load_image()
         
-        #self.grid = Grid()
         self.grid = GridCoordinator()
         self.camera = Camera()
 

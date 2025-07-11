@@ -5,7 +5,6 @@ class GridManager:
     """Manages the placement and removal of blocks on the grid"""
     
     def __init__(self):
-        self.connection_system = None # Will be set by the coordinator
         self.blocks: Dict[Tuple[int, int], Machine] = {}
         self.occupied_tiles: Dict[Tuple[int, int], Machine] = {}
     
@@ -19,9 +18,6 @@ class GridManager:
             for y in range(grid_y, grid_y + block.rotated_size[1]):
                 self.occupied_tiles[(x, y)] = block
         
-        # Update connections after placing a new block
-        self.connection_system.update_connections_at(grid_x, grid_y)
-    
     def remove_block(self, grid_x: int, grid_y: int) -> Optional[Machine]:
         """Remove block at position"""
         block = self.occupied_tiles.get((grid_x, grid_y))

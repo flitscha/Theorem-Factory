@@ -10,7 +10,6 @@ class GridCoordinator:
     def __init__(self):
         self.grid_manager = GridManager()
         self.connection_system = ConnectionSystem(self.grid_manager)
-        self.grid_manager.connection_system = self.connection_system
         self.item_transfer_system = ItemTransferSystem(self.grid_manager)
         self.update_system = UpdateSystem(self.grid_manager, self.item_transfer_system)
         self.renderer = GridRenderer(self.grid_manager)
@@ -18,6 +17,7 @@ class GridCoordinator:
     # Delegate common operations to grid_manager
     def add_block(self, grid_x: int, grid_y: int, block):
         self.grid_manager.add_block(grid_x, grid_y, block)
+        self.connection_system.update_connections_at(grid_x, grid_y)
     
     def remove_block(self, grid_x: int, grid_y: int):
         return self.grid_manager.remove_block(grid_x, grid_y)
