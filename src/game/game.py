@@ -138,6 +138,7 @@ class Game():
             self.grid.update(dt)
             self.grid.draw_grid_lines(self.screen, self.camera)
             self.grid.draw_blocks(self.screen, self.camera)
+            self.grid.draw_items(self.screen, self.camera) # draw items ABOVE blocks
 
             self.debug.draw(self.screen, self.camera, self.clock)
 

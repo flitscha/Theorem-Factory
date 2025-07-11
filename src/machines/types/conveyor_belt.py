@@ -92,6 +92,3 @@ class ConveyorBelt(Machine, IUpdatable, IProvider, IReceiver):
     def draw(self, screen, camera, grid_x, grid_y):
         """Draw the conveyor belt"""
         super().draw(screen, camera, grid_x, grid_y)
-        
-        if self.item:
-            self.item.draw(screen, camera)
