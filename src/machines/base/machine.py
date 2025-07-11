@@ -8,11 +8,10 @@ from entities.item import Item
 
 class Machine:
     def __init__(self, size=(1, 1), color=(200, 200, 200), image=None, rotation=0):
-        self.base_size = size # size in grid tiles
+        self.size = size # size in grid tiles. Can be changed by rotation
         self.color = color
         self.image = image
         self.rotation = rotation
-        self.rotated_size = None
         self.update_rotated_size()
         self.rotate_image()
         self.origin = None  # will be set on placement
@@ -42,9 +41,7 @@ class Machine:
     def update_rotated_size(self):
         # rotation 0 or 2 means size stays same, 1 or 3 swaps width/height
         if self.rotation % 2 == 1:
-            self.rotated_size = (self.base_size[1], self.base_size[0])
-        else:
-            self.rotated_size = self.base_size
+            self.size = (self.size[1], self.size[0])
 
     def rotate_image(self):
         if self.image:
@@ -61,8 +58,8 @@ class Machine:
         if self.image:
             scaled_image = pygame.transform.scale(
                 self.image, 
-                (int(self.rotated_size[0] * TILE_SIZE * camera.zoom), 
-                 int(self.rotated_size[1] * TILE_SIZE * camera.zoom))
+                (int(self.size[0] * TILE_SIZE * camera.zoom), 
+                 int(self.size[1] * TILE_SIZE * camera.zoom))
             )
             screen.blit(scaled_image, (screen_x, screen_y))
         

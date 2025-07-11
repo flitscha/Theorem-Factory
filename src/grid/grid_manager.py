@@ -14,8 +14,8 @@ class GridManager:
         self.blocks[(grid_x, grid_y)] = block
         
         # Add to occupied tiles
-        for x in range(grid_x, grid_x + block.rotated_size[0]):
-            for y in range(grid_y, grid_y + block.rotated_size[1]):
+        for x in range(grid_x, grid_x + block.size[0]):
+            for y in range(grid_y, grid_y + block.size[1]):
                 self.occupied_tiles[(x, y)] = block
         
     def remove_block(self, grid_x: int, grid_y: int) -> Optional[Machine]:

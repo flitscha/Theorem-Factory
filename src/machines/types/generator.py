@@ -5,15 +5,13 @@ from grid.interfaces import IUpdatable, IProvider
 
 class Generator(Machine, IUpdatable, IProvider):
     def __init__(self, machine_data, rotation=0):
-        self.image = machine_data.image
-        self.size = machine_data.size
         self.rotation = rotation
         self.produced_letter=None
 
         self.production_interval = 2.0  # seconds between productions
         self.time_since_last_production = 0.0
 
-        super().__init__(size=self.size, image=self.image, rotation=rotation)
+        super().__init__(size=machine_data.size, image=machine_data.image, rotation=rotation)
     
     def init_ports(self):
         """Initialize ports for the generator"""

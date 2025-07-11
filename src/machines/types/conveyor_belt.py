@@ -18,7 +18,7 @@ class ConveyorBelt(Machine, IUpdatable, IProvider, IReceiver):
         self.input_direction = self.direction.opposite()
         self.output_direction = self.direction
 
-        super().__init__(size=(1, 1), image=machine_data.image, rotation=rotation)
+        super().__init__(size=machine_data.size, image=machine_data.image, rotation=rotation)
 
     def init_ports(self):
         # Initialize input and output ports based on direction        
