@@ -11,6 +11,15 @@ class Direction(Enum):
     EAST = (1, 0)
     WEST = (-1, 0)
 
+    def as_vector(self): 
+        return self.value
+
+    @staticmethod    
+    def from_rotation(rotation: int):
+        """Convert rotation (0,1,2,3) to Direction enum"""
+        directions = [Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.NORTH]
+        return directions[rotation % 4]
+    
     def opposite(self):
         """Get the opposite direction"""
         opposites = {
@@ -46,7 +55,7 @@ class Port:
     def get_connection_position(self) -> tuple:
         """Get the grid position where a conveyor should connect to this port"""
         world_x, world_y = self.get_world_position()
-        dx, dy = self.direction.value
+        dx, dy = self.direction.as_vector()
         return (world_x + dx, world_y + dy)
     
     def can_connect_to(self, other: 'Port') -> bool:

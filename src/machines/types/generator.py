@@ -18,8 +18,8 @@ class Generator(Machine, IUpdatable, IProvider):
         # Add output port at center of top edge (relative to 3x3 machine)
         output_port = Port(
             relative_x=1,  # Center of 3x3 machine
-            relative_y=0,  # Top edge
-            direction=Direction.NORTH,
+            relative_y=2,  # Bottom edge
+            direction=Direction.SOUTH,
             port_type="output"
         )
         self.add_port(output_port)

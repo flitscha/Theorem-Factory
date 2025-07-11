@@ -1,10 +1,10 @@
 import pygame
-from typing import List, Optional
+from typing import List
 
 from entities.port import Port
 from core.utils import world_to_screen
 from config.settings import TILE_SIZE
-from entities.item import Item
+from entities.port import Direction
 
 class Machine:
     def __init__(self, size=(1, 1), color=(200, 200, 200), image=None, rotation=0):
@@ -23,6 +23,7 @@ class Machine:
 
         # initialize ports
         self.init_ports()
+        self.rotate_ports()
     
     def init_ports(self):
         """Initialize the ports for this machine. Override in subclasses."""
@@ -42,6 +43,33 @@ class Machine:
         """Disconnect all ports of this machine"""
         for port in self.ports:
             port.disconnect()
+
+    def rotate_ports(self):
+        direction_rotation = {
+            Direction.NORTH: [Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST],
+            Direction.EAST:  [Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.NORTH],
+            Direction.SOUTH: [Direction.SOUTH, Direction.WEST, Direction.NORTH, Direction.EAST],
+            Direction.WEST:  [Direction.WEST, Direction.NORTH, Direction.EAST, Direction.SOUTH],
+        }
+        
+        for port in self.ports:
+            old_x, old_y = port.relative_x, port.relative_y
+
+            # update position
+            if self.rotation == 1:
+                port.relative_x = self.size[1] - 1 - old_y
+                port.relative_y = old_x
+            elif self.rotation == 2:
+                port.relative_x = self.size[0] - 1 - old_x
+                port.relative_y = self.size[1] - 1 - old_y
+            elif self.rotation == 3:
+                port.relative_x = old_y
+                port.relative_y = self.size[0] - 1 - old_x
+
+            # Update direction
+            if port.direction:
+                port.direction = direction_rotation[port.direction][self.rotation % 4]
+            
 
     def update_rotated_size(self):
         # rotation 0 or 2 means size stays same, 1 or 3 swaps width/height

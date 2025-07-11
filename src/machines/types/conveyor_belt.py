@@ -12,26 +12,16 @@ class ConveyorBelt(Machine, IUpdatable, IProvider, IReceiver):
         self.speed = 1.0  # tiles per second
         self.item = None  # Current item on this belt. (only one item at a time)
         self.item_progress = 0.0  # 0.0 to 1.0, how far item has traveled
-        
-        # Direction mapping based on rotation
-        self.direction = self.get_direction_from_rotation(rotation)
-        self.input_direction = self.direction.opposite()
-        self.output_direction = self.direction
 
         super().__init__(size=machine_data.size, image=machine_data.image, rotation=rotation)
 
     def init_ports(self):
         # Initialize input and output ports based on direction        
-        input_port = Port(0, 0, self.input_direction, "input")
+        input_port = Port(0, 0, Direction.WEST, "input") # direction based on the base-sprite without rotation
         self.add_port(input_port)
 
-        output_port = Port(0, 0, self.output_direction, "output")
+        output_port = Port(0, 0, Direction.EAST, "output")
         self.add_port(output_port)
-    
-    def get_direction_from_rotation(self, rotation):
-        """Convert rotation (0,1,2,3) to Direction enum"""
-        directions = [Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.NORTH]
-        return directions[rotation % 4]
     
 
     # IProvider interface implementation  
@@ -87,7 +77,7 @@ class ConveyorBelt(Machine, IUpdatable, IProvider, IReceiver):
         start_x = self.origin[0] * 32 + 16  # Center of tile
         start_y = self.origin[1] * 32 + 16
         
-        dx, dy = self.direction.value
+        dx, dy = Direction.from_rotation(self.rotation).as_vector()
         target_x = start_x + dx * 32
         target_y = start_y + dy * 32
         
