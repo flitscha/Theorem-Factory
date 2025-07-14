@@ -1,6 +1,6 @@
 import pygame
 from config.settings import TILE_SIZE, GRID_COLOR
-from machines.types.conveyor_belt import ConveyorBelt
+from machines.types.conveyor_belt.conveyor_belt import ConveyorBelt
 
 class GridRenderer:
     """Handles rendering of the grid and its contents"""

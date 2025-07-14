@@ -1,5 +1,3 @@
-import pygame
-from typing import Optional
 from machines.base.machine import Machine
 from entities.item import Item
 from entities.port import Direction
@@ -13,16 +11,31 @@ class ConveyorBelt(Machine, IUpdatable, IProvider, IReceiver):
         self.item = None  # Current item on this belt. (only one item at a time)
         self.item_progress = 0.0  # 0.0 to 1.0, how far item has traveled
 
+        # Define input and output directions
+        # This can change, e.g. when the belt is a curve
+        # There can be multiple inputs and outputs, if multiple adjacent belts are connected
+        self.inputs = [Direction.WEST] # base direction. (changes with rotation)
+        self.outputs = [Direction.EAST]
+
+        self.init_inputs_and_outputs()
+
         super().__init__(size=machine_data.size, image=machine_data.image, rotation=rotation)
 
-    def init_ports(self):
-        # Initialize input and output ports based on direction        
-        input_port = Port(0, 0, Direction.WEST, "input") # direction based on the base-sprite without rotation
-        self.add_port(input_port)
+    def init_inputs_and_outputs(self):
+        """Initialize inputs and outputs based on adjacent belts"""
+        self.inputs.append(Direction.SOUTH)
+        pass
 
-        output_port = Port(0, 0, Direction.EAST, "output")
-        self.add_port(output_port)
-    
+    def init_ports(self):
+        """Initialize ports based on inputs and outputs"""
+        for direction in self.inputs:
+            port = Port(0, 0, direction, "input")
+            self.add_port(port)
+        
+        for direction in self.outputs:
+            port = Port(0, 0, direction, "output")
+            self.add_port(port)
+
 
     # IProvider interface implementation  
     def provide_item_from_port(self, port): # simple: a conveyor belt only has one output port

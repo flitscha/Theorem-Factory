@@ -1,7 +1,7 @@
 import pygame
 
 from machines.types.generator import Generator
-from machines.types.conveyor_belt import ConveyorBelt
+from machines.types.conveyor_belt.conveyor_belt import ConveyorBelt
 
 class MachineData:
     def __init__(self, id, name, size, sprite_path, cls, icon_path=None):
