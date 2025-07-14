@@ -1,5 +1,5 @@
 from machines.types.conveyor_belt.conveyor_belt import ConveyorBelt
-from machines.types.conveyor_belt.belt_shape import determine_inputs_and_output, \
+from machines.types.conveyor_belt.belt_autoconnect import determine_inputs_and_output, \
      determine_belt_sprite, update_neighboring_belt, update_neighboring_belt_when_removing
 
 class ConnectionSystem:

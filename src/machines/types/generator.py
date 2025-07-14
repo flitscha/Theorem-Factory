@@ -41,7 +41,7 @@ class Generator(Machine, IUpdatable, IProvider):
             return None
     
         # Create item at the output port position
-        port_world_x, port_world_y = port.get_world_position()
+        port_world_x, port_world_y = port.get_grid_position()
         item = Item(
             formula=self.produced_letter, 
             is_theorem=False,
