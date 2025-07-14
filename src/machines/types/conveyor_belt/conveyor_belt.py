@@ -17,17 +17,14 @@ class ConveyorBelt(Machine, IUpdatable, IProvider, IReceiver):
         self.inputs = [Direction.WEST] # base direction. (changes with rotation)
         self.outputs = [Direction.EAST]
 
-        self.init_inputs_and_outputs()
-
         super().__init__(size=machine_data.size, image=machine_data.image, rotation=rotation)
 
-    def init_inputs_and_outputs(self):
-        """Initialize inputs and outputs based on adjacent belts"""
-        self.inputs.append(Direction.SOUTH)
-        pass
 
     def init_ports(self):
         """Initialize ports based on inputs and outputs"""
+        # Clear existing ports
+        self.clear_ports()
+
         for direction in self.inputs:
             port = Port(0, 0, direction, "input")
             self.add_port(port)

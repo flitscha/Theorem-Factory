@@ -1,5 +1,6 @@
 from machines.types.conveyor_belt.conveyor_belt import ConveyorBelt
-from machines.types.conveyor_belt.belt_shape import determine_inputs_and_output, determine_belt_sprite, update_neighboring_belt
+from machines.types.conveyor_belt.belt_shape import determine_inputs_and_output, \
+     determine_belt_sprite, update_neighboring_belt, update_neighboring_belt_when_removing
 
 class ConnectionSystem:
     """Handles connections between blocks in the grid"""
@@ -38,6 +39,7 @@ class ConnectionSystem:
 
         # 2) initialize ports based on inputs and outputs
         conveyor.init_ports()
+        conveyor.rotate_ports()
 
         # 3) set the sprite
         #conveyor.sprite_name = determine_belt_sprite(conveyor.inputs, conveyor.outputs)
@@ -58,4 +60,4 @@ class ConnectionSystem:
         neighboring_machines = self.grid_manager.get_neighboring_machines(grid_x, grid_y)
         for direction, neighbor in neighboring_machines.items():
             if neighbor and isinstance(neighbor, ConveyorBelt):
-                self.update_belt_shape(neighbor, machine)
+                update_neighboring_belt_when_removing(neighbor, machine)

@@ -8,8 +8,8 @@ from machines.base.machine import Machine
 
 def determine_inputs_and_output(belt: ConveyorBelt, neighboring_machines: dict[Direction, Machine]) -> tuple:
     """Determine inputs and outputs of a belt based on neighboring machines."""
-    inputs = []
-    outputs = []
+    inputs = [Direction.WEST]  # default input direction
+    outputs = [Direction.EAST]  # default output direction
 
     return inputs, outputs
 

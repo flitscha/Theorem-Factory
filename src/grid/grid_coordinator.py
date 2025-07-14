@@ -18,11 +18,13 @@ class GridCoordinator:
     # Delegate common operations to grid_manager
     def add_block(self, grid_x: int, grid_y: int, block):
         self.grid_manager.add_block(grid_x, grid_y, block)
-        self.connection_system.update_connections_at(grid_x, grid_y)
 
         # if the block is a conveyor belt, update its inputs and outputs
         if isinstance(block, ConveyorBelt):
             self.connection_system.update_belt_shape(block)
+
+        # update connections for the newly placed block
+        self.connection_system.update_connections_at(grid_x, grid_y)
     
     def remove_block(self, grid_x: int, grid_y: int):
         # Update connections before removing the block

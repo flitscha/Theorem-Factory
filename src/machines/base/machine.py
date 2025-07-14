@@ -44,6 +44,12 @@ class Machine:
         for port in self.ports:
             port.disconnect()
 
+    def clear_ports(self):
+        """Clear all ports of this machine"""
+        self.ports.clear()
+        self.input_ports.clear()
+        self.output_ports.clear()
+        
     def rotate_ports(self):
         direction_rotation = {
             Direction.NORTH: [Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST],
