@@ -108,14 +108,21 @@ class Machine:
         # Draw ports for debugging
         self.draw_ports(screen, camera, grid_x, grid_y)
     
-    
+
     def draw_ports(self, screen, camera, grid_x, grid_y):
         """Draw ports for debugging purposes"""
         for port in self.ports:
-            port_world_x, port_world_y = port.get_world_position()
+            # get a position in between the port-position and the connection position
+            port_world_x, port_world_y = port.get_grid_position()
+            port_connection_x, port_connection_y = port.get_connection_position()
+
+            x = (1.4 * port_world_x + port_connection_x) / 2.4
+            y = (1.4 * port_world_y + port_connection_y) / 2.4
+            
+            port_world_x, port_world_y = port.get_grid_position()
             port_screen_x, port_screen_y = world_to_screen(
-                port_world_x * TILE_SIZE + TILE_SIZE // 2,
-                port_world_y * TILE_SIZE + TILE_SIZE // 2,
+                x * TILE_SIZE + TILE_SIZE // 2,
+                y * TILE_SIZE + TILE_SIZE // 2,
                 camera
             )
             
@@ -123,10 +130,10 @@ class Machine:
             color = (0, 255, 0) if port.port_type == "input" else (255, 0, 0)
             
             # Draw port as small circle
-            radius = max(3, int(8 * camera.zoom))
+            radius = int(4 * camera.zoom)
             pygame.draw.circle(screen, color, (int(port_screen_x), int(port_screen_y)), radius)
             
             # Draw connection indicator
             if port.connected_port:
-                pygame.draw.circle(screen, (255, 255, 255), (int(port_screen_x), int(port_screen_y)), radius + 2, 2)
+                pygame.draw.circle(screen, (255, 255, 255), (int(port_screen_x), int(port_screen_y)), radius + 3, 3)
 

@@ -44,7 +44,7 @@ class Port:
         self.machine: Optional['Machine'] = None  # Set when added to a machine
         self.connected_port: Optional['Port'] = None  # Direct connection to another port
     
-    def get_world_position(self) -> tuple:
+    def get_grid_position(self) -> tuple:
         """Get the world grid position of this port"""
         if not self.machine or not self.machine.origin:
             return (0, 0)
@@ -53,8 +53,8 @@ class Port:
         return (origin_x + self.relative_x, origin_y + self.relative_y)
     
     def get_connection_position(self) -> tuple:
-        """Get the grid position where a conveyor should connect to this port"""
-        world_x, world_y = self.get_world_position()
+        """Get the grid position where another port should connect to this port"""
+        world_x, world_y = self.get_grid_position()
         dx, dy = self.direction.as_vector()
         return (world_x + dx, world_y + dy)
     
@@ -62,7 +62,7 @@ class Port:
         """Returns True if this port can logically connect to the other."""
         if self.port_type == other.port_type:
             return False  # Only input ↔ output allowed
-        if self.get_connection_position() != other.get_world_position():
+        if self.get_connection_position() != other.get_grid_position():
             return False  # Must face each other spatially
         if self.direction != other.direction.opposite():
             return False  # Must face each other directionally
