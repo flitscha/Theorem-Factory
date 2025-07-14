@@ -1,3 +1,5 @@
+import pygame
+
 from machines.base.machine import Machine
 from entities.item import Item
 from entities.port import Direction
@@ -33,6 +35,14 @@ class ConveyorBelt(Machine, IUpdatable, IProvider, IReceiver):
             port = Port(0, 0, direction, "output")
             self.add_port(port)
 
+    def update_sprite(self, sprite_path, horizontal_mirror=False, vertical_mirror=False):
+        """Update the sprite based on inputs and outputs"""
+        self.image = pygame.image.load(sprite_path).convert_alpha()
+        if horizontal_mirror:
+            self.image = pygame.transform.flip(self.image, True, False)
+        if vertical_mirror:
+            self.image = pygame.transform.flip(self.image, False, True)
+        self.rotate_image()
 
     # IProvider interface implementation  
     def provide_item_from_port(self, port): # simple: a conveyor belt only has one output port

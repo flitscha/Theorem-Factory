@@ -1,6 +1,7 @@
 from machines.types.conveyor_belt.conveyor_belt import ConveyorBelt
-from machines.types.conveyor_belt.belt_autoconnect import update_inputs_and_output, \
-     determine_belt_sprite, update_neighboring_belt, update_neighboring_belt_when_removing
+from machines.types.conveyor_belt.belt_autoconnect import ConveyorBeltAutoConnector
+#from machines.types.conveyor_belt.belt_autoconnect import update_inputs_and_output, \
+#     determine_belt_sprite, update_neighboring_belt, update_neighboring_belt_when_removing
 
 class ConnectionSystem:
     """Handles connections between blocks in the grid"""
@@ -30,18 +31,17 @@ class ConnectionSystem:
                     port.connect_if_possible(source)
     
 
-    def update_belt_shape(self, conveyor: 'ConveyorBelt'):
+    def update_belt_shape(self, conveyor: ConveyorBelt):
         # 1) determine inputs and outputs based on neighboring belts (and machines)
         neighboring_machines = self.grid_manager.get_neighboring_machines(conveyor.origin[0], conveyor.origin[1])
-        update_inputs_and_output(conveyor, neighboring_machines)
 
-        # 2) set the sprite
-        #conveyor.sprite_name = determine_belt_sprite(conveyor.inputs, conveyor.outputs)
+        # 2) configure the conveyor belt based on its neighbors
+        ConveyorBeltAutoConnector.configure(conveyor, neighboring_machines)
 
         # 3) update the neighboring belts
         for direction, neighbor in neighboring_machines.items():
             if neighbor and isinstance(neighbor, ConveyorBelt):
-                update_neighboring_belt(neighbor, direction, conveyor)
+                ConveyorBeltAutoConnector.configure_neighbor_when_placing(neighbor, direction, conveyor)
                 self.update_connections_at(neighbor.origin[0], neighbor.origin[1])
     
     
@@ -55,4 +55,4 @@ class ConnectionSystem:
         neighboring_machines = self.grid_manager.get_neighboring_machines(grid_x, grid_y)
         for direction, neighbor in neighboring_machines.items():
             if neighbor and isinstance(neighbor, ConveyorBelt):
-                update_neighboring_belt_when_removing(neighbor, machine)
+                ConveyorBeltAutoConnector.configure_neighbor_when_removing(neighbor, machine)
