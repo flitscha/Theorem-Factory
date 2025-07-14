@@ -21,6 +21,8 @@ def determine_belt_sprite(inputs: List[Direction], outputs: List[Direction]) -> 
 
 def update_neighboring_belt(neighbor: ConveyorBelt, direction: Direction, conveyor: ConveyorBelt) -> None:
     """when placing a new belt, update the neighboring belt's inputs and outputs."""
+    print(f"Updating neighboring belt at {neighbor.origin} with direction {direction}")
+    neighbor.inputs.append(direction)
     pass
 
 def update_neighboring_belt_when_removing(neighbor: ConveyorBelt, removed_machine: Machine) -> None:
