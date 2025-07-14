@@ -1,3 +1,6 @@
+from machines.types.conveyor_belt.conveyor_belt import ConveyorBelt
+from machines.types.conveyor_belt.belt_shape import determine_inputs_and_output, determine_belt_sprite, update_neighboring_belt
+
 class ConnectionSystem:
     """Handles connections between blocks in the grid"""
     def __init__(self, grid_manager):
@@ -24,3 +27,35 @@ class ConnectionSystem:
                 source = self.grid_manager.get_block(*source_pos)
                 if source and hasattr(source, "output_ports"):
                     port.connect_if_possible(source)
+    
+
+    def update_belt_shape(self, conveyor: 'ConveyorBelt'):
+        # 1) determine inputs and outputs based on neighboring belts (and machines)
+        neighboring_machines = self.grid_manager.get_neighboring_machines(conveyor.origin[0], conveyor.origin[1])
+        inputs, outputs = determine_inputs_and_output(conveyor, neighboring_machines)
+        conveyor.inputs = inputs
+        conveyor.outputs = outputs
+
+        # 2) initialize ports based on inputs and outputs
+        conveyor.init_ports()
+
+        # 3) set the sprite
+        #conveyor.sprite_name = determine_belt_sprite(conveyor.inputs, conveyor.outputs)
+
+        # 4) update the neighboring belts
+        for direction, neighbor in neighboring_machines.items():
+            if neighbor and isinstance(neighbor, ConveyorBelt):
+                update_neighboring_belt(neighbor, direction, conveyor)
+    
+    
+    def update_neighboring_belts_when_removing(self, grid_x: int, grid_y: int):
+        """Update neighboring belts when a block is removed"""
+        machine = self.grid_manager.get_block(grid_x, grid_y)
+        if not machine:
+            return
+        
+        # Get neighboring conveyors and update their inputs/outputs
+        neighboring_machines = self.grid_manager.get_neighboring_machines(grid_x, grid_y)
+        for direction, neighbor in neighboring_machines.items():
+            if neighbor and isinstance(neighbor, ConveyorBelt):
+                self.update_belt_shape(neighbor, machine)

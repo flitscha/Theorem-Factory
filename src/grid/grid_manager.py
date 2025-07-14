@@ -1,5 +1,6 @@
 from typing import Dict, Tuple, Optional
 from machines.base.machine import Machine
+from entities.port import Direction
 
 class GridManager:
     """Manages the placement and removal of blocks on the grid"""
@@ -48,3 +49,19 @@ class GridManager:
                 if self.occupied_tiles.get((x, y)):
                     return False
         return True
+    
+    def get_neighboring_machines(self, grid_x: int, grid_y: int) -> Dict[Direction, Optional[Machine]]:
+        """Get neighboring machines around a position"""
+        neighboring_machines = {}
+        
+        for direction in Direction:
+            dx, dy = direction.as_vector()
+            neighbor_pos = (grid_x + dx, grid_y + dy)
+            machine = self.get_block(*neighbor_pos)
+            if machine:
+                neighboring_machines[direction] = machine
+            else:
+                neighboring_machines[direction] = None
+        
+        return neighboring_machines
+    
