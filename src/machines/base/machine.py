@@ -51,13 +51,6 @@ class Machine:
         self.output_ports.clear()
         
     def rotate_ports(self):
-        direction_rotation = {
-            Direction.NORTH: [Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST],
-            Direction.EAST:  [Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.NORTH],
-            Direction.SOUTH: [Direction.SOUTH, Direction.WEST, Direction.NORTH, Direction.EAST],
-            Direction.WEST:  [Direction.WEST, Direction.NORTH, Direction.EAST, Direction.SOUTH],
-        }
-        
         for port in self.ports:
             old_x, old_y = port.relative_x, port.relative_y
 
@@ -74,7 +67,7 @@ class Machine:
 
             # Update direction
             if port.direction:
-                port.direction = direction_rotation[port.direction][self.rotation % 4]
+                port.direction = port.direction.rotate(self.rotation)
             
 
     def update_rotated_size(self):

@@ -8,16 +8,29 @@ from machines.base.machine import Machine
 
 def update_inputs_and_output(belt: ConveyorBelt, neighboring_machines: dict[Direction, Optional[Machine]]) -> None:
     """Determine inputs and outputs of a belt based on neighboring machines."""
-    inputs = [Direction.WEST]  # default input direction
-    outputs = [Direction.EAST]  # default output direction
+    inputs = []
+    outputs = []
 
-    machine_north = neighboring_machines.get(Direction.NORTH)
-    machine_south = neighboring_machines.get(Direction.SOUTH)
-    machine_west = neighboring_machines.get(Direction.WEST)
-    machine_east = neighboring_machines.get(Direction.EAST)
+    for direction, neighbor in neighboring_machines.items():
+        # at the moment, we only care about neighboring conveyor belts
+        if isinstance(neighbor, ConveyorBelt):
+            # rotate the direction to match the belt's rotation
+            rotated_direction = direction.rotate(-belt.rotation)
+            rotated_neighbor_outputs = [output.rotate(neighbor.rotation - belt.rotation) for output in neighbor.outputs]
+            rotated_neighbor_inputs = [input.rotate(neighbor.rotation - belt.rotation) for input in neighbor.inputs]
 
+            # append inputs and outputs based on the neighbor's inputs and outputs
+            if rotated_direction.opposite() in rotated_neighbor_outputs:
+                inputs.append(rotated_direction)
+            if rotated_direction.opposite() in rotated_neighbor_inputs:
+                outputs.append(rotated_direction)
+
+    # If no inputs or outputs are found, use default values
+    if not inputs:
+        inputs = [Direction.WEST]
+    if not outputs:
+        outputs = [Direction.EAST]
     
-
     # set inputs, outputs and ports
     belt.inputs = inputs
     belt.outputs = outputs

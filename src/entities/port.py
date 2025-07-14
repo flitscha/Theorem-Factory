@@ -29,6 +29,12 @@ class Direction(Enum):
             Direction.WEST: Direction.EAST
         }
         return opposites[self]
+    
+    def rotate(self, rotation: int):
+        """Rotate this direction by the given rotation (0, 1, 2, 3)"""
+        directions = [Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.NORTH]
+        index = (directions.index(self) + rotation) % 4
+        return directions[index]
 
 class Port:
     def __init__(self, relative_x: int, relative_y: int, direction: Direction, port_type: str):
