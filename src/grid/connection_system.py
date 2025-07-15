@@ -41,7 +41,7 @@ class ConnectionSystem:
         # 3) update the neighboring belts
         for direction, neighbor in neighboring_machines.items():
             if neighbor and isinstance(neighbor, ConveyorBelt):
-                ConveyorBeltAutoConnector.configure_neighbor_when_placing(neighbor, direction, conveyor)
+                ConveyorBeltAutoConnector.configure_neighbor_when_placing(neighbor, direction, conveyor, self)
                 self.update_connections_at(neighbor.origin[0], neighbor.origin[1])
     
     
@@ -55,4 +55,4 @@ class ConnectionSystem:
         neighboring_machines = self.grid_manager.get_neighboring_machines(grid_x, grid_y)
         for direction, neighbor in neighboring_machines.items():
             if neighbor and isinstance(neighbor, ConveyorBelt):
-                ConveyorBeltAutoConnector.configure_neighbor_when_removing(neighbor, machine)
+                ConveyorBeltAutoConnector.configure_neighbor_when_removing(neighbor, direction, machine, self)
