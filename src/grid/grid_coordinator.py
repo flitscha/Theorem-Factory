@@ -22,7 +22,6 @@ class GridCoordinator:
         # update connections for the newly placed block
         self.connection_system.update_connections_at(grid_x, grid_y)
 
-        print(block.input_ports[0].connected_port)
         # if the block is a conveyor belt, update its inputs and outputs
         if isinstance(block, ConveyorBelt):
             self.connection_system.update_belt_shape(block)

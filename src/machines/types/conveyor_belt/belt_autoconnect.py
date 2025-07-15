@@ -16,8 +16,8 @@ class ConveyorBeltAutoConnector:
     @staticmethod
     def _update_io(belt: ConveyorBelt, neighbors: dict[Direction, Optional[Machine]]) -> None:
         """Determine inputs and outputs of a belt based on neighboring machines."""
-        inputs = []
-        outputs = []
+        inputs = belt.inputs#[]
+        outputs = belt.outputs#[]
 
         for direction, neighbor in neighbors.items():
             # at the moment, we only care about neighboring conveyor belts
@@ -32,12 +32,15 @@ class ConveyorBeltAutoConnector:
                     inputs.append(rotated_direction)
                 if rotated_direction.opposite() in rotated_neighbor_inputs:
                     outputs.append(rotated_direction)
+                
 
         # If no inputs or outputs are found, use default values
         if not inputs:
             inputs = [Direction.WEST]
-        if not outputs:
-            outputs = [Direction.EAST]
+        
+        # at east, we always have an output
+        if Direction.EAST not in outputs:
+            outputs.append(Direction.EAST)
         
         # set inputs, outputs and ports
         belt.inputs = inputs
@@ -162,11 +165,27 @@ class ConveyorBeltAutoConnector:
         belt.update_sprite(sprite_path, horizontal_mirror, vertical_mirror)
     
     @staticmethod
-    def configure_neighbor_when_removing(neighbor: ConveyorBelt, removed_machine: Machine) -> None:
+    def configure_neighbor_when_removing(neighbor: ConveyorBelt, direction: Direction, removed_machine: Machine) -> None:
         """Update a specific neighboring belt when a block is removed."""
         pass
 
     @staticmethod
-    def configure_neighbor_when_placing(neighbor: ConveyorBelt, neighbors: dict, placed_machine: Machine):
+    def configure_neighbor_when_placing(neighbor: ConveyorBelt, direction: Direction, placed_machine: Machine):
+        """Update a specific neighboring belt when a block is placed."""
+        # 1) remove unused inputs and outputs of the neighbor
+        for port in neighbor.ports:
+            if not port.connected_port:
+                rotated_direction = port.direction.rotate(-neighbor.rotation)
+                if port.port_type == "input":
+                    neighbor.inputs.remove(rotated_direction)
+                elif port.port_type == "output":
+                    neighbor.outputs.remove(rotated_direction)
+
+        # most important case: the placed machine is a conveyor belt
+        if isinstance(placed_machine, ConveyorBelt):
+            opposite_direction = direction.opposite()
+            ConveyorBeltAutoConnector._update_io(neighbor, {opposite_direction: placed_machine})
+            pass
+
         ConveyorBeltAutoConnector._update_sprite(neighbor)
         pass

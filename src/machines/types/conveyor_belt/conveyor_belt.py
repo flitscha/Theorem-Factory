@@ -16,8 +16,8 @@ class ConveyorBelt(Machine, IUpdatable, IProvider, IReceiver):
         # Define input and output directions
         # This can change, e.g. when the belt is a curve
         # There can be multiple inputs and outputs, if multiple adjacent belts are connected
-        self.inputs = [Direction.WEST] # base direction. (does NOT change with rotation)
-        self.outputs = [Direction.EAST]
+        self.inputs = [] # does NOT change with rotation
+        self.outputs = []
 
         super().__init__(size=machine_data.size, image=machine_data.image, rotation=rotation)
 
