@@ -42,6 +42,10 @@ class ConveyorBeltAutoConnector:
         if Direction.EAST not in outputs:
             outputs.append(Direction.EAST)
         
+        # remove duplicates
+        inputs = list(set(inputs))
+        outputs = list(set(outputs))
+
         # set inputs, outputs and ports
         belt.inputs = inputs
         belt.outputs = outputs
@@ -165,12 +169,32 @@ class ConveyorBeltAutoConnector:
         belt.update_sprite(sprite_path, horizontal_mirror, vertical_mirror)
     
     @staticmethod
-    def configure_neighbor_when_removing(neighbor: ConveyorBelt, direction: Direction, removed_machine: Machine) -> None:
+    def configure_neighbor_when_removing(neighbor: ConveyorBelt, direction, removed_machine, connection_system) -> None:
         """Update a specific neighboring belt when a block is removed."""
-        pass
+
+        # most important case: the removed machine is a conveyor belt
+        if isinstance(removed_machine, ConveyorBelt):
+            # remove the input/output of the neighbor, that is connected to the removed machine
+            for port in neighbor.ports:
+                rotated_direction = port.direction.rotate(-neighbor.rotation)
+
+                if port.connected_port and port.connected_port.machine == removed_machine:
+                    if port.port_type == "input":
+                        neighbor.inputs.remove(rotated_direction)
+                    elif port.port_type == "output":
+                        neighbor.outputs.remove(rotated_direction)
+                    break
+            
+        # update the inputs and outputs of the neighbor (maybe we have to add a new input/output)
+        ConveyorBeltAutoConnector._update_io(neighbor, {})
+        
+        # update the ports and sprite of the neighbor
+        ConveyorBeltAutoConnector._update_port_connections(neighbor, connection_system)
+        ConveyorBeltAutoConnector._update_sprite(neighbor)
+
 
     @staticmethod
-    def configure_neighbor_when_placing(neighbor: ConveyorBelt, direction: Direction, placed_machine: Machine):
+    def configure_neighbor_when_placing(neighbor: ConveyorBelt, direction, placed_machine, connection_system):
         """Update a specific neighboring belt when a block is placed."""
         # 1) remove unused inputs and outputs of the neighbor
         for port in neighbor.ports:
@@ -181,11 +205,8 @@ class ConveyorBeltAutoConnector:
                 elif port.port_type == "output":
                     neighbor.outputs.remove(rotated_direction)
 
-        # most important case: the placed machine is a conveyor belt
-        if isinstance(placed_machine, ConveyorBelt):
-            opposite_direction = direction.opposite()
-            ConveyorBeltAutoConnector._update_io(neighbor, {opposite_direction: placed_machine})
-            pass
-
+        # 2) update the inputs and outputs of the neighbor
+        opposite_direction = direction.opposite()
+        ConveyorBeltAutoConnector._update_io(neighbor, {opposite_direction: placed_machine})
+        ConveyorBeltAutoConnector._update_port_connections(neighbor, connection_system)
         ConveyorBeltAutoConnector._update_sprite(neighbor)
-        pass
