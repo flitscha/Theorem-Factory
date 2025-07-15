@@ -36,7 +36,7 @@ class ConnectionSystem:
         neighboring_machines = self.grid_manager.get_neighboring_machines(conveyor.origin[0], conveyor.origin[1])
 
         # 2) configure the conveyor belt based on its neighbors
-        ConveyorBeltAutoConnector.configure(conveyor, neighboring_machines)
+        ConveyorBeltAutoConnector.configure(conveyor, neighboring_machines, self)
 
         # 3) update the neighboring belts
         for direction, neighbor in neighboring_machines.items():

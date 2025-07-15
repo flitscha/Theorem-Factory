@@ -48,7 +48,7 @@ database.register_machine(MachineData(
     id="conveyor",
     name="Conveyor Belt",
     size=(1, 1),
-    sprite_path="assets/sprites/conveyor_belt_vertical.png",
+    sprite_path="assets/sprites/conveyorbelts/horizontal/1/horizontal_1.png",
     icon_path=None,
     cls=ConveyorBelt
 ))
