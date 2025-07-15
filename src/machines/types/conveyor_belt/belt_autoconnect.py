@@ -83,55 +83,57 @@ class ConveyorBeltAutoConnector:
             input_port = input_ports[0]
             output_port = output_ports[0]
 
+            """NORMAL BELTS"""
+
             # case 1.1: horizontal from left to right
             if input_port.direction == Direction.WEST and output_port.direction == Direction.EAST:
                 
-                # case 1.1.1: output is connected, and input is not
+                # case 1.1.1: output is not connected, and input is is connected
                 if not output_port.connected_port and input_port.connected_port:
                     sprite_path = "assets/sprites/conveyorbelts/horizontal/1/horizontal_end_1.png"
-                # case 1.1.2: output is connected, and input is connected
+                # case 1.1.2: output is connected, and input is not
                 if output_port.connected_port and not input_port.connected_port:
                     sprite_path = "assets/sprites/conveyorbelts/horizontal/2/horizontal_end_2.png"
                     horizontal_mirror = True
                 # case 1.1.3: output is not connected, and input is not
                 if not output_port.connected_port and not input_port.connected_port:
                     sprite_path = "assets/sprites/conveyorbelts/horizontal/1/horizontal_1.png"
-                # case 1.1.4: output is not connected, and input is connected
+                # case 1.1.4: output is connected, and input is connected
                 if output_port.connected_port and input_port.connected_port:
                     sprite_path = "assets/sprites/conveyorbelts/horizontal/1/horizontal_straight_1.png"
             
-            # case 1.2: horizontal from left to right
+            # case 1.2: horizontal from right to left
             if input_port.direction == Direction.EAST and output_port.direction == Direction.WEST:
                 
                 vertical_mirror = True
-                # case 1.2.1: output is connected, and input is not
+                # case 1.2.1: output is not connected, and input is connected
                 if not output_port.connected_port and input_port.connected_port:
                     sprite_path = "assets/sprites/conveyorbelts/horizontal/1/horizontal_end_1.png"
-                # case 1.2.2: output is connected, and input is connected
+                # case 1.2.2: output is connected, and input is not
                 if output_port.connected_port and not input_port.connected_port:
                     sprite_path = "assets/sprites/conveyorbelts/horizontal/2/horizontal_end_2.png"
                     horizontal_mirror = True
                 # case 1.2.3: output is not connected, and input is not
                 if not output_port.connected_port and not input_port.connected_port:
                     sprite_path = "assets/sprites/conveyorbelts/horizontal/1/horizontal_1.png"
-                # case 1.2.4: output is not connected, and input is connected
+                # case 1.2.4: output is connected, and input is connected
                 if output_port.connected_port and input_port.connected_port:
                     sprite_path = "assets/sprites/conveyorbelts/horizontal/1/horizontal_straight_1.png"
             
             # case 1.3: vertical from top to bottom
             if input_port.direction == Direction.NORTH and output_port.direction == Direction.SOUTH:
                 
-                # case 1.3.1: output is connected, and input is not
+                # case 1.3.1: output is not connected, and input is connected
                 if not output_port.connected_port and input_port.connected_port:
                     sprite_path = "assets/sprites/conveyorbelts/vertical/1/vertical_end_1.png"
-                # case 1.3.2: output is connected, and input is connected
+                # case 1.3.2: output is connected, and input is not
                 if output_port.connected_port and not input_port.connected_port:
                     sprite_path = "assets/sprites/conveyorbelts/vertical/2/vertical_end_2.png"
                     horizontal_mirror = True
                 # case 1.3.3: output is not connected, and input is not
                 if not output_port.connected_port and not input_port.connected_port:
                     sprite_path = "assets/sprites/conveyorbelts/vertical/1/vertical_1.png"
-                # case 1.3.4: output is not connected, and input is connected
+                # case 1.3.4: output is connected, and input is connected
                 if output_port.connected_port and input_port.connected_port:
                     sprite_path = "assets/sprites/conveyorbelts/vertical/1/vertical_straight_1.png"
             
@@ -139,20 +141,71 @@ class ConveyorBeltAutoConnector:
             if input_port.direction == Direction.SOUTH and output_port.direction == Direction.NORTH:
                 
                 vertical_mirror = True
-                print("hello")
-                # case 1.4.1: output is connected, and input is not
+                # case 1.4.1: output is not connected, and input is connected
                 if not output_port.connected_port and input_port.connected_port:
                     sprite_path = "assets/sprites/conveyorbelts/vertical/1/vertical_end_1.png"
-                # case 1.4.2: output is connected, and input is connected
+                # case 1.4.2: output is connected, and input is not
                 if output_port.connected_port and not input_port.connected_port:
                     sprite_path = "assets/sprites/conveyorbelts/vertical/2/vertical_end_2.png"
                     horizontal_mirror = True
                 # case 1.4.3: output is not connected, and input is not
                 if not output_port.connected_port and not input_port.connected_port:
                     sprite_path = "assets/sprites/conveyorbelts/vertical/1/vertical_1.png"
-                # case 1.4.4: output is not connected, and input is connected
+                # case 1.4.4: output is connected, and input is connected
                 if output_port.connected_port and input_port.connected_port:
                     sprite_path = "assets/sprites/conveyorbelts/vertical/1/vertical_straight_1.png"
+
+            """CURVED BELTS"""
+            
+            # case 1.5: from left to bottom
+            if input_port.direction == Direction.WEST and output_port.direction == Direction.SOUTH:
+                # case 1.5.1: output is not connected, and input is connected AND case 1.5.2: output is connected, and input is connected
+                if (not output_port.connected_port and input_port.connected_port) or (output_port.connected_port and input_port.connected_port):
+                    sprite_path = "assets/sprites/conveyorbelts/curve/curve_left_bottom.png"
+            
+            # case 1.6: from left to top
+            if input_port.direction == Direction.WEST and output_port.direction == Direction.NORTH:
+                # case 1.6.1: output is not connected, and input is connected AND case 1.6.2: output is connected, and input is connected
+                if (not output_port.connected_port and input_port.connected_port) or (output_port.connected_port and input_port.connected_port):
+                    sprite_path = "assets/sprites/conveyorbelts/curve/curve_left_top.png"
+            
+            # case 1.7: from right to bottom
+            if input_port.direction == Direction.EAST and output_port.direction == Direction.SOUTH:
+                # case 1.7.1: output is not connected, and input is connected AND case 1.7.2: output is connected, and input is connected
+                if (not output_port.connected_port and input_port.connected_port) or (output_port.connected_port and input_port.connected_port):
+                    sprite_path = "assets/sprites/conveyorbelts/curve/curve_right_bottom.png"
+            
+             # case 1.8: from right to top
+            if input_port.direction == Direction.EAST and output_port.direction == Direction.NORTH:
+                # case 1.8.1: output is not connected, and input is connected AND case 1.8.2: output is connected, and input is connected
+                if (not output_port.connected_port and input_port.connected_port) or (output_port.connected_port and input_port.connected_port):
+                    sprite_path = "assets/sprites/conveyorbelts/curve/curve_right_top.png"
+            
+
+
+            # case 1.9: from bottom to left
+            if input_port.direction == Direction.SOUTH and output_port.direction == Direction.WEST:
+                # case 1.9.1: output is not connected, and input is connected AND case 1.9.2: output is connected, and input is connected
+                if (not output_port.connected_port and input_port.connected_port) or (output_port.connected_port and input_port.connected_port):
+                    sprite_path = "assets/sprites/conveyorbelts/curve/curve_bottom_left.png"
+            
+            # case 1.10: from top to left
+            if input_port.direction == Direction.NORTH and output_port.direction == Direction.WEST:
+                # case 1.10.1: output is not connected, and input is connected AND case 1.10.2: output is connected, and input is connected
+                if (not output_port.connected_port and input_port.connected_port) or (output_port.connected_port and input_port.connected_port):
+                    sprite_path = "assets/sprites/conveyorbelts/curve/curve_top_left.png"
+            
+            # case 1.11: from bottom to right
+            if input_port.direction == Direction.SOUTH and output_port.direction == Direction.EAST:
+                # case 1.11.1: output is not connected, and input is connected AND case 1.11.2: output is connected, and input is connected
+                if (not output_port.connected_port and input_port.connected_port) or (output_port.connected_port and input_port.connected_port):
+                    sprite_path = "assets/sprites/conveyorbelts/curve/curve_bottom_right.png"
+            
+             # case 1.12: from top to right
+            if input_port.direction == Direction.NORTH and output_port.direction == Direction.EAST:
+                # case 1.12.1: output is not connected, and input is connected AND case 1.12.2: output is connected, and input is connected
+                if (not output_port.connected_port and input_port.connected_port) or (output_port.connected_port and input_port.connected_port):
+                    sprite_path = "assets/sprites/conveyorbelts/curve/curve_top_right.png"
             
 
 
@@ -167,6 +220,7 @@ class ConveyorBeltAutoConnector:
         #vertical_mirror = False
         
         belt.update_sprite(sprite_path, horizontal_mirror, vertical_mirror)
+
     
     @staticmethod
     def configure_neighbor_when_removing(neighbor: ConveyorBelt, direction, removed_machine, connection_system) -> None:
