@@ -105,7 +105,7 @@ class Machine:
                             self.size[1] * TILE_SIZE * camera.zoom)
             )
         # Draw ports for debugging
-        #self.draw_ports(screen, camera, grid_x, grid_y)
+        self.draw_ports(screen, camera, grid_x, grid_y)
     
 
     def draw_ports(self, screen, camera, grid_x, grid_y):

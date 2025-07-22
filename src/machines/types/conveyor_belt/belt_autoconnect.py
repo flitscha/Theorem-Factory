@@ -16,16 +16,25 @@ class ConveyorBeltAutoConnector:
     @staticmethod
     def _update_io(belt: ConveyorBelt, neighbors: dict[Direction, Optional[Machine]]) -> None:
         """Determine inputs and outputs of a belt based on neighboring machines."""
-        inputs = belt.inputs#[]
-        outputs = belt.outputs#[]
+        inputs = belt.inputs
+        outputs = belt.outputs
 
         for direction, neighbor in neighbors.items():
             # at the moment, we only care about neighboring conveyor belts
             if isinstance(neighbor, ConveyorBelt):
                 # rotate the direction to match the belt's rotation
-                rotated_direction = direction.rotate(-belt.rotation)
+                rotated_direction = direction.rotate(-belt.rotation) # position relative to the base-image of the belt. (goes from left to right)
                 rotated_neighbor_outputs = [output.rotate(neighbor.rotation - belt.rotation) for output in neighbor.outputs]
                 rotated_neighbor_inputs = [input.rotate(neighbor.rotation - belt.rotation) for input in neighbor.inputs]
+
+                # define some useful variables
+                neighbor_wants_to_output_here = rotated_direction.opposite() in rotated_neighbor_outputs
+                #neighbor_wants_to_input_here = rotated_direction.opposite() in rotated_neighbor_inputs
+                # note: we cant do the same for THIS belt, because the inputs and outputs may not be set yet
+
+                # avoid special cases where both belts want to output to each other
+                if neighbor_wants_to_output_here and rotated_direction == Direction.EAST: # EAST is the default output direction (base image without rotation)
+                    continue
 
                 # append inputs and outputs based on the neighbor's inputs and outputs
                 if rotated_direction.opposite() in rotated_neighbor_outputs:
