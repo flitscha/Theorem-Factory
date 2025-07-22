@@ -11,7 +11,7 @@ class ConveyorBeltAutoConnector:
     def configure(belt: ConveyorBelt, neighbors: dict, connection_system):
         ConveyorBeltAutoConnector._update_io(belt, neighbors)
         ConveyorBeltAutoConnector._update_port_connections(belt, connection_system)
-        ConveyorBeltAutoConnector._update_sprite(belt)
+        #ConveyorBeltAutoConnector.update_sprite(belt)
     
     @staticmethod
     def _update_io(belt: ConveyorBelt, neighbors: dict[Direction, Optional[Machine]]) -> None:
@@ -67,7 +67,7 @@ class ConveyorBeltAutoConnector:
 
     
     @staticmethod
-    def _update_sprite(belt: ConveyorBelt):
+    def update_sprite(belt: ConveyorBelt):
         """Update the sprite based on inputs and outputs."""
         # belt.rotation (0, 1, 2, 3) determines the orientation of the belt
         # belt.inputs and belt.outputs
@@ -253,7 +253,7 @@ class ConveyorBeltAutoConnector:
         
         # update the ports and sprite of the neighbor
         ConveyorBeltAutoConnector._update_port_connections(neighbor, connection_system)
-        ConveyorBeltAutoConnector._update_sprite(neighbor)
+        ConveyorBeltAutoConnector.update_sprite(neighbor)
 
 
     @staticmethod
@@ -272,4 +272,4 @@ class ConveyorBeltAutoConnector:
         opposite_direction = direction.opposite()
         ConveyorBeltAutoConnector._update_io(neighbor, {opposite_direction: placed_machine})
         ConveyorBeltAutoConnector._update_port_connections(neighbor, connection_system)
-        ConveyorBeltAutoConnector._update_sprite(neighbor)
+        ConveyorBeltAutoConnector.update_sprite(neighbor)

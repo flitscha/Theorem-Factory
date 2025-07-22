@@ -43,6 +43,9 @@ class ConnectionSystem:
             if neighbor and isinstance(neighbor, ConveyorBelt):
                 ConveyorBeltAutoConnector.configure_neighbor_when_placing(neighbor, direction, conveyor, self)
                 self.update_connections_at(neighbor.origin[0], neighbor.origin[1])
+        
+        # 4) update the sprite of the conveyor belt
+        ConveyorBeltAutoConnector.update_sprite(conveyor)
     
     
     def update_neighboring_belts_when_removing(self, grid_x: int, grid_y: int):
