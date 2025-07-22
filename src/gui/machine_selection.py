@@ -1,6 +1,6 @@
 import pygame
 
-from config.settings import MACHINE_SELECTION_GUI_HEIGHT
+from config.settings import MACHINE_SELECTION_GUI_HEIGHT, ITEM_SELECTION_COLOR, ITEM_SELECTION_ICON_BACKGROUND_COLOR
 
 # the gui-bar at the bottom of the screen, where the player selects the machine, he wants to place.
 class MachineSelectionBar:
@@ -60,11 +60,11 @@ class MachineSelectionBar:
     def draw(self):
         # Background bar
         bar_rect = pygame.Rect(0, self.screen.get_height() - self.height, self.screen.get_width(), self.height)
-        pygame.draw.rect(self.screen, (30, 30, 30), bar_rect)
+        pygame.draw.rect(self.screen, ITEM_SELECTION_COLOR, bar_rect)
 
         # Buttons
         for btn in self.buttons:
-            pygame.draw.rect(self.screen, (60, 60, 60), btn["rect"])
+            pygame.draw.rect(self.screen, ITEM_SELECTION_ICON_BACKGROUND_COLOR, btn["rect"])
             self.screen.blit(btn["image"], btn["rect"].topleft)
 
             # Highlight selected

@@ -85,13 +85,18 @@ class Machine:
     
     def draw(self, screen, camera, grid_x, grid_y):
         screen_x, screen_y = world_to_screen(grid_x * TILE_SIZE, grid_y * TILE_SIZE, camera)
+        screen_x = int(screen_x)
+        screen_y = int(screen_y)
+
+        # Scale the size based on TILE_SIZE and camera zoom (+1 to avoid gaps)
+        scaled_width = int(self.size[0] * TILE_SIZE * camera.zoom) + 1
+        scaled_height = int(self.size[1] * TILE_SIZE * camera.zoom) + 1
 
         # draw the image of the machine, if it exists
         if self.image:
             scaled_image = pygame.transform.scale(
                 self.image, 
-                (int(self.size[0] * TILE_SIZE * camera.zoom), 
-                 int(self.size[1] * TILE_SIZE * camera.zoom))
+                (scaled_width, scaled_height)
             )
             screen.blit(scaled_image, (screen_x, screen_y))
         
@@ -100,12 +105,10 @@ class Machine:
             pygame.draw.rect(
                 screen, 
                 self.color, 
-                pygame.Rect(screen_x, screen_y, 
-                            self.size[0] * TILE_SIZE * camera.zoom, 
-                            self.size[1] * TILE_SIZE * camera.zoom)
+                pygame.Rect(screen_x, screen_y, scaled_width, scaled_height)
             )
         # Draw ports for debugging
-        self.draw_ports(screen, camera, grid_x, grid_y)
+        #self.draw_ports(screen, camera, grid_x, grid_y)
     
 
     def draw_ports(self, screen, camera, grid_x, grid_y):

@@ -75,7 +75,7 @@ class Game:
             
     def render(self):
         """Render the complete frame"""
-        self.renderer.clear_screen()
+        self.renderer.clear_screen(BACKGROUND_COLOR)
         
         # Render game world
         self.renderer.render_game_world(self.grid, self.camera)

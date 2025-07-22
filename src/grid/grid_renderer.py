@@ -1,5 +1,5 @@
 import pygame
-from config.settings import TILE_SIZE, GRID_COLOR
+from config.settings import TILE_SIZE, GRID_LINE_COLOR
 from machines.types.conveyor_belt.conveyor_belt import ConveyorBelt
 
 class GridRenderer:
@@ -11,19 +11,19 @@ class GridRenderer:
     def draw_grid_lines(self, screen, camera):
         """Draw the grid lines"""
         screen_width, screen_height = screen.get_size()
-        start_x = -(camera.offset_x % TILE_SIZE) * camera.zoom
-        start_y = -(camera.offset_y % TILE_SIZE) * camera.zoom
+        start_x = int(-(camera.offset_x % TILE_SIZE) * camera.zoom)
+        start_y = int(-(camera.offset_y % TILE_SIZE) * camera.zoom)
         
         # Vertical lines
         x = start_x
         while x < screen_width:
-            pygame.draw.line(screen, GRID_COLOR, (x, 0), (x, screen_height))
+            pygame.draw.line(screen, GRID_LINE_COLOR, (int(x), 0), (int(x), screen_height))
             x += TILE_SIZE * camera.zoom
         
         # Horizontal lines
         y = start_y
         while y < screen_height:
-            pygame.draw.line(screen, GRID_COLOR, (0, y), (screen_width, y))
+            pygame.draw.line(screen, GRID_LINE_COLOR, (0, int(y)), (screen_width, int(y)))
             y += TILE_SIZE * camera.zoom
     
     def _block_is_visible(self, block, camera) -> bool:
