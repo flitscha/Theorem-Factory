@@ -87,135 +87,159 @@ class ConveyorBeltAutoConnector:
         horizontal_mirror = False
         vertical_mirror = False
 
-        # case 1: 1 input and 1 output
+        # 1 INPUT AND 1 OUTPUT - REFACTORED
         if len(input_ports) == 1 and len(output_ports) == 1:
-            input_port = input_ports[0]
-            output_port = output_ports[0]
+            input_dir = input_ports[0].direction
+            output_dir = output_ports[0].direction
 
-            """NORMAL BELTS"""
-
-            # case 1.1: horizontal from left to right
-            if input_port.direction == Direction.WEST and output_port.direction == Direction.EAST:
-                
-                # case 1.1.1: output is not connected, and input is is connected
-                if not output_port.connected_port and input_port.connected_port:
-                    sprite_path = "assets/sprites/conveyorbelts/horizontal/1/horizontal_end_1.png"
-                # case 1.1.2: output is connected, and input is not
-                if output_port.connected_port and not input_port.connected_port:
-                    sprite_path = "assets/sprites/conveyorbelts/horizontal/2/horizontal_end_2.png"
-                    horizontal_mirror = True
-                # case 1.1.3: output is not connected, and input is not
-                if not output_port.connected_port and not input_port.connected_port:
-                    sprite_path = "assets/sprites/conveyorbelts/horizontal/1/horizontal_1.png"
-                # case 1.1.4: output is connected, and input is connected
-                if output_port.connected_port and input_port.connected_port:
-                    sprite_path = "assets/sprites/conveyorbelts/horizontal/1/horizontal_straight_1.png"
+            """STRAIGHT BELTS"""
+            # Horizontal belts
+            if input_dir == Direction.WEST and output_dir == Direction.EAST:
+                sprite_path = "assets/sprites/conveyorbelts/normal/horizontal.png"
             
-            # case 1.2: horizontal from right to left
-            if input_port.direction == Direction.EAST and output_port.direction == Direction.WEST:
-                
+            elif input_dir == Direction.EAST and output_dir == Direction.WEST:
+                sprite_path = "assets/sprites/conveyorbelts/normal/horizontal.png"
                 vertical_mirror = True
-                # case 1.2.1: output is not connected, and input is connected
-                if not output_port.connected_port and input_port.connected_port:
-                    sprite_path = "assets/sprites/conveyorbelts/horizontal/1/horizontal_end_1.png"
-                # case 1.2.2: output is connected, and input is not
-                if output_port.connected_port and not input_port.connected_port:
-                    sprite_path = "assets/sprites/conveyorbelts/horizontal/2/horizontal_end_2.png"
-                    horizontal_mirror = True
-                # case 1.2.3: output is not connected, and input is not
-                if not output_port.connected_port and not input_port.connected_port:
-                    sprite_path = "assets/sprites/conveyorbelts/horizontal/1/horizontal_1.png"
-                # case 1.2.4: output is connected, and input is connected
-                if output_port.connected_port and input_port.connected_port:
-                    sprite_path = "assets/sprites/conveyorbelts/horizontal/1/horizontal_straight_1.png"
             
-            # case 1.3: vertical from top to bottom
-            if input_port.direction == Direction.NORTH and output_port.direction == Direction.SOUTH:
-                
-                # case 1.3.1: output is not connected, and input is connected
-                if not output_port.connected_port and input_port.connected_port:
-                    sprite_path = "assets/sprites/conveyorbelts/vertical/1/vertical_end_1.png"
-                # case 1.3.2: output is connected, and input is not
-                if output_port.connected_port and not input_port.connected_port:
-                    sprite_path = "assets/sprites/conveyorbelts/vertical/2/vertical_end_2.png"
-                    horizontal_mirror = True
-                # case 1.3.3: output is not connected, and input is not
-                if not output_port.connected_port and not input_port.connected_port:
-                    sprite_path = "assets/sprites/conveyorbelts/vertical/1/vertical_1.png"
-                # case 1.3.4: output is connected, and input is connected
-                if output_port.connected_port and input_port.connected_port:
-                    sprite_path = "assets/sprites/conveyorbelts/vertical/1/vertical_straight_1.png"
+            # Vertical belts
+            elif input_dir == Direction.NORTH and output_dir == Direction.SOUTH:
+                sprite_path = "assets/sprites/conveyorbelts/normal/vertical.png"
             
-            # case 1.4: vertical from bottom to top
-            if input_port.direction == Direction.SOUTH and output_port.direction == Direction.NORTH:
-                
+            elif input_dir == Direction.SOUTH and output_dir == Direction.NORTH:
+                sprite_path = "assets/sprites/conveyorbelts/normal/vertical.png"
                 vertical_mirror = True
-                # case 1.4.1: output is not connected, and input is connected
-                if not output_port.connected_port and input_port.connected_port:
-                    sprite_path = "assets/sprites/conveyorbelts/vertical/1/vertical_end_1.png"
-                # case 1.4.2: output is connected, and input is not
-                if output_port.connected_port and not input_port.connected_port:
-                    sprite_path = "assets/sprites/conveyorbelts/vertical/2/vertical_end_2.png"
-                    horizontal_mirror = True
-                # case 1.4.3: output is not connected, and input is not
-                if not output_port.connected_port and not input_port.connected_port:
-                    sprite_path = "assets/sprites/conveyorbelts/vertical/1/vertical_1.png"
-                # case 1.4.4: output is connected, and input is connected
-                if output_port.connected_port and input_port.connected_port:
-                    sprite_path = "assets/sprites/conveyorbelts/vertical/1/vertical_straight_1.png"
 
             """CURVED BELTS"""
+            # Left curves
+            if input_dir == Direction.WEST and output_dir == Direction.SOUTH:
+                sprite_path = "assets/sprites/conveyorbelts/curve/curve_left_bottom.png"
             
-            # case 1.5: from left to bottom
-            if input_port.direction == Direction.WEST and output_port.direction == Direction.SOUTH:
-                # case 1.5.1: output is not connected, and input is connected AND case 1.5.2: output is connected, and input is connected
-                if (not output_port.connected_port and input_port.connected_port) or (output_port.connected_port and input_port.connected_port):
-                    sprite_path = "assets/sprites/conveyorbelts/curve/curve_left_bottom.png"
+            elif input_dir == Direction.WEST and output_dir == Direction.NORTH:
+                sprite_path = "assets/sprites/conveyorbelts/curve/curve_left_top.png"
             
-            # case 1.6: from left to top
-            if input_port.direction == Direction.WEST and output_port.direction == Direction.NORTH:
-                # case 1.6.1: output is not connected, and input is connected AND case 1.6.2: output is connected, and input is connected
-                if (not output_port.connected_port and input_port.connected_port) or (output_port.connected_port and input_port.connected_port):
-                    sprite_path = "assets/sprites/conveyorbelts/curve/curve_left_top.png"
+            # Right curves
+            elif input_dir == Direction.EAST and output_dir == Direction.SOUTH:
+                sprite_path = "assets/sprites/conveyorbelts/curve/curve_right_bottom.png"
             
-            # case 1.7: from right to bottom
-            if input_port.direction == Direction.EAST and output_port.direction == Direction.SOUTH:
-                # case 1.7.1: output is not connected, and input is connected AND case 1.7.2: output is connected, and input is connected
-                if (not output_port.connected_port and input_port.connected_port) or (output_port.connected_port and input_port.connected_port):
-                    sprite_path = "assets/sprites/conveyorbelts/curve/curve_right_bottom.png"
+            elif input_dir == Direction.EAST and output_dir == Direction.NORTH:
+                sprite_path = "assets/sprites/conveyorbelts/curve/curve_right_top.png"
             
-             # case 1.8: from right to top
-            if input_port.direction == Direction.EAST and output_port.direction == Direction.NORTH:
-                # case 1.8.1: output is not connected, and input is connected AND case 1.8.2: output is connected, and input is connected
-                if (not output_port.connected_port and input_port.connected_port) or (output_port.connected_port and input_port.connected_port):
-                    sprite_path = "assets/sprites/conveyorbelts/curve/curve_right_top.png"
+            # Bottom curves
+            elif input_dir == Direction.SOUTH and output_dir == Direction.WEST:
+                sprite_path = "assets/sprites/conveyorbelts/curve/curve_bottom_left.png"
             
+            elif input_dir == Direction.SOUTH and output_dir == Direction.EAST:
+                sprite_path = "assets/sprites/conveyorbelts/curve/curve_bottom_right.png"
+            
+            # Top curves
+            elif input_dir == Direction.NORTH and output_dir == Direction.WEST:
+                sprite_path = "assets/sprites/conveyorbelts/curve/curve_top_left.png"
+            
+            elif input_dir == Direction.NORTH and output_dir == Direction.EAST:
+                sprite_path = "assets/sprites/conveyorbelts/curve/curve_top_right.png"
 
 
-            # case 1.9: from bottom to left
-            if input_port.direction == Direction.SOUTH and output_port.direction == Direction.WEST:
-                # case 1.9.1: output is not connected, and input is connected AND case 1.9.2: output is connected, and input is connected
-                if (not output_port.connected_port and input_port.connected_port) or (output_port.connected_port and input_port.connected_port):
-                    sprite_path = "assets/sprites/conveyorbelts/curve/curve_bottom_left.png"
+        """INTERSECTION BELTS"""
+
+        # 2 INPUTS AND 1 OUTPUT
+        if len(input_ports) == 2 and len(output_ports) == 1:
+            input_dirs = {port.direction for port in input_ports}  # Set comprehension
+            output_dir = output_ports[0].direction
+
+            # Left-bottom to right (WEST+SOUTH → EAST)
+            if input_dirs == {Direction.WEST, Direction.SOUTH} and output_dir == Direction.EAST:
+                sprite_path = "assets/sprites/conveyorbelts/intersections/horizontal/left_bottom_to_right.png"
             
-            # case 1.10: from top to left
-            if input_port.direction == Direction.NORTH and output_port.direction == Direction.WEST:
-                # case 1.10.1: output is not connected, and input is connected AND case 1.10.2: output is connected, and input is connected
-                if (not output_port.connected_port and input_port.connected_port) or (output_port.connected_port and input_port.connected_port):
-                    sprite_path = "assets/sprites/conveyorbelts/curve/curve_top_left.png"
+            # Mirrored case (EAST+SOUTH → WEST)
+            elif input_dirs == {Direction.EAST, Direction.SOUTH} and output_dir == Direction.WEST:
+                sprite_path = "assets/sprites/conveyorbelts/intersections/horizontal/left_bottom_to_right.png"
+                vertical_mirror = True
+
+            # Left-top to right (WEST+NORTH → EAST)
+            elif input_dirs == {Direction.WEST, Direction.NORTH} and output_dir == Direction.EAST:
+                sprite_path = "assets/sprites/conveyorbelts/intersections/horizontal/left_top_to_right.png"
             
-            # case 1.11: from bottom to right
-            if input_port.direction == Direction.SOUTH and output_port.direction == Direction.EAST:
-                # case 1.11.1: output is not connected, and input is connected AND case 1.11.2: output is connected, and input is connected
-                if (not output_port.connected_port and input_port.connected_port) or (output_port.connected_port and input_port.connected_port):
-                    sprite_path = "assets/sprites/conveyorbelts/curve/curve_bottom_right.png"
+            # Mirrored case (EAST+NORTH → WEST)
+            elif input_dirs == {Direction.EAST, Direction.NORTH} and output_dir == Direction.WEST:
+                sprite_path = "assets/sprites/conveyorbelts/intersections/horizontal/left_top_to_right.png"
+                vertical_mirror = True
+
+        # 1 INPUT AND 2 OUTPUTS
+        elif len(input_ports) == 1 and len(output_ports) == 2:
+            input_dir = input_ports[0].direction
+            output_dirs = {port.direction for port in sorted(output_ports, key=lambda p: p.direction.value)}
+
+            # Left to bottom-right (WEST → SOUTH+EAST)
+            if input_dir == Direction.WEST and output_dirs == {Direction.SOUTH, Direction.EAST}:
+                sprite_path = "assets/sprites/conveyorbelts/intersections/horizontal/left_to_bottom_right.png"
             
-             # case 1.12: from top to right
-            if input_port.direction == Direction.NORTH and output_port.direction == Direction.EAST:
-                # case 1.12.1: output is not connected, and input is connected AND case 1.12.2: output is connected, and input is connected
-                if (not output_port.connected_port and input_port.connected_port) or (output_port.connected_port and input_port.connected_port):
-                    sprite_path = "assets/sprites/conveyorbelts/curve/curve_top_right.png"
+            # Mirrored case (EAST → SOUTH+WEST)
+            elif input_dir == Direction.EAST and output_dirs == {Direction.SOUTH, Direction.WEST}:
+                sprite_path = "assets/sprites/conveyorbelts/intersections/horizontal/left_to_bottom_right.png"
+                vertical_mirror = True
             
+            # Left to top-right (WEST → NORTH+EAST)
+            elif input_dir == Direction.WEST and output_dirs == {Direction.NORTH, Direction.EAST}:
+                sprite_path = "assets/sprites/conveyorbelts/intersections/horizontal/left_to_top_right.png"
+            
+            # Mirrored case (EAST → NORTH+WEST)
+            elif input_dir == Direction.EAST and output_dirs == {Direction.NORTH, Direction.WEST}:
+                sprite_path = "assets/sprites/conveyorbelts/intersections/horizontal/left_to_top_right.png"
+                vertical_mirror = True
+        
+        """CROSSSECTION BELTS"""
+        
+        # 1 INPUT AND 3 OUTPUTS
+        if len(input_ports) == 1 and len(output_ports) == 3:
+            input_dir = input_ports[0].direction
+            output_dirs = {port.direction for port in output_ports}  # Set comprehension
+
+            # Base case (WEST → NORTH+EAST+SOUTH)
+            if input_dir == Direction.WEST and output_dirs == {Direction.NORTH, Direction.EAST, Direction.SOUTH}:
+                sprite_path = "assets/sprites/conveyorbelts/crosssections/horizontal/left_to_top_right_bottom.png"
+
+            # Mirrored case (EAST → NORTH+WEST+SOUTH)
+            elif input_dir == Direction.EAST and output_dirs == {Direction.NORTH, Direction.WEST, Direction.SOUTH}:
+                sprite_path = "assets/sprites/conveyorbelts/crosssections/horizontal/left_to_top_right_bottom.png"
+                vertical_mirror = True
+
+        # 3 INPUTS AND 1 OUTPUT
+        if len(input_ports) == 3 and len(output_ports) == 1:
+            input_dirs = {port.direction for port in input_ports}  # Set comprehension
+            output_dir = output_ports[0].direction
+
+            # Base case (WEST+NORTH+SOUTH → EAST)
+            if input_dirs == {Direction.WEST, Direction.NORTH, Direction.SOUTH} and output_dir == Direction.EAST:
+                sprite_path = "assets/sprites/conveyorbelts/crosssections/horizontal/left_top_bottom_to_right.png"
+
+            # Mirrored case (EAST+NORTH+SOUTH → WEST)
+            elif input_dirs == {Direction.EAST, Direction.NORTH, Direction.SOUTH} and output_dir == Direction.WEST:
+                sprite_path = "assets/sprites/conveyorbelts/crosssections/horizontal/left_top_bottom_to_right.png"
+                vertical_mirror = True
+        
+        # 2 INPUTS AND 2 OUTPUTS
+        if len(input_ports) == 2 and len(output_ports) == 2:
+            input_dirs = {port.direction for port in input_ports}  # Set comprehension
+            output_dirs = {port.direction for port in output_ports}
+
+            # Left-bottom to right-top (WEST+SOUTH → NORTH+EAST)
+            if input_dirs == {Direction.WEST, Direction.SOUTH} and output_dirs == {Direction.NORTH, Direction.EAST}:
+                sprite_path = "assets/sprites/conveyorbelts/crosssections/horizontal/left_bottom_to_right_top.png"
+
+            # Mirrored case (EAST+SOUTH → NORTH+WEST)
+            elif input_dirs == {Direction.EAST, Direction.SOUTH} and output_dirs == {Direction.NORTH, Direction.WEST}:
+                sprite_path = "assets/sprites/conveyorbelts/crosssections/horizontal/left_bottom_to_right_top.png"
+                vertical_mirror = True
+
+            # Left-top to right-bottom (WEST+NORTH → SOUTH+EAST)
+            elif input_dirs == {Direction.WEST, Direction.NORTH} and output_dirs == {Direction.SOUTH, Direction.EAST}:
+                sprite_path = "assets/sprites/conveyorbelts/crosssections/horizontal/left_top_to_bottom_right.png"
+
+            # Mirrored case (EAST+NORTH → SOUTH+WEST)
+            elif input_dirs == {Direction.EAST, Direction.NORTH} and output_dirs == {Direction.SOUTH, Direction.WEST}:
+                sprite_path = "assets/sprites/conveyorbelts/crosssections/horizontal/left_top_to_bottom_right.png"
+                vertical_mirror = True
+
 
 
         #for port in input_ports:
@@ -224,7 +248,7 @@ class ConveyorBeltAutoConnector:
         # example:
         #sprite_path = "assets/sprites/conveyor_belt_vertical_curve.png"
         if sprite_path == None:
-            sprite_path = "assets/sprites/conveyorbelts/horizontal/1/horizontal_1.png"
+            sprite_path = "assets/sprites/conveyorbelts/normal/horizontal.png"
         #horizontal_mirror = False
         #vertical_mirror = False
         
