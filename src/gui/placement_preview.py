@@ -1,7 +1,7 @@
 import pygame
 
 from config.settings import TILE_SIZE
-from core.utils import get_grid_coordinates_when_placing_machine, grid_to_screen_coordinates
+from core.utils import get_grid_coordinates_when_placing_machine, grid_to_screen_coordinates, can_overwrite_belt
 from config.settings import SCREEN_HEIGHT, MACHINE_SELECTION_GUI_HEIGHT
 
 class PlacementPreview():
@@ -62,9 +62,19 @@ class PlacementPreview():
 
             overlay_surface.set_alpha(90)  # normal preview alpha
 
-            # if the machine cannot be placed there, the preview is red
-            can_place = self.grid.is_empty(grid_x, grid_y, rotated_size)
-            if not can_place:
+            # Determine color: no color / yellow / red
+            existing_block = self.grid.get_block(grid_x, grid_y)
+
+            if existing_block is None:
+                # space is free -> no overlay
+                pass
+            elif can_overwrite_belt(existing_block, self.rotation):
+                # yellow overlay for overwriting
+                yellow_overlay = pygame.Surface(scaled_image.get_size(), pygame.SRCALPHA)
+                yellow_overlay.fill((255, 255, 0, 120))
+                overlay_surface.blit(yellow_overlay, (0, 0))
+            else:
+                # red overlay for invalid placement
                 red_overlay = pygame.Surface(scaled_image.get_size(), pygame.SRCALPHA)
                 red_overlay.fill((255, 0, 0, 120))
                 overlay_surface.blit(red_overlay, (0, 0))

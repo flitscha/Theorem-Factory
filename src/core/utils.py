@@ -61,3 +61,27 @@ def grid_to_screen_coordinates(grid_x, grid_y, camera):
     screen_x, screen_y = world_to_screen(world_x, world_y, camera)
     
     return screen_x, screen_y
+
+
+def can_overwrite_belt(existing_block, new_rotation):
+    from machines.types.conveyor_belt.conveyor_belt import ConveyorBelt
+
+    # Only belts
+    if not isinstance(existing_block, ConveyorBelt):
+        return False
+     
+    # if the direction is the same, do nothing
+    if existing_block.rotation == new_rotation:
+        return False
+    
+    # if the direction is opposite AND the existing belt is straight, do nothing
+    if (existing_block.rotation + 2) % 4 == new_rotation and \
+            existing_block.input_ports[0].direction == existing_block.output_ports[0].direction.opposite():
+        return False
+
+    # if the existing belt is an intersection, do nothing
+    if len(existing_block.input_ports) > 1: #or len(existing_block.output_ports) > 1:
+        return False
+    
+    # all other cases: the existing belt can be overwritten
+    return True

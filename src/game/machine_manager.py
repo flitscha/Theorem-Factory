@@ -1,5 +1,5 @@
 from config.settings import *
-from core.utils import get_grid_coordinates_when_placing_machine, get_mouse_grid_pos
+from core.utils import get_grid_coordinates_when_placing_machine, get_mouse_grid_pos, can_overwrite_belt
 from machines.types.generator import Generator
 from machines.menu.generator_menu import GeneratorMenu
 
@@ -12,7 +12,7 @@ class MachineManager:
         self.camera = camera
         self.placement_preview = placement_preview
         self.machine_database = machine_database
-        
+    
     def try_place_machine(self, mouse_pos):
         """Attempt to place a machine at the given position"""
         # Don't place if clicking on GUI area
@@ -27,18 +27,26 @@ class MachineManager:
             
         # Get machine data and calculate rotated size
         data = self.machine_database.get(machine_id)
-        size = data.size
-        
+        size = data.size 
         rotated_size = (size[1], size[0]) if rotation % 2 == 1 else size
         grid_x, grid_y = get_grid_coordinates_when_placing_machine(self.camera, rotated_size)
-        
-        # Check if position is empty and place machine
-        if self.grid.is_empty(grid_x, grid_y, rotated_size):
-            machine = data.cls(data, rotation=rotation)
-            self.grid.add_block(grid_x, grid_y, machine)
-            return True
-            
-        return False
+
+        # Check if there is already a block
+        existing_block = self.grid.get_block(grid_x, grid_y)
+        if existing_block:
+            # check if we can overwrite the existing block
+            if can_overwrite_belt(existing_block, rotation):
+                # Remove the existing block
+                self.grid.remove_block(grid_x, grid_y)
+            else:
+                # if we cannot overwrite, do nothing
+                return False
+
+        # Place new machine
+        machine = data.cls(data, rotation=rotation)
+        self.grid.add_block(grid_x, grid_y, machine)
+        return True
+    
         
     def remove_machine_at_mouse(self):
         """Remove machine at current mouse position"""
