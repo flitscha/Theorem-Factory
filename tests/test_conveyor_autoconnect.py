@@ -8,6 +8,7 @@ from machines.types.conveyor_belt.belt_autoconnect import ConveyorBeltAutoConnec
 from grid.grid_manager import GridManager
 from grid.connection_system import ConnectionSystem
 from machines.base.machine_database import MachineData
+from machines.types.generator import Generator
 
 
 # helper function to create a conveyor belt with given rotation and inputs/outputs
@@ -29,6 +30,21 @@ def create_belt(rotation=0, inputs=None, outputs=None):
     belt.init_ports()
     belt.rotate_ports()
     return belt
+
+
+def create_generator(rotation=0):
+    # Dummy MachineData for a generator
+    data = MachineData(
+        id="generator",
+        name="Generator",
+        size=(3, 3),
+        sprite_path="dummy.png",
+        cls=Generator
+    )
+    generator = Generator(data, rotation=rotation)
+    generator.init_ports()
+    generator.rotate_ports()
+    return generator
 
 # setup for tests
 @pytest.fixture
@@ -225,3 +241,56 @@ def test_update_io_with_four_neighbors_inputs(grid_and_connection):
     # Expected: inputs = [WEST], outputs = [NORTH, SOUTH, EAST]
     assert set(belt.inputs) == set([Direction.WEST])
     assert set(belt.outputs) == set([Direction.NORTH, Direction.SOUTH, Direction.EAST])
+
+
+
+# ------------ Tests involving other machines ------------
+# neighbor (NORTH) is a generator, providing output to the south.
+def test_update_io_with_generator1(grid_and_connection):
+    grid, connection = grid_and_connection
+    belt = create_belt()
+    belt.origin = (0, 0)
+    belt.init_ports()
+    belt.rotate_ports()
+    neighbor = create_generator(rotation=0)
+    neighbor.origin = (-1, -3)
+    neighbor.init_ports()
+    neighbor.rotate_ports()
+    
+    neighbors = {
+        Direction.WEST: None,
+        Direction.EAST: None,
+        Direction.NORTH: neighbor,
+        Direction.SOUTH: None
+    }
+
+    ConveyorBeltAutoConnector._update_io(belt, neighbors)
+
+    # Expected: inputs = [NORTH], outputs = [EAST]
+    assert belt.inputs == [Direction.NORTH]
+    assert belt.outputs == [Direction.EAST]
+
+
+# neighbor (WEST) is a generator, providing output to the EAST. (belt is rotated from south to north)
+def test_update_io_with_generator2(grid_and_connection):
+    grid, connection = grid_and_connection
+    belt = create_belt(rotation=3)
+    belt.init_ports()
+    belt.rotate_ports()
+    neighbor = create_generator(rotation=3)
+    neighbor.origin = (-3, -1)
+    neighbor.init_ports()
+    neighbor.rotate_ports()
+    
+    neighbors = {
+        Direction.WEST: neighbor,
+        Direction.EAST: None,
+        Direction.NORTH: None,
+        Direction.SOUTH: None
+    }
+
+    ConveyorBeltAutoConnector._update_io(belt, neighbors)
+
+    # Expected: inputs = [NORTH], outputs = [EAST]
+    assert belt.inputs == [Direction.NORTH] # directions are not affected by rotation
+    assert belt.outputs == [Direction.EAST]

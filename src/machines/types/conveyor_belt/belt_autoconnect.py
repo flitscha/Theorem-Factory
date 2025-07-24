@@ -51,14 +51,19 @@ class ConveyorBeltAutoConnector:
             
             # case 2: neighbor is another machine
             elif neighbor:
+                if rotated_direction == Direction.EAST or rotated_direction == Direction.WEST:
+                    # only consider interesting case, where the neighbor outputs to the side of the belt
+                    # the other cases are already handled
+                    continue 
+
                 # the only case we want to consider here is: a machine that outputs to the side of a belt
                 output_ports = neighbor.output_ports
                 
-                # create dummy-input-ports to check, if they can connect to the outputport
+                # create dummy-input-ports to check, if they can connect to the output port
                 dummy_port1 = Port(
                     relative_x=0, 
                     relative_y=0, 
-                    direction=rotated_direction,
+                    direction=direction,
                     port_type="input"
                 )
                 dummy_port1.machine = belt
@@ -66,17 +71,17 @@ class ConveyorBeltAutoConnector:
                 dummy_port2 = Port(
                     relative_x=0, 
                     relative_y=0, 
-                    direction=rotated_direction.opposite(),
+                    direction=direction.opposite(),
                     port_type="input"
                 )
                 dummy_port2.machine = belt
 
                 for port in output_ports:
                     if port.can_connect_to(dummy_port1):
-                        inputs.append(dummy_port1.direction)
+                        inputs.append(rotated_direction)
                     
                     if port.can_connect_to(dummy_port2):
-                        inputs.append(dummy_port2.direction.opposite())
+                        inputs.append(rotated_direction.opposite())
                 
 
         # If no inputs or outputs are found, use default values
