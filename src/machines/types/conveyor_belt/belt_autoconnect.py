@@ -29,11 +29,15 @@ class ConveyorBeltAutoConnector:
 
                 # define some useful variables
                 neighbor_wants_to_output_here = rotated_direction.opposite() in rotated_neighbor_outputs
-                #neighbor_wants_to_input_here = rotated_direction.opposite() in rotated_neighbor_inputs
+                neighbor_wants_to_input_here = rotated_direction.opposite() in rotated_neighbor_inputs
                 # note: we cant do the same for THIS belt, because the inputs and outputs may not be set yet
 
                 # avoid special cases where both belts want to output to each other
                 if neighbor_wants_to_output_here and rotated_direction == Direction.EAST: # EAST is the default output direction (base image without rotation)
+                    continue
+
+                # avoid special cases where both belts want to input from each other
+                if neighbor_wants_to_input_here and rotated_direction == Direction.WEST:
                     continue
 
                 # append inputs and outputs based on the neighbor's inputs and outputs
