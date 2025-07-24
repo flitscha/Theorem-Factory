@@ -34,6 +34,9 @@ class GridCoordinator:
     def get_block(self, grid_x: int, grid_y: int):
         return self.grid_manager.get_block(grid_x, grid_y)
     
+    def get_neighboring_machines(self, grid_x: int, grid_y: int):
+        return self.grid_manager.get_neighboring_machines(grid_x, grid_y)
+    
     def is_empty(self, grid_x: int, grid_y: int, size=(1, 1)):
         return self.grid_manager.is_empty(grid_x, grid_y, size)
     
