@@ -178,3 +178,50 @@ def test_update_io_with_two_neighbors1(grid_and_connection):
     # Expected: inputs = [Direction.WEST, Direction.NORTH], outputs = [Direction.EAST]
     assert set(belt.inputs) == set([Direction.WEST, Direction.NORTH])
     assert belt.outputs == [Direction.EAST]
+
+
+# ----------- 4 neighbors ------------
+# 4 neighbors, all providing outputs to the direction of the belt
+def test_update_io_with_four_neighbors_outputs(grid_and_connection):
+    grid, connection = grid_and_connection
+    belt = create_belt()
+    neighbor_west = create_belt(rotation=0, inputs=[Direction.WEST], outputs=[Direction.EAST])
+    neighbor_east = create_belt(rotation=0, inputs=[Direction.EAST], outputs=[Direction.WEST])
+    neighbor_north = create_belt(rotation=0, inputs=[Direction.NORTH], outputs=[Direction.SOUTH])
+    neighbor_south = create_belt(rotation=0, inputs=[Direction.SOUTH], outputs=[Direction.NORTH])
+    
+    neighbors = {
+        Direction.WEST: neighbor_west,
+        Direction.EAST: neighbor_east,
+        Direction.NORTH: neighbor_north,
+        Direction.SOUTH: neighbor_south
+    }
+
+    ConveyorBeltAutoConnector._update_io(belt, neighbors)
+
+    # Expected: inputs = [WEST, NORTH, SOUTH], outputs = [Direction.EAST]
+    assert set(belt.inputs) == set([Direction.WEST, Direction.NORTH, Direction.SOUTH])
+    assert belt.outputs == [Direction.EAST]
+
+
+# 4 neighbors, all prividing inputs to the direction of the belt
+def test_update_io_with_four_neighbors_inputs(grid_and_connection):
+    grid, connection = grid_and_connection
+    belt = create_belt()
+    neighbor_west = create_belt(rotation=0, inputs=[Direction.EAST], outputs=[Direction.WEST])
+    neighbor_east = create_belt(rotation=0, inputs=[Direction.WEST], outputs=[Direction.EAST])
+    neighbor_north = create_belt(rotation=0, inputs=[Direction.SOUTH], outputs=[Direction.NORTH])
+    neighbor_south = create_belt(rotation=0, inputs=[Direction.NORTH], outputs=[Direction.SOUTH])
+    
+    neighbors = {
+        Direction.WEST: neighbor_west,
+        Direction.EAST: neighbor_east,
+        Direction.NORTH: neighbor_north,
+        Direction.SOUTH: neighbor_south
+    }
+
+    ConveyorBeltAutoConnector._update_io(belt, neighbors)
+
+    # Expected: inputs = [WEST], outputs = [NORTH, SOUTH, EAST]
+    assert set(belt.inputs) == set([Direction.WEST])
+    assert set(belt.outputs) == set([Direction.NORTH, Direction.SOUTH, Direction.EAST])
