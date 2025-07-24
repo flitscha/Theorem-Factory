@@ -19,6 +19,10 @@ class ConveyorBelt(Machine, IUpdatable, IProvider, IReceiver):
         self.inputs = [] # does NOT change with rotation
         self.outputs = []
 
+        # Round robin indices
+        self.next_output_index = 0
+        self.next_input_index = 0
+
         super().__init__(size=machine_data.size, image=machine_data.image, rotation=rotation)
 
 
@@ -44,16 +48,31 @@ class ConveyorBelt(Machine, IUpdatable, IProvider, IReceiver):
             self.image = pygame.transform.flip(self.image, False, True)
         self.rotate_image()
 
-    # IProvider interface implementation  
-    def provide_item_from_port(self, port): # simple: a conveyor belt only has one output port
-        """Called when the output port is asked for an item"""
-        if self.item and self.item_progress >= 1.0:
-            item = self.item
-            self.item = None
-            self.item_progress = 0.0
-            return item
-        return None
-    
+
+    # IProvider interface implementation
+    def provide_item_from_port(self, port):
+        """Nur der 'dran'-Port darf aktuell ein Item liefern (Round Robin)."""
+        if not self.item or self.item_progress < 1.0:
+            return None
+
+        # Prüfen, ob dieser Port der aktuelle Output ist
+        output_ports = self.output_ports
+        if not output_ports:
+            return None
+
+        # Index normalisieren
+        current_index = self.next_output_index % len(output_ports)
+        if port != output_ports[current_index]:
+            return None
+
+        # Item abgeben und Index weiterschalten
+        item = self.item
+        self.item = None
+        self.item_progress = 0.0
+        self.next_output_index = (self.next_output_index + 1) % len(output_ports)
+        return item
+
+
     def handle_backpressure(self, item: Item, port: Port):
         """Handle backpressure when output is blocked"""
         # If output is blocked, we just keep the item on the belt
@@ -70,13 +89,25 @@ class ConveyorBelt(Machine, IUpdatable, IProvider, IReceiver):
 
     # IReceiver interface implementation
     def receive_item_at_port(self, port: Port, item: Item) -> bool:
-        """Called when the input port receives an item"""
-        if self.item is None:
-            self.item = item
-            self.item_progress = 0.0
-            return True
-        return False
-        
+        """Nur der 'dran'-Input darf aktuell ein Item annehmen (Round Robin)."""
+        if self.item is not None:
+            return False
+
+        input_ports = self.input_ports
+        if not input_ports:
+            return False
+
+        # Index normalisieren
+        current_index = self.next_input_index % len(input_ports)
+        if port != input_ports[current_index]:
+            return False
+
+        # Item akzeptieren und Index weiterschalten
+        self.item = item
+        self.item_progress = 0.0
+        self.next_input_index = (self.next_input_index + 1) % len(input_ports)
+        return True
+
 
     # IUpdatable interface implementation
     def update(self, dt):

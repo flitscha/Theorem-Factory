@@ -47,7 +47,9 @@ class PlacementPreview():
             ConveyorBeltAutoConnector.update_sprite(dummy)
             # right now, we don't update the sprites of the neighbors. But this would also be an option.
 
-        #dummy.rotate_image()
+        else:
+            dummy.rotate_image()
+            
         return dummy
 
     def _draw_overlay(self, surface, grid_x, grid_y):
