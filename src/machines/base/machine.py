@@ -132,10 +132,10 @@ class Machine:
             color = (0, 255, 0) if port.port_type == "input" else (255, 0, 0)
             
             # Draw port as small circle
-            radius = int(4 * camera.zoom)
+            radius = int(3 * camera.zoom)
             pygame.draw.circle(screen, color, (int(port_screen_x), int(port_screen_y)), radius)
             
             # Draw connection indicator
             if port.connected_port:
-                pygame.draw.circle(screen, (255, 255, 255), (int(port_screen_x), int(port_screen_y)), radius + 3, 3)
+                pygame.draw.circle(screen, (255, 255, 255), (int(port_screen_x), int(port_screen_y)), radius + 2, 3)
 
