@@ -20,10 +20,13 @@ class ConveyorBeltAutoConnector:
         outputs = belt.outputs
 
         for direction, neighbor in neighbors.items():
-            # at the moment, we only care about neighboring conveyor belts
+            rotated_direction = direction.rotate(-belt.rotation) # position relative to the base-image of the belt. (goes from left to right)
+
+            # case 1: neighbor is a conveyor belt
+            # we distinguish between this two cases, because conveyor belts are more complex. Inputs and outputs change dynamically. 
+            # For this reason, conveyor belts have the attributs input and output, unlike other machines.
             if isinstance(neighbor, ConveyorBelt):
                 # rotate the direction to match the belt's rotation
-                rotated_direction = direction.rotate(-belt.rotation) # position relative to the base-image of the belt. (goes from left to right)
                 rotated_neighbor_outputs = [output.rotate(neighbor.rotation - belt.rotation) for output in neighbor.outputs]
                 rotated_neighbor_inputs = [input.rotate(neighbor.rotation - belt.rotation) for input in neighbor.inputs]
 
@@ -45,6 +48,35 @@ class ConveyorBeltAutoConnector:
                     inputs.append(rotated_direction)
                 if rotated_direction.opposite() in rotated_neighbor_inputs:
                     outputs.append(rotated_direction)
+            
+            # case 2: neighbor is another machine
+            elif neighbor:
+                # the only case we want to consider here is: a machine that outputs to the side of a belt
+                output_ports = neighbor.output_ports
+                
+                # create dummy-input-ports to check, if they can connect to the outputport
+                dummy_port1 = Port(
+                    relative_x=0, 
+                    relative_y=0, 
+                    direction=rotated_direction,
+                    port_type="input"
+                )
+                dummy_port1.machine = belt
+
+                dummy_port2 = Port(
+                    relative_x=0, 
+                    relative_y=0, 
+                    direction=rotated_direction.opposite(),
+                    port_type="input"
+                )
+                dummy_port2.machine = belt
+
+                for port in output_ports:
+                    if port.can_connect_to(dummy_port1):
+                        inputs.append(dummy_port1.direction)
+                    
+                    if port.can_connect_to(dummy_port2):
+                        inputs.append(dummy_port2.direction.opposite())
                 
 
         # If no inputs or outputs are found, use default values
