@@ -26,6 +26,8 @@ class ConveyorBelt(Machine, IUpdatable, IProvider, IReceiver):
         self.next_output_index = 0
         self.next_input_index = 0
 
+        self.was_empty_last_frame = True # no item on the belt last frame
+
         super().__init__(size=machine_data.size, image=machine_data.image, rotation=rotation)
 
 
@@ -50,6 +52,15 @@ class ConveyorBelt(Machine, IUpdatable, IProvider, IReceiver):
         if vertical_mirror:
             self.image = pygame.transform.flip(self.image, False, True)
         self.rotate_image()
+    
+    # add 1 to the next input/output index
+    def advance_output_index(self):
+        """Advance to the next output index"""
+        self.next_output_index = (self.next_output_index + 1) % len(self.output_ports)
+
+    def advance_input_index(self):
+        """Advance to the next input index"""
+        self.next_input_index = (self.next_input_index + 1) % len(self.input_ports)
 
 
     # IProvider interface implementation
@@ -58,21 +69,18 @@ class ConveyorBelt(Machine, IUpdatable, IProvider, IReceiver):
         if not self.item or self.item_progress < 1.0:
             return None
 
-        # Prüfen, ob dieser Port der aktuelle Output ist
-        output_ports = self.output_ports
-        if not output_ports:
+        if not self.output_ports:
             return None
 
-        # Index normalisieren
-        current_index = self.next_output_index % len(output_ports)
-        if port != output_ports[current_index]:
+        # check if this port is the current output
+        if port != self.output_ports[self.next_output_index]:
             return None
 
         # Item abgeben und Index weiterschalten
         item = self.item
         self.item = None
         self.item_progress = 0.0
-        self.next_output_index = (self.next_output_index + 1) % len(output_ports)
+        self.advance_output_index()
         return item
 
 
@@ -92,26 +100,30 @@ class ConveyorBelt(Machine, IUpdatable, IProvider, IReceiver):
 
     # IReceiver interface implementation
     def receive_item_at_port(self, port: Port, item: Item) -> bool:
-        """Nur der 'dran'-Input darf aktuell ein Item annehmen (Round Robin)."""
+        """Receive item at the specified port"""
         if self.item is not None:
             return False
 
-        input_ports = self.input_ports
-        if not input_ports:
+        if not self.input_ports:
             return False
 
         # check if this port is the current input
-        current_index = self.next_input_index % len(input_ports)
-        if port != input_ports[current_index]:
+        if port != self.input_ports[self.next_input_index]:
+            if self.was_empty_last_frame:
+                # if the belt was empty last frame, we can change the input index.
+                # because the belt would recieve items, but it is blocked.
+                # We dont accept this item immediately, because we want to keep it fair, 
+                # if 2 of 3 inputs provide items
+                self.advance_input_index()
             return False
 
         # accept the item
         self.item = item
         self.item_progress = 0.0
         # update the start and end position of the item. (used to interpolate the item position)
-        self.item_start_position = self._get_start_position_of_item(input_index=current_index)
+        self.item_start_position = self._get_start_position_of_item(input_index=self.next_input_index)
         self.item_end_position = self._get_end_position_of_item()
-        self.next_input_index = (self.next_input_index + 1) % len(input_ports)
+        self.advance_input_index()
         return True
 
 
@@ -124,6 +136,8 @@ class ConveyorBelt(Machine, IUpdatable, IProvider, IReceiver):
             
             # Update item visual position
             self._update_item_position()
+        
+        self.was_empty_last_frame = self.item is None
     
     def _get_start_position_of_item(self, input_index):
         """Get the start position of the item on the belt"""
