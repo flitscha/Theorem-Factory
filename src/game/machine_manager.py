@@ -32,10 +32,11 @@ class MachineManager:
         grid_x, grid_y = get_grid_coordinates_when_placing_machine(self.camera, rotated_size)
 
         # Check if there is already a block
-        existing_block = self.grid.get_block(grid_x, grid_y)
-        if existing_block:
+        existing_blocks = self.grid.get_blocks_at_area(grid_x, grid_y, (rotated_size))
+
+        if existing_blocks:
             # check if we can overwrite the existing block
-            if can_overwrite_belt(existing_block, rotation):
+            if machine_id == 'conveyor' and can_overwrite_belt(existing_blocks.get((grid_x, grid_y)), rotation):
                 # Remove the existing block
                 self.grid.remove_block(grid_x, grid_y)
             else:

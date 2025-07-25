@@ -1,9 +1,11 @@
+from typing import Dict, Tuple
 from grid.grid_manager import GridManager
 from grid.update_system import UpdateSystem
 from grid.grid_renderer import GridRenderer
 from grid.item_transfer_system import ItemTransferSystem
 from grid.connection_system import ConnectionSystem
 from machines.types.conveyor_belt.conveyor_belt import ConveyorBelt
+from machines.base.machine import Machine
 
 class GridCoordinator:
     """Main coordinator for the grid system"""
@@ -33,6 +35,9 @@ class GridCoordinator:
     
     def get_block(self, grid_x: int, grid_y: int):
         return self.grid_manager.get_block(grid_x, grid_y)
+    
+    def get_blocks_at_area(self, grid_x: int, grid_y: int, size: tuple[int, int]) -> Dict[Tuple[int, int], Machine]:
+        return self.grid_manager.get_blocks_at_area(grid_x, grid_y, size)
     
     def get_neighboring_machines(self, grid_x: int, grid_y: int):
         return self.grid_manager.get_neighboring_machines(grid_x, grid_y)

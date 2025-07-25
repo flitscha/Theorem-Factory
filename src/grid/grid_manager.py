@@ -42,6 +42,16 @@ class GridManager:
         """Get block at position"""
         return self.occupied_tiles.get((grid_x, grid_y))
     
+    def get_blocks_at_area(self, grid_x: int, grid_y: int, size: Tuple[int, int]) -> Dict[Tuple[int, int], Machine]:
+        """Get all blocks in a specified area"""
+        blocks = {}
+        for x in range(grid_x, grid_x + size[0]):
+            for y in range(grid_y, grid_y + size[1]):
+                block = self.get_block(x, y)
+                if block:
+                    blocks[(x, y)] = block
+        return blocks
+    
     def is_empty(self, grid_x: int, grid_y: int, size: Tuple[int, int] = (1, 1)) -> bool:
         """Check if area is empty"""
         for x in range(grid_x, grid_x + size[0]):

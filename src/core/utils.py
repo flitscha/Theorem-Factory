@@ -66,6 +66,9 @@ def grid_to_screen_coordinates(grid_x, grid_y, camera):
 def can_overwrite_belt(existing_block, new_rotation):
     from machines.types.conveyor_belt.conveyor_belt import ConveyorBelt
 
+    if not existing_block:
+        return False
+    
     # Only belts
     if not isinstance(existing_block, ConveyorBelt):
         return False

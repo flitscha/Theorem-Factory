@@ -52,13 +52,13 @@ class PlacementPreview():
             
         return dummy
 
-    def _draw_overlay(self, surface, grid_x, grid_y):
+    def _draw_overlay(self, surface, grid_x, grid_y, dummy_machine):
         """Draw an overlay on the surface (red or yellow) to indicate placement validity"""
-        existing_block = self.grid.get_block(grid_x, grid_y)
+        existing_blocks = self.grid.get_blocks_at_area(grid_x, grid_y, dummy_machine.size)
 
-        if existing_block is None:
+        if not existing_blocks:
             return  # no overlay if space is free
-        elif can_overwrite_belt(existing_block, self.rotation):
+        elif isinstance(dummy_machine, ConveyorBelt) and can_overwrite_belt(existing_blocks.get((grid_x, grid_y)), self.rotation):
             # Yellow overlay for overwriting
             yellow_overlay = pygame.Surface(surface.get_size(), pygame.SRCALPHA)
             yellow_overlay.fill((255, 255, 0, 120))
@@ -96,57 +96,7 @@ class PlacementPreview():
         overlay_surface.set_alpha(90)
 
         # add the overlay (yellow/red)
-        self._draw_overlay(overlay_surface, grid_x, grid_y)
+        self._draw_overlay(overlay_surface, grid_x, grid_y, dummy_machine)
 
         # Draw it on the screen
         self.screen.blit(overlay_surface, (screen_x, screen_y))
-
-        """
-        data = self.machine_database.get(self.active_preview)
-        image = data.image
-        size = data.size
-
-        # Calculate rotated size. (swap the x-size and y-size)
-        if self.rotation % 2 == 1:  # 90 or 270 degrees
-            rotated_size = (size[1], size[0])
-        else:
-            rotated_size = size
-
-        # calculate the grid position
-        grid_x, grid_y = get_grid_coordinates_when_placing_machine(self.camera, rotated_size)
-        screen_x, screen_y = grid_to_screen_coordinates(grid_x, grid_y, self.camera)
-
-        # Rotate the image
-        angle = self.rotation * 90
-        rotated_image = pygame.transform.rotate(image, -angle)  # negative to rotate clockwise
-
-        # Scale the rotated image
-        scaled_image = pygame.transform.scale(
-            rotated_image, 
-            (int(rotated_size[0] * TILE_SIZE * self.camera.zoom), 
-                int(rotated_size[1] * TILE_SIZE * self.camera.zoom))
-        )
-
-        # Semi-transparent machen (alpha)
-        overlay_surface = scaled_image.copy()
-
-        overlay_surface.set_alpha(90)  # normal preview alpha
-
-        # Determine color: no color / yellow / red
-        existing_block = self.grid.get_block(grid_x, grid_y)
-
-        if existing_block is None:
-            # space is free -> no overlay
-            pass
-        elif can_overwrite_belt(existing_block, self.rotation):
-            # yellow overlay for overwriting
-            yellow_overlay = pygame.Surface(scaled_image.get_size(), pygame.SRCALPHA)
-            yellow_overlay.fill((255, 255, 0, 120))
-            overlay_surface.blit(yellow_overlay, (0, 0))
-        else:
-            # red overlay for invalid placement
-            red_overlay = pygame.Surface(scaled_image.get_size(), pygame.SRCALPHA)
-            red_overlay.fill((255, 0, 0, 120))
-            overlay_surface.blit(red_overlay, (0, 0))
-
-        self.screen.blit(overlay_surface, (screen_x, screen_y))"""
