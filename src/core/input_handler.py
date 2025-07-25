@@ -4,7 +4,7 @@ class InputHandler:
     def __init__(self):
         # Continuous states (can be checked anytime)
         self.mouse_wheel_dir = 0
-        self.is_dragging = False
+        #self.is_dragging = False
         self.keys_pressed = set()
         self.mouse_pos = (0, 0)
         
@@ -37,15 +37,12 @@ class InputHandler:
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 self.events_this_frame[f'mouse_down_{event.button}'] = True
                 self.events_this_frame[f'mouse_down_{event.button}_pos'] = event.pos
-                
-                if event.button == 3:  # Right mouse - start dragging
-                    self.is_dragging = True
+                self.keys_pressed.add(f'mouse_{event.button}')
                     
             elif event.type == pygame.MOUSEBUTTONUP:
                 self.events_this_frame[f'mouse_up_{event.button}'] = True
-                
-                if event.button == 3:  # Right mouse - stop dragging
-                    self.is_dragging = False
+                self.keys_pressed.discard(f'mouse_{event.button}')
+                    
                     
     def was_key_pressed(self, key):
         """Check if key was pressed this frame (flank detection)"""

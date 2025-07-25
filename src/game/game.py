@@ -64,7 +64,8 @@ class Game:
         """Update all game systems"""
         # Update camera
         keys = pygame.key.get_pressed()
-        self.camera.update(keys, self.input_handler.mouse_wheel_dir, self.input_handler.is_dragging)
+        is_dragging = self.input_handler.is_key_held('mouse_3')
+        self.camera.update(keys, self.input_handler.mouse_wheel_dir, is_dragging)
         
         # Update grid
         self.grid.update(dt)
