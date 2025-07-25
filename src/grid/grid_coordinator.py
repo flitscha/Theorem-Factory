@@ -46,8 +46,11 @@ class GridCoordinator:
     def draw_grid_lines(self, screen, camera):
         self.renderer.draw_grid_lines(screen, camera)
     
-    def draw_blocks(self, screen, camera):
-        self.renderer.draw_blocks(screen, camera)
+    def draw_machines(self, screen, camera):
+        self.renderer.draw_machines(screen, camera)
     
     def draw_items(self, screen, camera):
         self.renderer.draw_items(screen, camera)
+    
+    def draw_conveyor_belts(self, screen, camera):
+        self.renderer.draw_conveyor_belts(screen, camera)

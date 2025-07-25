@@ -14,8 +14,9 @@ class Renderer:
     def render_game_world(self, grid, camera):
         """Render the main game world elements"""
         grid.draw_grid_lines(self.screen, camera)
-        grid.draw_blocks(self.screen, camera)
+        grid.draw_conveyor_belts(self.screen, camera)
         grid.draw_items(self.screen, camera)
+        grid.draw_machines(self.screen, camera)
         
     def render_gui_components(self, components):
         """Render all GUI components"""

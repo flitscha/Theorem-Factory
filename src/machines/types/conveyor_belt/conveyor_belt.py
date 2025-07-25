@@ -1,4 +1,5 @@
 import pygame
+from pygame.math import Vector2
 
 from machines.base.machine import Machine
 from entities.item import Item
@@ -12,6 +13,8 @@ class ConveyorBelt(Machine, IUpdatable, IProvider, IReceiver):
         self.speed = 1.0  # tiles per second
         self.item = None  # Current item on this belt. (only one item at a time)
         self.item_progress = 0.0  # 0.0 to 1.0, how far item has traveled
+        self.item_start_position = Vector2(0, 0) # tuple of (x, y) where the item starts on the belt
+        self.item_end_position = Vector2(0, 0)
 
         # Define input and output directions
         # This can change, e.g. when the belt is a curve
@@ -97,14 +100,17 @@ class ConveyorBelt(Machine, IUpdatable, IProvider, IReceiver):
         if not input_ports:
             return False
 
-        # Index normalisieren
+        # check if this port is the current input
         current_index = self.next_input_index % len(input_ports)
         if port != input_ports[current_index]:
             return False
 
-        # Item akzeptieren und Index weiterschalten
+        # accept the item
         self.item = item
         self.item_progress = 0.0
+        # update the start and end position of the item. (used to interpolate the item position)
+        self.item_start_position = self._get_start_position_of_item(input_index=current_index)
+        self.item_end_position = self._get_end_position_of_item()
         self.next_input_index = (self.next_input_index + 1) % len(input_ports)
         return True
 
@@ -118,26 +124,28 @@ class ConveyorBelt(Machine, IUpdatable, IProvider, IReceiver):
             
             # Update item visual position
             self._update_item_position()
+    
+    def _get_start_position_of_item(self, input_index):
+        """Get the start position of the item on the belt"""
+        input = self.inputs[input_index]
+        previous_input_direction = input.rotate(self.rotation)
+        target_x, target_y = self.origin[0] * 32 + 16, self.origin[1] * 32 + 16  # Center of this tile
+        start_x = target_x + previous_input_direction.value[0] * 32
+        start_y = target_y + previous_input_direction.value[1] * 32
+        return Vector2(start_x, start_y)
+    
+    def _get_end_position_of_item(self):
+        """Get the end position of the item on the belt"""
+        return Vector2(self.origin[0] * 32 + 16, self.origin[1] * 32 + 16)
+
         
     def _update_item_position(self):
-        """Update the visual position of the item on the belt"""
-        if not self.item or not self.origin:
-            return
-        
-        # Calculate start and end positions
-        start_x = self.origin[0] * 32 + 16  # Center of tile
-        start_y = self.origin[1] * 32 + 16
-        
-        dx, dy = Direction.from_rotation(self.rotation).as_vector()
-        target_x = start_x + dx * 32
-        target_y = start_y + dy * 32
-        
-        # Interpolate position based on progress
-        current_x = start_x + (target_x - start_x) * self.item_progress
-        current_y = start_y + (target_y - start_y) * self.item_progress
-        
-        self.item.position.x = current_x
-        self.item.position.y = current_y
+        """
+        Update the visual position of the item on the belt
+        The item starts at the center of the previous tile (the used input of this conveyor belt),
+        and moves in this direction, until it reaches the center of this belt.
+        """
+        self.item.position = self.item_start_position.lerp(self.item_end_position, self.item_progress)
 
         
     def draw(self, screen, camera, grid_x, grid_y):

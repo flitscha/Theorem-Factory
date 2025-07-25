@@ -34,15 +34,17 @@ class GridRenderer:
         
         return not (tile_x + w < min_x or tile_x > max_x or tile_y + h < min_y or tile_y > max_y)
 
-    def draw_blocks(self, screen, camera):
-        """Draw all blocks on the grid"""
+
+    def draw_machines(self, screen, camera):
+        """Draw all blocks on the grid, that are not conveyor belts"""
         for (tile_x, tile_y), block in self.grid_manager.blocks.items():
             # Check if block is within visible bounds
             if not self._block_is_visible(block, camera):
                 continue
 
             # Draw the block
-            block.draw(screen, camera, tile_x, tile_y)
+            if not isinstance(block, ConveyorBelt):
+                block.draw(screen, camera, tile_x, tile_y)
         
     
     def draw_items(self, screen, camera):
@@ -56,4 +58,16 @@ class GridRenderer:
             if isinstance(block, ConveyorBelt):
                 if block.item:
                     block.item.draw(screen, camera)
+    
+
+    def draw_conveyor_belts(self, screen, camera):
+        """Draw all conveyor belts on the grid"""
+        for (tile_x, tile_y), block in self.grid_manager.blocks.items():
+            # Check if block is within visible bounds
+            if not self._block_is_visible(block, camera):
+                continue
+            
+            # Draw the conveyor belt
+            if isinstance(block, ConveyorBelt):
+                block.draw(screen, camera, tile_x, tile_y)
     
