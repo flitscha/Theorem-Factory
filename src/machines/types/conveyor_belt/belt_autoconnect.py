@@ -96,6 +96,20 @@ class ConveyorBeltAutoConnector:
         inputs = list(set(inputs))
         outputs = list(set(outputs))
 
+        # special case: if the belt is an intersection belt, it should always have an input at the west side
+        if Direction.WEST not in inputs and (len(outputs) > 1 or len(inputs) > 1):
+            inputs.append(Direction.WEST)
+        
+        elif Direction.WEST in inputs and len(inputs) == 2:
+            # but be careful: when we remove a neighboring belt, this belt should be a curve again
+            if Direction.SOUTH in inputs or Direction.NORTH in inputs: # this means, that the belt is a curve
+                # we only remove the west input, if the input is not connected
+                rotated_direction = Direction.WEST.rotate(belt.rotation)
+                for port in belt.input_ports:
+                    if port.direction == rotated_direction and not port.connected_port:
+                        inputs.remove(Direction.WEST)
+                        break
+        
         # set inputs, outputs and ports
         belt.inputs = inputs
         belt.outputs = outputs
