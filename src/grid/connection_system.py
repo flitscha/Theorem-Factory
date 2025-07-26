@@ -1,7 +1,7 @@
 from machines.types.conveyor_belt.conveyor_belt import ConveyorBelt
 from machines.types.conveyor_belt.belt_autoconnect import ConveyorBeltAutoConnector
-#from machines.types.conveyor_belt.belt_autoconnect import update_inputs_and_output, \
-#     determine_belt_sprite, update_neighboring_belt, update_neighboring_belt_when_removing
+from machines.base.machine import Machine
+
 
 class ConnectionSystem:
     """Handles connections between blocks in the grid"""
@@ -29,10 +29,12 @@ class ConnectionSystem:
                 source = self.grid_manager.get_block(*source_pos)
                 if source and hasattr(source, "output_ports"):
                     port.connect_if_possible(source)
-    
 
-    def update_belt_shape(self, conveyor: ConveyorBelt):
+
+
+    def handle_placing_conveyor_belt(self, conveyor: ConveyorBelt):
         # 1) determine inputs and outputs based on neighboring belts (and machines)
+        # we can use the simple neighbor-function here, because a conveyor belt is only 1x1 tile
         neighboring_machines = self.grid_manager.get_neighboring_machines(conveyor.origin[0], conveyor.origin[1])
 
         # 2) configure the conveyor belt based on its neighbors
@@ -46,16 +48,24 @@ class ConnectionSystem:
         
         # 4) update the sprite of the conveyor belt
         ConveyorBeltAutoConnector.update_sprite(conveyor)
+
+
+    def update_neighboring_belts_when_placing(self, machine: Machine):
+        neighboring_machines = self.grid_manager.get_neighboring_machines_of(machine)
+        for direction, neighbors in neighboring_machines.items():
+            for neighbor in neighbors:
+                if isinstance(neighbor, ConveyorBelt):
+                    ConveyorBeltAutoConnector.configure_neighbor_when_placing(neighbor, direction, machine, self)
+                    self.update_connections_at(neighbor.origin[0], neighbor.origin[1])
+
+
+    def update_neighboring_belts_when_removing(self, machine: Machine):
+        """Update neighboring belts, when a block is removed"""
+        # Get neighboring conveyors
+        neighboring_machines = self.grid_manager.get_neighboring_machines_of(machine)
+        for direction, neighbors in neighboring_machines.items():
+            for neighbor in neighbors:
+                if isinstance(neighbor, ConveyorBelt):
+                    ConveyorBeltAutoConnector.configure_neighbor_when_removing(neighbor, direction, machine, self)
+                    self.update_connections_at(neighbor.origin[0], neighbor.origin[1])
     
-    
-    def update_neighboring_belts_when_removing(self, grid_x: int, grid_y: int):
-        """Update neighboring belts when a block is removed"""
-        machine = self.grid_manager.get_block(grid_x, grid_y)
-        if not machine:
-            return
-        
-        # Get neighboring conveyors and update their inputs/outputs
-        neighboring_machines = self.grid_manager.get_neighboring_machines(grid_x, grid_y)
-        for direction, neighbor in neighboring_machines.items():
-            if neighbor and isinstance(neighbor, ConveyorBelt):
-                ConveyorBeltAutoConnector.configure_neighbor_when_removing(neighbor, direction, machine, self)
