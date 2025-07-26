@@ -25,6 +25,7 @@ class ConveyorBelt(Machine, IUpdatable, IProvider, IReceiver):
         # Round robin indices
         self.next_output_index = 0
         self.next_input_index = 0
+        self.last_input_index = 0 # used to avoid livelocks
 
         self.was_empty_last_frame = True # no item on the belt last frame
 
@@ -35,6 +36,8 @@ class ConveyorBelt(Machine, IUpdatable, IProvider, IReceiver):
         """Initialize ports based on inputs and outputs"""
         # Clear existing ports
         self.clear_ports()
+        self.next_output_index = 0
+        self.next_input_index = 0
 
         for direction in self.inputs:
             port = Port(0, 0, direction, "input")
@@ -114,7 +117,8 @@ class ConveyorBelt(Machine, IUpdatable, IProvider, IReceiver):
                 # because the belt would recieve items, but it is blocked.
                 # We dont accept this item immediately, because we want to keep it fair, 
                 # if 2 of 3 inputs provide items
-                self.advance_input_index()
+                if self.next_input_index == self.last_input_index:
+                    self.advance_input_index()
             return False
 
         # accept the item
@@ -138,6 +142,7 @@ class ConveyorBelt(Machine, IUpdatable, IProvider, IReceiver):
             self._update_item_position()
         
         self.was_empty_last_frame = self.item is None
+        self.last_input_index = self.next_input_index
     
     def _get_start_position_of_item(self, input_index):
         """Get the start position of the item on the belt"""
