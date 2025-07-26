@@ -6,6 +6,7 @@ from grid.item_transfer_system import ItemTransferSystem
 from grid.connection_system import ConnectionSystem
 from machines.types.conveyor_belt.conveyor_belt import ConveyorBelt
 from machines.base.machine import Machine
+from machines.types.conveyor_belt.belt_autoconnect import ConveyorBeltAutoConnector
 
 class GridCoordinator:
     """Main coordinator for the grid system"""
@@ -26,11 +27,18 @@ class GridCoordinator:
 
         # if the block is a conveyor belt, update its inputs and outputs
         if isinstance(block, ConveyorBelt):
-            self.connection_system.update_belt_shape(block)
+            self.connection_system.handle_placing_conveyor_belt(block)
+            # the neighboring belts are getting updated inside handle_placing_conveyor_belt()
+        else:
+            # update neighboring belts
+            self.connection_system.update_neighboring_belts_when_placing(block)
+        
     
     def remove_block(self, grid_x: int, grid_y: int):
         # Update connections before removing the block
-        self.connection_system.update_neighboring_belts_when_removing(grid_x, grid_y)
+        block = self.grid_manager.get_block(grid_x, grid_y)
+        if block:
+            self.connection_system.update_neighboring_belts_when_removing(block)
         return self.grid_manager.remove_block(grid_x, grid_y)
     
     def get_block(self, grid_x: int, grid_y: int):
@@ -41,6 +49,9 @@ class GridCoordinator:
     
     def get_neighboring_machines(self, grid_x: int, grid_y: int):
         return self.grid_manager.get_neighboring_machines(grid_x, grid_y)
+    
+    def get_neighboring_machines_of(self, machine: Machine):
+        return self.grid_manager.get_neighboring_machines_of(machine)
     
     def is_empty(self, grid_x: int, grid_y: int, size=(1, 1)):
         return self.grid_manager.is_empty(grid_x, grid_y, size)

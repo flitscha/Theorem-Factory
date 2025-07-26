@@ -79,8 +79,8 @@ def test_update_neighboring_belts_when_placing1(grid):
     grid.add_block(-1, -3, generator)
     assert grid.get_block(-1, -3) is generator # check the corners. (generator is 3x3 tiles)
     assert grid.get_block(1, -3) is generator
-    assert grid.get_block(-1, 1) is generator
-    assert grid.get_block(1, 1) is generator
+    assert grid.get_block(-1, -1) is generator
+    assert grid.get_block(1, -1) is generator
 
     # test, if the belt got updated: the belt should be a curve now: (↳)
     assert belt.inputs == [Direction.NORTH]
@@ -106,7 +106,7 @@ def test_update_neighboring_belts_when_placing2(grid):
     # check the inputs and outputs of the belts
     assert belt1.inputs == [Direction.WEST]
     assert belt1.outputs == [Direction.EAST]
-    assert set(belt2.inputs) == set([Direction.WEST, Direction.NORTH])
+    assert set(belt2.inputs) == set([Direction.WEST, Direction.SOUTH])
     assert belt2.outputs == [Direction.EAST]
     assert belt3.inputs == [Direction.WEST]
     assert belt3.outputs == [Direction.EAST]
@@ -158,7 +158,7 @@ def test_update_neighboring_belts_when_removing2(grid):
     # check the inputs and outputs of the belts
     assert belt1.inputs == [Direction.WEST]
     assert belt1.outputs == [Direction.EAST]
-    assert set(belt2.inputs) == set([Direction.WEST, Direction.SOUTH])
+    assert set(belt2.inputs) == set([Direction.WEST, Direction.NORTH])
     assert belt2.outputs == [Direction.EAST]
     assert belt3.inputs == [Direction.WEST]
     assert belt3.outputs == [Direction.EAST]

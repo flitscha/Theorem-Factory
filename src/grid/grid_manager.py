@@ -1,4 +1,4 @@
-from typing import Dict, Tuple, Optional
+from typing import Dict, List, Tuple, Optional
 from machines.base.machine import Machine
 from entities.port import Direction
 
@@ -75,3 +75,38 @@ class GridManager:
         
         return neighboring_machines
     
+
+    def get_neighboring_machines_of(self, machine: Machine) -> Dict[Direction, set[Machine]]:
+        """Get all neighboring machines around the perimeter of a machine (no diagonals)."""
+        if not machine:
+            return {}
+        
+        origin_x, origin_y = machine.origin
+        size_x, size_y = machine.size
+
+        # initialize the dict
+        neighbors: Dict[Direction, set[Machine]] = {d: set() for d in Direction}
+
+        for x in range(origin_x, origin_x + size_x):
+            # north
+            top_neighbor = self.get_block(x, origin_y - 1)
+            if top_neighbor:
+                neighbors[Direction.NORTH].add(top_neighbor)
+
+            # south
+            bottom_neighbor = self.get_block(x, origin_y + size_y)
+            if bottom_neighbor:
+                neighbors[Direction.SOUTH].add(bottom_neighbor)
+
+        for y in range(origin_y, origin_y + size_y):
+            # west
+            left_neighbor = self.get_block(origin_x - 1, y)
+            if left_neighbor:
+                neighbors[Direction.WEST].add(left_neighbor)
+
+            # east
+            right_neighbor = self.get_block(origin_x + size_x, y)
+            if right_neighbor:
+                neighbors[Direction.EAST].add(right_neighbor)
+
+        return neighbors

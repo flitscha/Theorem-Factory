@@ -326,18 +326,16 @@ class ConveyorBeltAutoConnector:
     def configure_neighbor_when_removing(neighbor: ConveyorBelt, direction, removed_machine, connection_system) -> None:
         """Update a specific neighboring belt when a block is removed."""
 
-        # most important case: the removed machine is a conveyor belt
-        if isinstance(removed_machine, ConveyorBelt):
-            # remove the input/output of the neighbor, that is connected to the removed machine
-            for port in neighbor.ports:
-                rotated_direction = port.direction.rotate(-neighbor.rotation)
+        # remove the input/output of the neighbor, that is connected to the removed machine
+        for port in neighbor.ports:
+            rotated_direction = port.direction.rotate(-neighbor.rotation)
 
-                if port.connected_port and port.connected_port.machine == removed_machine:
-                    if port.port_type == "input":
-                        neighbor.inputs.remove(rotated_direction)
-                    elif port.port_type == "output":
-                        neighbor.outputs.remove(rotated_direction)
-                    break
+            if port.connected_port and port.connected_port.machine == removed_machine:
+                if port.port_type == "input":
+                    neighbor.inputs.remove(rotated_direction)
+                elif port.port_type == "output":
+                    neighbor.outputs.remove(rotated_direction)
+                break
             
         # update the inputs and outputs of the neighbor (maybe we have to add a new input/output)
         ConveyorBeltAutoConnector._update_io(neighbor, {})
