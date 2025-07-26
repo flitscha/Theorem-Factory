@@ -10,7 +10,6 @@ from tests.test_utils import create_belt, initialize_pygame
 def grid():
     initialize_pygame()
     grid = GridCoordinator()
-    #connection = ConnectionSystem(grid.grid_manager)
     return grid
 
 

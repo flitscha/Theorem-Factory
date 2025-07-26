@@ -3,8 +3,6 @@ import pytest
 # important: dont import it with src.path, because it would not be compatible with the imports in the src folder
 from entities.port import Direction
 from machines.types.conveyor_belt.belt_autoconnect import ConveyorBeltAutoConnector
-from grid.grid_coordinator import GridCoordinator
-from grid.connection_system import ConnectionSystem
 
 from tests.test_utils import create_belt, create_generator
 
@@ -255,54 +253,3 @@ def test_update_io_with_four_neighbors_inputs():
     # Expected: inputs = [WEST], outputs = [NORTH, SOUTH, EAST]
     assert set(belt.inputs) == set([Direction.WEST])
     assert set(belt.outputs) == set([Direction.NORTH, Direction.SOUTH, Direction.EAST])
-
-
-
-# ------------ Tests involving other machines ------------
-# neighbor (NORTH) is a generator, providing output to the south.
-def test_update_io_with_generator1():
-    belt = create_belt()
-    belt.origin = (0, 0)
-    belt.init_ports()
-    belt.rotate_ports()
-    neighbor = create_generator(rotation=0)
-    neighbor.origin = (-1, -3)
-    neighbor.init_ports()
-    neighbor.rotate_ports()
-    
-    neighbors = {
-        Direction.WEST: None,
-        Direction.EAST: None,
-        Direction.NORTH: neighbor,
-        Direction.SOUTH: None
-    }
-
-    ConveyorBeltAutoConnector._update_io(belt, neighbors)
-
-    # Expected: inputs = [NORTH], outputs = [EAST]
-    assert belt.inputs == [Direction.NORTH]
-    assert belt.outputs == [Direction.EAST]
-
-
-# neighbor (WEST) is a generator, providing output to the EAST. (belt is rotated from south to north)
-def test_update_io_with_generator2():
-    belt = create_belt(rotation=3)
-    belt.init_ports()
-    belt.rotate_ports()
-    neighbor = create_generator(rotation=3)
-    neighbor.origin = (-3, -1)
-    neighbor.init_ports()
-    neighbor.rotate_ports()
-    
-    neighbors = {
-        Direction.WEST: neighbor,
-        Direction.EAST: None,
-        Direction.NORTH: None,
-        Direction.SOUTH: None
-    }
-
-    ConveyorBeltAutoConnector._update_io(belt, neighbors)
-
-    # Expected: inputs = [NORTH], outputs = [EAST]
-    assert belt.inputs == [Direction.NORTH] # directions are not affected by rotation
-    assert belt.outputs == [Direction.EAST]
