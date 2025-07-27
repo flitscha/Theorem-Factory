@@ -5,12 +5,13 @@ from core.camera import Camera
 from core.debug import Debug
 from core.input_handler import InputHandler
 from core.renderer import Renderer
-from game.game_state import GameStateManager
+from game.game_state import GameState, GameStateManager
 from game.machine_manager import MachineManager
 from game.input_processor import InputProcessor
 from gui.placement_preview import PlacementPreview
 from machines.base.machine_database import database as machine_data
 from gui.machine_selection import MachineSelectionBar
+from gui.menu.pause_menu import PauseMenu
 
 class Game:
     """Main game class that coordinates all systems"""
@@ -50,6 +51,9 @@ class Game:
         self.placement_preview = PlacementPreview(self.screen, self.grid, self.camera, machine_data)
         self.machine_selection_bar = MachineSelectionBar(self.screen, machine_data)
         
+        # Initialize pause menu
+        self.pause_menu = PauseMenu(self.screen, self.game_state, self)
+        
         # Initialize managers that depend on GUI
         self.machine_manager = MachineManager(
             self.grid, self.camera, self.placement_preview, machine_data
@@ -62,18 +66,23 @@ class Game:
         
     def update(self, dt):
         """Update all game systems"""
+        # Update pause menu
+        self.pause_menu.update()
+
         # Update camera
-        keys = pygame.key.get_pressed()
-        is_dragging = self.input_handler.is_key_held('mouse_3')
-        self.camera.update(keys, self.input_handler.mouse_wheel_dir, is_dragging)
+        if self.game_state.should_update_game():
+            keys = pygame.key.get_pressed()
+            is_dragging = self.input_handler.is_key_held('mouse_3')
+            self.camera.update(keys, self.input_handler.mouse_wheel_dir, is_dragging)
         
-        # Update grid
-        self.grid.update(dt)
+            # Update grid
+            self.grid.update(dt)
         
         # Update active menu if open
         if self.game_state.is_menu_open() and self.game_state.active_menu:
             self.game_state.active_menu.update()
             
+
     def render(self):
         """Render the complete frame"""
         self.renderer.clear_screen(BACKGROUND_COLOR)
@@ -81,11 +90,17 @@ class Game:
         # Render game world
         self.renderer.render_game_world(self.grid, self.camera)
         
-        # Render GUI components
-        gui_components = [self.placement_preview, self.machine_selection_bar]
-        if self.game_state.is_menu_open():
-            gui_components.append(self.game_state.active_menu)
-            
+        # Select gui components, based on the game-state
+        gui_components = []
+        match self.game_state.current_state:
+            case GameState.PLAYING:
+                gui_components = [self.placement_preview, self.machine_selection_bar]
+            case GameState.MENU_OPEN:
+                gui_components = [self.game_state.active_menu]
+            case GameState.PAUSED:
+                gui_components = [self.machine_selection_bar, self.pause_menu]
+
+        # render the gui components
         self.renderer.render_gui_components(gui_components)
         
         # Render debug overlay
@@ -100,9 +115,13 @@ class Game:
             # Handle input
             events = pygame.event.get()
             self.input_handler.update(events)
+
+            # Handle pause menu events
+            for event in events:
+                self.pause_menu.handle_event(event)
             
             # Process input events
-            result = self.input_processor.process_input(self.screen)
+            result = self.input_processor.process_input(self.screen, self.pause_menu)
             if result.get("quit"):
                 self.running = False
                 
