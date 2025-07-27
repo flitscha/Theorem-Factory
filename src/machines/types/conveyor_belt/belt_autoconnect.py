@@ -201,6 +201,7 @@ class ConveyorBeltAutoConnector:
             input_dirs = {port.direction for port in input_ports}  # Set comprehension
             output_dir = output_ports[0].direction
 
+            """HORIZONTAL"""
             # Left-bottom to right (WEST+SOUTH → EAST)
             if input_dirs == {Direction.WEST, Direction.SOUTH} and output_dir == Direction.EAST:
                 sprite_path = "assets/sprites/conveyorbelts/intersections/horizontal/left_bottom_to_right.png"
@@ -218,12 +219,35 @@ class ConveyorBeltAutoConnector:
             elif input_dirs == {Direction.EAST, Direction.NORTH} and output_dir == Direction.WEST:
                 sprite_path = "assets/sprites/conveyorbelts/intersections/horizontal/left_top_to_right.png"
                 vertical_mirror = True
+            
+
+            """VERTICAL"""
+            # Bottom-right to top (SOUTH+EAST → NORTH)
+            if input_dirs == {Direction.SOUTH, Direction.EAST} and output_dir == Direction.NORTH:
+                sprite_path = "assets/sprites/conveyorbelts/intersections/vertical/bottom_right_to_top.png"
+            
+            # Mirrored case (SOUTH+WEST → NORTH)
+            elif input_dirs == {Direction.SOUTH, Direction.WEST} and output_dir == Direction.NORTH:
+                sprite_path = "assets/sprites/conveyorbelts/intersections/vertical/bottom_right_to_top.png"
+                vertical_mirror = True
+            
+            # Top-right to bottom (NORTH+EAST → SOUTH)
+            elif input_dirs == {Direction.NORTH, Direction.EAST} and output_dir == Direction.SOUTH:
+                sprite_path = "assets/sprites/conveyorbelts/intersections/vertical/top_right_to_bottom.png"
+                horizontal_mirror = True
+                vertical_mirror = True
+            
+            # Mirrored case (NORTH+WEST → SOUTH)
+            elif input_dirs == {Direction.NORTH, Direction.WEST} and output_dir == Direction.SOUTH:
+                sprite_path = "assets/sprites/conveyorbelts/intersections/vertical/top_right_to_bottom.png"
+                horizontal_mirror = True
 
         # 1 INPUT AND 2 OUTPUTS
         elif len(input_ports) == 1 and len(output_ports) == 2:
             input_dir = input_ports[0].direction
             output_dirs = {port.direction for port in sorted(output_ports, key=lambda p: p.direction.value)}
 
+            """HORIZONTAL"""
             # Left to bottom-right (WEST → SOUTH+EAST)
             if input_dir == Direction.WEST and output_dirs == {Direction.SOUTH, Direction.EAST}:
                 sprite_path = "assets/sprites/conveyorbelts/intersections/horizontal/left_to_bottom_right.png"
@@ -241,6 +265,28 @@ class ConveyorBeltAutoConnector:
             elif input_dir == Direction.EAST and output_dirs == {Direction.NORTH, Direction.WEST}:
                 sprite_path = "assets/sprites/conveyorbelts/intersections/horizontal/left_to_top_right.png"
                 vertical_mirror = True
+            
+
+            """VERTICAL"""
+            # Bottom to right-top (SOUTH → EAST+NORTH)
+            if input_dir == Direction.SOUTH and output_dirs == {Direction.EAST, Direction.NORTH}:
+                sprite_path = "assets/sprites/conveyorbelts/intersections/vertical/bottom_to_right_top.png"
+            
+            # Mirrored case (SOUTH → WEST+NORTH)
+            elif input_dir == Direction.SOUTH and output_dirs == {Direction.WEST, Direction.NORTH}:
+                sprite_path = "assets/sprites/conveyorbelts/intersections/vertical/bottom_to_right_top.png"
+                vertical_mirror = True
+            
+            # Top to right-bottom (NORTH → EAST+SOUTH)
+            elif input_dir == Direction.NORTH and output_dirs == {Direction.EAST, Direction.SOUTH}:
+                sprite_path = "assets/sprites/conveyorbelts/intersections/vertical/top_to_right_bottom.png"
+                vertical_mirror = True
+                horizontal_mirror = True
+            
+            # Mirrored case (NORTH → WEST+SOUTH)
+            elif input_dir == Direction.NORTH and output_dirs == {Direction.WEST, Direction.SOUTH}:
+                sprite_path = "assets/sprites/conveyorbelts/intersections/vertical/top_to_right_bottom.png"
+                horizontal_mirror = True
         
         """CROSSSECTION BELTS"""
         

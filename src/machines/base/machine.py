@@ -118,7 +118,7 @@ class Machine:
                 pygame.Rect(screen_x, screen_y, scaled_width, scaled_height)
             )
         # Draw ports for debugging
-        self.draw_ports(screen, camera, grid_x, grid_y)
+        #self.draw_ports(screen, camera, grid_x, grid_y)
     
 
     def draw_ports(self, screen, camera, grid_x, grid_y):
