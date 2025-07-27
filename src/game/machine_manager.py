@@ -2,6 +2,7 @@ from config.settings import *
 from core.utils import get_grid_coordinates_when_placing_machine, get_mouse_grid_pos, can_overwrite_belt
 from machines.types.generator import Generator
 from machines.menu.generator_menu import GeneratorMenu
+from machines.types.conveyor_belt.conveyor_belt import ConveyorBelt
 
 class MachineManager:
     """Handles all machine-related operations. 
@@ -68,3 +69,32 @@ class MachineManager:
                 return GeneratorMenu(screen, (500, 300), block)
                 
         return None
+    
+
+    def rotate_machine_at_mouse(self):
+        """Rotate the machine under the mouse cursor if any exists"""
+        from core.utils import get_mouse_grid_pos
+
+        # get the grid-coordinates under the mouse
+        grid_x, grid_y = get_mouse_grid_pos(self.camera)
+
+        machine = self.grid.get_block(grid_x, grid_y)
+        if not machine:
+            return False
+
+        # update the neighboring belts, BEFORE rotating
+        self.grid.connection_system.update_neighboring_belts_when_removing(machine)
+
+        # rotate the machine
+        machine.rotate(1)
+        # if the machine is a conveyor belt, we have to do more. We have to reset the ports, inputs and outputs
+        if isinstance(machine, ConveyorBelt):
+            machine.clear_ports()
+            machine.init_ports()
+            machine.inputs = []
+            machine.outputs = []
+
+        # update the connections
+        self.grid.connection_system.handle_placing_conveyor_belt(machine)
+        self.grid.connection_system.update_connections_at(grid_x, grid_y)
+        return True

@@ -54,7 +54,7 @@ class ConveyorBelt(Machine, IUpdatable, IProvider, IReceiver):
             self.image = pygame.transform.flip(self.image, True, False)
         if vertical_mirror:
             self.image = pygame.transform.flip(self.image, False, True)
-        self.rotate_image()
+        self.rotate_image(self.rotation)
     
     # add 1 to the next input/output index
     def advance_output_index(self):

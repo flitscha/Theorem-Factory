@@ -12,8 +12,8 @@ class Machine:
         self.color = color
         self.image = image
         self.rotation = rotation
-        self.update_rotated_size()
-        self.rotate_image()
+        self.update_rotated_size(rotation)
+        self.rotate_image(rotation)
         self.origin = None  # will be set on placement
 
         # port system
@@ -50,6 +50,14 @@ class Machine:
         self.input_ports.clear()
         self.output_ports.clear()
         
+    def rotate(self, n=1):
+        """Rotate the machine by n * 90° clockwise"""
+        self.disconnect_all_ports()
+        self.rotation = (self.rotation + n) % 4
+        self.update_rotated_size(n)
+        self.rotate_ports()
+        self.rotate_image(n)
+
     def rotate_ports(self):
         for port in self.ports:
             old_x, old_y = port.relative_x, port.relative_y
@@ -70,14 +78,16 @@ class Machine:
                 port.direction = port.direction.rotate(self.rotation)
             
 
-    def update_rotated_size(self):
+    def update_rotated_size(self, n):
+        """update the size, if the machine got rotated by n * 90°"""
         # rotation 0 or 2 means size stays same, 1 or 3 swaps width/height
-        if self.rotation % 2 == 1:
+        if n % 2 == 1:
             self.size = (self.size[1], self.size[0])
 
-    def rotate_image(self):
+    def rotate_image(self, n):
+        """rotate the current image by n * 90°"""
         if self.image:
-            self.image = pygame.transform.rotate(self.image, -90 * self.rotation)
+            self.image = pygame.transform.rotate(self.image, -90 * n)
     
     def update(self):
         pass

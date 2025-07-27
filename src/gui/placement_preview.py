@@ -48,7 +48,7 @@ class PlacementPreview():
             # right now, we don't update the sprites of the neighbors. But this would also be an option.
 
         else:
-            dummy.rotate_image()
+            dummy.rotate_image(self.rotation)
             
         return dummy
 

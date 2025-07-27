@@ -24,7 +24,12 @@ class InputProcessor:
             
         # Handle rotation
         if self.input_handler.was_key_pressed(pygame.K_r):
-            self.placement_preview.rotate_preview()
+            # if you are about to place a machine, rotate the preview
+            if self.placement_preview.active_preview:
+                self.placement_preview.rotate_preview()
+            else:
+                # otherwise, an existing machine should get rotated
+                self.machine_manager.rotate_machine_at_mouse()
             
         # Handle left mouse click
         if self.input_handler.was_mouse_pressed(1):
@@ -67,10 +72,11 @@ class InputProcessor:
                     self.is_placing = True
                 else:
                     # If no preview, check if we clicked on a machine
-                    self._handle_machine_interaction(mouse_pos, screen)
+                    self._open_machine_menu(mouse_pos, screen)
                
-    
-    def _handle_machine_interaction(self, mouse_pos, screen):
+
+    def _open_machine_menu(self, mouse_pos, screen):
         menu = self.machine_manager.create_menu_for_machine_at_mouse(screen)
         if menu:
             self.game_state.open_menu(menu)
+    
