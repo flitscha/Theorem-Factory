@@ -1,6 +1,7 @@
 import pygame
 from config.settings import *
 from gui.elements.button import Button
+from gui.menu.settings_menu import SettingsMenu
 
 class PauseMenu:
     """Pause menu overlay - separate from machine menus"""
@@ -26,6 +27,10 @@ class PauseMenu:
         
         # Create buttons
         self.buttons = self._create_buttons()
+
+        # Submenus
+        self.settings_menu = SettingsMenu(screen, game_state_manager, on_back=self._close_submenu)
+        self.active_submenu = None
         
     def _create_buttons(self):
         """Create all menu buttons"""
@@ -98,9 +103,9 @@ class PauseMenu:
         self.close()
         
     def _open_settings(self):
-        """Open settings menu (placeholder)"""
-        print("Settings menu - TODO: Implement")
-        # TODO: Create settings menu
+        """Open settings menu"""
+        self.active_submenu = self.settings_menu
+        self.settings_menu.open()
         
     def _save_game(self):
         """Save the game (placeholder)"""
@@ -118,9 +123,19 @@ class PauseMenu:
             self.game_instance.running = False
         self.close()
     
+    def _close_submenu(self):
+        if self.active_submenu:
+            self.active_submenu.close()
+            self.active_submenu = None
+
     def handle_events(self, events):
         """Handle input events"""
         if not self.is_open:
+            return
+        
+        # if a submenu is open, the events get tranfered to the submenu
+        if self.active_submenu:
+            self.active_submenu.handle_events(events)
             return
         
         # resume game, if esc was pressed
@@ -135,6 +150,11 @@ class PauseMenu:
     
     def update(self):
         """Update menu state"""
+        if not self.is_open:
+            return
+        if self.active_submenu:
+            self.active_submenu.update()
+            return
         mouse_pos = pygame.mouse.get_pos()
         for button in self.buttons:
             button.update(mouse_pos)
@@ -146,6 +166,11 @@ class PauseMenu:
             
         # Draw semi-transparent overlay
         self.screen.blit(self.overlay, (0, 0))
+
+        # draw the submenu, if active
+        if self.active_submenu:
+            self.active_submenu.draw()
+            return
         
         # Draw menu background
         menu_rect = pygame.Rect(self.menu_x, self.menu_y, self.menu_width, self.menu_height)
@@ -160,3 +185,4 @@ class PauseMenu:
         # Draw buttons
         for button in self.buttons:
             button.draw(self.screen)
+        
