@@ -15,7 +15,7 @@ class InputProcessor:
         self.is_placing = False # True when placing a machine.
         # this is used to prevent placing machines, when lmb is held down, but the click started in a menu
         
-    def process_input(self, screen, pause_menu=None):
+    def process_input(self, screen, events, pause_menu=None):
         """Process all input and execute corresponding actions"""
         # Handle quit
         if self.input_handler.should_quit():
@@ -39,14 +39,9 @@ class InputProcessor:
         
         # Handle machine menu input
         if self.game_state.is_menu_open():
-            # Handle left mouse click for machine menu
-            if self.input_handler.was_mouse_pressed(1):
-                mouse_pos = self.input_handler.get_mouse_press_pos(1)
-                event = pygame.event.Event(pygame.MOUSEBUTTONDOWN, {"button": 1, "pos": mouse_pos})
-                self.game_state.active_menu.handle_event(event)
-                
-                if self.game_state.active_menu.closed:
-                    self.game_state.close_menu()
+            self.game_state.active_menu.handle_events(events)
+            if self.game_state.active_menu.closed:
+                self.game_state.close_menu()
             return {}
         
         # Handle rotation

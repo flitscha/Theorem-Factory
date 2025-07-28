@@ -96,7 +96,7 @@ class Game:
             case GameState.PLAYING:
                 gui_components = [self.placement_preview, self.machine_selection_bar]
             case GameState.MENU_OPEN:
-                gui_components = [self.game_state.active_menu]
+                gui_components = [self.game_state.active_menu, self.machine_selection_bar]
             case GameState.PAUSED:
                 gui_components = [self.machine_selection_bar, self.pause_menu]
 
@@ -121,7 +121,7 @@ class Game:
                 self.pause_menu.handle_event(event)
             
             # Process input events
-            result = self.input_processor.process_input(self.screen, self.pause_menu)
+            result = self.input_processor.process_input(self.screen, events, pause_menu=self.pause_menu)
             if result.get("quit"):
                 self.running = False
                 
