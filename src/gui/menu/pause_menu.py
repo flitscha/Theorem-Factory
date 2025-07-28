@@ -118,22 +118,26 @@ class PauseMenu:
             self.game_instance.running = False
         self.close()
     
-    def handle_event(self, event):
+    def handle_events(self, events):
         """Handle input events"""
         if not self.is_open:
             return
-            
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_ESCAPE:
-                self._resume_game()
         
+        # resume game, if esc was pressed
+        for event in events:
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    self._resume_game()
+            
         # Forward events to buttons
         for button in self.buttons:
-            button.handle_event(event)
+            button.handle_events(events)
     
     def update(self):
         """Update menu state"""
-        pass  # No animation for now, but could be extended
+        mouse_pos = pygame.mouse.get_pos()
+        for button in self.buttons:
+            button.update(mouse_pos)
     
     def draw(self):
         """Draw the pause menu"""

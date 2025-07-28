@@ -117,8 +117,7 @@ class Game:
             self.input_handler.update(events)
 
             # Handle pause menu events
-            for event in events:
-                self.pause_menu.handle_event(event)
+            self.pause_menu.handle_events(events)
             
             # Process input events
             result = self.input_processor.process_input(self.screen, events, pause_menu=self.pause_menu)

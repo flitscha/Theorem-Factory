@@ -10,49 +10,71 @@ class GeneratorMenu(AbstractMenu):
         self.font = pygame.font.SysFont(None, 28)
         self.small_font = pygame.font.SysFont(None, 22)
         self.letter_buttons = []
-        self.create_letter_buttons()
+        self._create_letter_buttons()
     
 
-    def create_letter_buttons(self):
+    def _create_letter_buttons(self):
         """Create 26 letter buttons, and set the one currently selected."""
         margin = 10
         btn_width = 40
         btn_height = 40
         cols = 9
 
-        # Total grid size
+        # Calculate grid positioning
         grid_width = cols * btn_width + (cols - 1) * margin
-        rows = (len(string.ascii_lowercase) + cols - 1) // cols
-        grid_height = rows * btn_height + (rows - 1) * margin
-
         start_x = self.rect.centerx - grid_width // 2
         start_y = self.rect.y + 90
 
         self.letter_buttons.clear()
 
+        # Create buttons
         for i, letter in enumerate(string.ascii_lowercase):
             x = start_x + (i % cols) * (btn_width + margin)
             y = start_y + (i // cols) * (btn_height + margin)
 
-            def make_callback(l=letter):
-                return lambda: self.set_letter(l)
+            # Create callback that handles single-selection logic
+            callback = self._create_letter_callback(letter)
 
             selected = (letter == self.generator.produced_letter)
-            btn = Button((x, y, btn_width, btn_height), letter, make_callback(), self.font, selected)
+            btn = Button(
+                rect=(x, y, btn_width, btn_height), 
+                text=letter, 
+                callback=callback, 
+                font=self.font, 
+                selected=selected
+            )
             self.letter_buttons.append(btn)
+    
+    def _create_letter_callback(self, letter):
+        """Create callback function for letter button"""
+        def callback():
+            self.set_letter(letter)
+        return callback
 
     def set_letter(self, letter):
+        """Set the generator's produced letter and update button states"""
         self.generator.produced_letter = letter
-        self.update_button_selection()
+        self._update_button_selection()
 
-    def update_button_selection(self):
+    def _update_button_selection(self):
+        """Update button selection states - only one can be selected"""
         for btn in self.letter_buttons:
-            btn.selected = (btn.text == self.generator.produced_letter)
+            btn.set_selected(btn.text == self.generator.produced_letter)
+    
+    def update(self):
+        """Update menu state - must be called every frame"""
+        super().update()
+        
+        # Update button hover states
+        mouse_pos = pygame.mouse.get_pos()
+        for btn in self.letter_buttons:
+            btn.update(mouse_pos)
 
-    def handle_event(self, event):
-        super().handle_event(event)
+    def handle_events(self, events):
+        """Handle input events"""
+        super().handle_events(events)
         for btn in self.letter_buttons:
-            btn.handle_event(event)
+            btn.handle_events(events)
 
     def draw(self):
         super().draw()
