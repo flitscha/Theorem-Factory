@@ -1,5 +1,6 @@
 import pygame
 from config.settings import *
+from game.game_state import *
 
 class InputProcessor:
     """Processes input events and translates them to game actions"""
@@ -15,23 +16,31 @@ class InputProcessor:
         self.is_placing = False # True when placing a machine.
         # this is used to prevent placing machines, when lmb is held down, but the click started in a menu
         
-    def process_input(self, screen, events, pause_menu=None):
+    def process_input(self, screen, events, pause_menu):
         """Process all input and execute corresponding actions"""
         # Handle quit
         if self.input_handler.should_quit():
             return {"quit": True}
         
+        # check if the pause-menu was closed. (Maybe it would be better, to allow the menu itself to change the state)
+        if self.game_state.current_state == GameState.PAUSED and not pause_menu.is_open:
+            self.game_state.resume_game()
+        
         # Handle ESC key for pause menu
         if self.input_handler.was_key_pressed(pygame.K_ESCAPE):
-            if pause_menu:
-                if pause_menu.is_open:
-                    pause_menu.close()
-                elif self.game_state.is_menu_open():
-                    # Close machine menu first
-                    self.game_state.close_menu()
-                else:
-                    # Open pause menu
-                    pause_menu.open()
+            # close machine menus
+            if self.game_state.is_menu_open():
+                self.game_state.close_menu()
+            
+            # close pause-menu
+            elif pause_menu.is_open and pause_menu.active_submenu is None:
+                self.game_state.resume_game()
+            
+            elif not pause_menu.is_open:
+                self.game_state.pause_game()
+                pause_menu.open()
+
+            
         
         # dont process game inputs, if paused
         if self.game_state.is_paused():

@@ -52,7 +52,7 @@ class Game:
         self.machine_selection_bar = MachineSelectionBar(self.screen, machine_data)
         
         # Initialize pause menu
-        self.pause_menu = PauseMenu(self.screen, self.game_state, self)
+        self.pause_menu = PauseMenu(self.screen, self)
         
         # Initialize managers that depend on GUI
         self.machine_manager = MachineManager(
@@ -116,13 +116,13 @@ class Game:
             events = pygame.event.get()
             self.input_handler.update(events)
 
-            # Handle pause menu events
-            self.pause_menu.handle_events(events)
-            
             # Process input events
             result = self.input_processor.process_input(self.screen, events, pause_menu=self.pause_menu)
             if result.get("quit"):
                 self.running = False
+
+            # Handle pause menu events
+            self.pause_menu.handle_events(events)
                 
             # Update game state
             dt = self.clock.tick(60) / 1000.0
