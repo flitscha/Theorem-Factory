@@ -18,7 +18,7 @@ class DebugSettingsMenu(AbstractMenu):
         buttons = []
         # TODO: get rid of the magic numbers
         toggle_button_width = 40
-        button_width = 300 # normal buttons. (for example the back-button)
+        button_width = 250 # normal buttons. (for example the back-button)
         button_height = 50
         button_spacing = 60
         start_y = self.menu_y + 120

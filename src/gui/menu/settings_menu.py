@@ -21,23 +21,23 @@ class SettingsMenu(AbstractMenu):
         button_spacing = 60
         start_y = self.menu_y + 120
 
-        # Back button
-        back_btn = Button(
-            (self.menu_x + (self.width - button_width) // 2, start_y, button_width, button_height),
-            "Back",
-            self.on_back,
-            self.font
-        )
-        buttons.append(back_btn)
-
         # Debug settings button
         debug_btn = Button(
-            (self.menu_x + (self.width - button_width) // 2, start_y + button_spacing, button_width, button_height),
+            (self.menu_x + (self.width - button_width) // 2, start_y, button_width, button_height),
             "Debug Settings",
             self._open_debug,
             self.font
         )
         buttons.append(debug_btn)
+
+        # back button
+        back_btn = Button(
+            (self.menu_x + 40, self.menu_y + self.height - button_height - 40, button_width, 50),
+            "Back",
+            self.on_back,
+            self.font
+        )
+        buttons.append(back_btn)
 
         return buttons
     

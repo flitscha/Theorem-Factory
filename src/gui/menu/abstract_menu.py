@@ -72,15 +72,18 @@ class AbstractMenu:
         if not self.is_open or self.opened_this_frame:
             return
 
-        if self.active_submenu:
-            self.active_submenu.handle_events(events)
-            return
-
+        # check escape, even if submenus are open.
+        # like this, when you escape, the menu is always closed immediately
         for event in events:
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 if self.on_back:
-                    self.on_back()
+                    self.on_back() # this will close all submenus.
 
+        # pass events to submenu
+        if self.active_submenu:
+            self.active_submenu.handle_events(events)
+            return
+        
         for button in self.buttons:
             button.handle_events(events)
 
