@@ -12,6 +12,7 @@ from gui.placement_preview import PlacementPreview
 from machines.base.machine_database import database as machine_data
 from gui.machine_selection import MachineSelectionBar
 from gui.menu.pause_menu import PauseMenu
+from config.settings_manager import settings_manager
 
 class Game:
     """Main game class that coordinates all systems"""
@@ -130,5 +131,7 @@ class Game:
             
             # Render frame
             self.render()
-            
+
+        # save the settings, when quitting the game
+        settings_manager.save_to_file() 
         pygame.quit()
