@@ -20,11 +20,11 @@ class ButtonColorScheme:
 # predefined color schemes
 DEFAULT_COLORS = ButtonColorScheme()
 GREEN_COLORS = ButtonColorScheme(
-    normal=(60, 120, 60),
-    hover=(80, 150, 80),
-    pressed=(40, 90, 40),
-    selected=(60, 180, 60),
-    selected_hover=(80, 200, 80)
+    normal=(80, 80, 80),
+    hover=(120, 120, 120),
+    pressed=(60, 60, 60),
+    selected=(110, 220, 110),
+    selected_hover=(120, 235, 120),
 )
 RED_COLORS = ButtonColorScheme(
     normal=(120, 60, 60),
