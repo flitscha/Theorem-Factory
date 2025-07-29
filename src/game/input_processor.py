@@ -1,5 +1,5 @@
 import pygame
-from config.settings import *
+from config.constants import *
 from game.game_state import *
 
 class InputProcessor:

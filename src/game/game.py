@@ -1,5 +1,5 @@
 import pygame
-from config.settings import *
+from config.constants import *
 from grid.grid_coordinator import GridCoordinator
 from core.camera import Camera
 from core.debug import Debug

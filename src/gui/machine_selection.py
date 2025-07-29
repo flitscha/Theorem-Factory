@@ -1,6 +1,6 @@
 import pygame
 
-from config.settings import MACHINE_SELECTION_GUI_HEIGHT, ITEM_SELECTION_COLOR, ITEM_SELECTION_ICON_BACKGROUND_COLOR
+from config.constants import MACHINE_SELECTION_GUI_HEIGHT, ITEM_SELECTION_COLOR, ITEM_SELECTION_ICON_BACKGROUND_COLOR
 
 # the gui-bar at the bottom of the screen, where the player selects the machine, he wants to place.
 class MachineSelectionBar:

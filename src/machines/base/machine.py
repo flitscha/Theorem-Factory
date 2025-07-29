@@ -3,7 +3,7 @@ from typing import List
 
 from entities.port import Port
 from core.utils import world_to_screen
-from config.settings import TILE_SIZE
+from config.constants import TILE_SIZE
 from entities.port import Direction
 
 class Machine:

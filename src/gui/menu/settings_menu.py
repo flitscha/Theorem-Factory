@@ -1,5 +1,4 @@
-import pygame
-from config.settings import *
+from config.constants import *
 from gui.elements.button import Button
 from gui.menu.debug_settings_menu import DebugSettingsMenu
 from gui.menu.abstract_menu import AbstractMenu

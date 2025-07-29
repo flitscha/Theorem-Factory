@@ -1,7 +1,7 @@
 import pygame
 
 from core.utils import get_mouse_world_pos
-from config.settings import TILE_SIZE
+from config.constants import TILE_SIZE
 
 
 class Debug():

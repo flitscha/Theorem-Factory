@@ -1,8 +1,8 @@
 import pygame
 
-from config.settings import TILE_SIZE
+from config.constants import TILE_SIZE
 from core.utils import get_grid_coordinates_when_placing_machine, grid_to_screen_coordinates, can_overwrite_belt
-from config.settings import SCREEN_HEIGHT, MACHINE_SELECTION_GUI_HEIGHT
+from config.constants import SCREEN_HEIGHT, MACHINE_SELECTION_GUI_HEIGHT
 from machines.types.conveyor_belt.conveyor_belt import ConveyorBelt
 from machines.types.conveyor_belt.belt_autoconnect import ConveyorBeltAutoConnector
 

@@ -1,5 +1,5 @@
 import pygame
-from config.settings import *
+from config.constants import *
 
 class Renderer:
     """Handles all rendering operations"""

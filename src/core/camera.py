@@ -1,6 +1,6 @@
 import pygame
 
-from config.settings import *
+from config.constants import *
 from core.utils import get_mouse_world_pos
 from typing import Tuple
 

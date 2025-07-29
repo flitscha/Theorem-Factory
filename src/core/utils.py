@@ -1,6 +1,6 @@
 import pygame
 
-from config.settings import TILE_SIZE
+from config.constants import TILE_SIZE
 
 
 def screen_to_world(screen_x, screen_y, camera):

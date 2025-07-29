@@ -1,5 +1,5 @@
 import pygame
-from config.settings import *
+from config.constants import *
 
 class AbstractMenu:
     def __init__(self, screen, width=800, height=600, on_back=None, title="MENU"):

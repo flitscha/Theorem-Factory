@@ -1,4 +1,4 @@
-from config.settings import *
+from config.constants import *
 from core.utils import get_grid_coordinates_when_placing_machine, get_mouse_grid_pos, can_overwrite_belt
 from machines.types.generator import Generator
 from machines.menu.generator_menu import GeneratorMenu

@@ -1,5 +1,5 @@
 import pygame
-from config.settings import TILE_SIZE, GRID_LINE_COLOR
+from config.constants import TILE_SIZE, GRID_LINE_COLOR
 from machines.types.conveyor_belt.conveyor_belt import ConveyorBelt
 
 class GridRenderer:
