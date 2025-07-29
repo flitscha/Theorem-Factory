@@ -4,7 +4,7 @@ from typing import List
 from entities.port import Port
 from core.utils import world_to_screen
 from config.constants import TILE_SIZE
-from entities.port import Direction
+from config.settings_manager import settings_manager
 
 class Machine:
     def __init__(self, size=(1, 1), color=(200, 200, 200), image=None, rotation=0):
@@ -118,7 +118,8 @@ class Machine:
                 pygame.Rect(screen_x, screen_y, scaled_width, scaled_height)
             )
         # Draw ports for debugging
-        #self.draw_ports(screen, camera, grid_x, grid_y)
+        if settings_manager.get("debug.show_ports"):
+            self.draw_ports(screen, camera, grid_x, grid_y)
     
 
     def draw_ports(self, screen, camera, grid_x, grid_y):

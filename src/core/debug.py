@@ -2,6 +2,7 @@ import pygame
 
 from core.utils import get_mouse_world_pos
 from config.constants import TILE_SIZE
+from config.settings_manager import settings_manager
 
 
 class Debug():
@@ -26,6 +27,9 @@ class Debug():
 
 
     def draw(self, screen, camera, clock):
-        self.draw_coordinates(screen, camera)
-        self.draw_fps(screen, clock)
+        if settings_manager.get("debug.show_coords"):
+            self.draw_coordinates(screen, camera)
+
+        if settings_manager.get("debug.show_fps"):
+            self.draw_fps(screen, clock)
         
