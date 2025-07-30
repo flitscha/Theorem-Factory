@@ -91,3 +91,7 @@ class MachineSelectionBar:
                 self.selected_machine_id = btn["id"]
                 return btn["id"]
         return None # no icon clicked
+    
+
+    def set_tool(self, tool_id):
+        self.selected_machine_id = tool_id

@@ -51,14 +51,19 @@ class InputProcessor:
                 self.game_state.close_menu()
             return {}
 
-
+        # left mouse button: select tools / machines
         if self.input_handler.was_mouse_pressed(1):
             self._handle_left_mouse_button()
 
+        # shift: temporary select delete-tool
         if self.input_handler.was_key_pressed(pygame.K_LSHIFT):
             self._handle_shift_down()
         if self.input_handler.was_key_released(pygame.K_LSHIFT):
             self._handle_shift_up()
+
+        # q: switch to empty-tool
+        if self.input_handler.was_key_pressed(pygame.K_q):
+            self._handle_q_down()
 
         # pass events to current tool
         self.current_tool.handle_inputs(self.input_handler, screen)
@@ -102,6 +107,17 @@ class InputProcessor:
         if self.shift_active:
             self.shift_active = False
             self.machine_selection_bar.selected_machine_id = self.prev_selected_id
-            if self.prev_selected_id and self.prev_selected_id != "eraser":
+            if self.prev_selected_id == "eraser":
+                self.current_tool = self.eraser_tool
+            elif self.prev_selected_id == "None":
+                self.current_tool = self.empty_tool
+            elif self.prev_selected_id:
                 self.placement_preview.start_preview(self.prev_selected_id)
-            self.current_tool = self.placement_tool
+                self.current_tool = self.placement_tool
+    
+
+    def _handle_q_down(self):
+        self.placement_preview.stop_preview()
+        self.machine_selection_bar.set_tool("None")
+        self.current_tool = self.empty_tool
+                
