@@ -6,7 +6,7 @@ class PlacementTool(AbstractTool):
         super().__init__(machine_manager, placement_preview, machine_selection_bar, game_state)
         self.is_placing = False
 
-    def handle_events(self, events, input_handler, screen):
+    def handle_inputs(self, input_handler, screen):
         # Rotation
         if input_handler.was_key_pressed(pygame.K_r):
             if self.placement_preview.active_preview:
@@ -20,8 +20,8 @@ class PlacementTool(AbstractTool):
 
             # place machines
             if self.placement_preview.active_preview:
-                self.machine_manager.try_place_machine(mouse_pos)
-                self.is_placing = True
+                if self.machine_manager.try_place_machine(mouse_pos):
+                    self.is_placing = True
 
 
     def update(self, input_handler):

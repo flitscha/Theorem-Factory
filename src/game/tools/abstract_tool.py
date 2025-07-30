@@ -7,7 +7,7 @@ class AbstractTool:
         self.machine_selection_bar = machine_selection_bar
         self.game_state = game_state
 
-    def handle_events(self, events, input_handler, screen):
+    def handle_inputs(self, input_handler, screen):
         """Process raw events (mouse/keyboard)"""
         pass
 

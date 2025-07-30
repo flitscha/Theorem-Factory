@@ -1,12 +1,12 @@
 import pygame
-from .abstract_tool import AbstractTool
+from game.tools.abstract_tool import AbstractTool
 
 class EmptyTool(AbstractTool):
     def __init__(self, machine_manager, placement_preview, machine_selection_bar, game_state):
         super().__init__(machine_manager, placement_preview, machine_selection_bar, game_state)
         self.is_placing = False
 
-    def handle_events(self, events, input_handler, screen):
+    def handle_inputs(self, input_handler, screen):
         # Rotation
         if input_handler.was_key_pressed(pygame.K_r):
             if self.placement_preview.active_preview:

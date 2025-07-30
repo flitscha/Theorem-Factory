@@ -1,12 +1,12 @@
 import pygame
-from .abstract_tool import AbstractTool
+from game.tools.abstract_tool import AbstractTool
 
 class EraserTool(AbstractTool):
     def __init__(self, machine_manager, placement_preview, machine_selection_bar, game_state):
         super().__init__(machine_manager, placement_preview, machine_selection_bar, game_state)
         self.is_deleting = False
 
-    def handle_events(self, events, input_handler, screen):
+    def handle_inputs(self, input_handler, screen):
         # left click
         if input_handler.was_mouse_pressed(1):
             # delete machine

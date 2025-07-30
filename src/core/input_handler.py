@@ -47,6 +47,9 @@ class InputHandler:
     def was_key_pressed(self, key):
         """Check if key was pressed this frame (flank detection)"""
         return self.events_this_frame.get(f'key_down_{key}', False)
+    
+    def was_key_released(self, key):
+        return self.events_this_frame.get(f'key_up_{key}', False)
         
     def is_key_held(self, key):
         """Check if key is currently held down (continuous)"""

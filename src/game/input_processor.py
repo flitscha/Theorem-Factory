@@ -52,18 +52,16 @@ class InputProcessor:
             return {}
 
 
-        for event in events:
-            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                self._handle_left_mouse_button()
+        if self.input_handler.was_mouse_pressed(1):
+            self._handle_left_mouse_button()
 
-            # shift -> activate eraser
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_LSHIFT:
-                self._handle_shift_down()
-            elif event.type == pygame.KEYUP and event.key == pygame.K_LSHIFT:
-                self._handle_shift_up()
+        if self.input_handler.was_key_pressed(pygame.K_LSHIFT):
+            self._handle_shift_down()
+        if self.input_handler.was_key_released(pygame.K_LSHIFT):
+            self._handle_shift_up()
 
         # pass events to current tool
-        self.current_tool.handle_events(events, self.input_handler, screen)
+        self.current_tool.handle_inputs(self.input_handler, screen)
         self.current_tool.update(self.input_handler)
 
         return {}
@@ -76,18 +74,20 @@ class InputProcessor:
             selected = self.machine_selection_bar.handle_click(mouse_pos)
 
             # change tool + preview
-            if selected is None or selected == "None" or selected == "eraser":
-                self.placement_preview.active_preview = None
-                if selected == "eraser":
-                    self.current_tool = self.eraser_tool
-                elif selected == "None":
+            match selected:
+                case None:
+                    # dont reset the active preview
+                    pass
+                case "None": # tool to navigate, open machine menus, ...
+                    self.placement_preview.active_preview = None
                     self.current_tool = self.empty_tool
-                else:
+                case "eraser":
+                    self.placement_preview.active_preview = None
+                    self.current_tool = self.eraser_tool
+                case _:
+                    self.placement_preview.start_preview(selected)
                     self.current_tool = self.placement_tool
-            else:
-                self.placement_preview.start_preview(selected)
-                self.current_tool = self.placement_tool
-    
+
 
     def _handle_shift_down(self):
         if not self.shift_active:
