@@ -11,7 +11,7 @@ class Generator(Machine, IUpdatable, IProvider):
         self.production_interval = 2.0  # seconds between productions
         self.time_since_last_production = 0.0
 
-        super().__init__(size=machine_data.size, image=machine_data.image, rotation=rotation)
+        super().__init__(machine_data, rotation=rotation)
     
     def init_ports(self):
         """Initialize ports for the generator"""

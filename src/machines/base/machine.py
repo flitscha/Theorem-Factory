@@ -7,10 +7,12 @@ from config.constants import TILE_SIZE
 from config.settings_manager import settings_manager
 
 class Machine:
-    def __init__(self, size=(1, 1), color=(200, 200, 200), image=None, rotation=0):
-        self.size = size # size in grid tiles. Can be changed by rotation
-        self.color = color
-        self.image = image
+    def __init__(self, machine_data, rotation=0):
+        self.data = machine_data
+
+        self.size = machine_data.size # size in grid tiles. Can be changed by rotation
+        self.color = (200, 200, 200)
+        self.image = machine_data.image
         self.rotation = rotation
         self.update_rotated_size(rotation)
         self.rotate_image(rotation)

@@ -29,7 +29,7 @@ class ConveyorBelt(Machine, IUpdatable, IProvider, IReceiver):
 
         self.was_empty_last_frame = True # no item on the belt last frame
 
-        super().__init__(size=machine_data.size, image=machine_data.image, rotation=rotation)
+        super().__init__(machine_data, rotation=rotation)
 
 
     def init_ports(self):
