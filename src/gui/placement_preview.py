@@ -19,15 +19,19 @@ class PlacementPreview():
 
     def start_preview(self, machine_id):
         self.active_preview = machine_id
-        self.rotation = 0
 
     def stop_preview(self):
         self.active_preview = None
-        self.rotation = 0  # reset rotation on new preview
     
     def rotate_preview(self):
         if self.active_preview is not None:
             self.rotation = (self.rotation + 1) % 4  # cycle 0->1->2->3->0
+    
+    def set_rotation(self, n):
+        if n < 0 or n > 3:
+            print("Warning: the rotation has to be 0,1,2 or 3")
+            return
+        self.rotation = n
     
     # --------- Helper functions for drawing -----------
     def _get_rotated_size(self, size):

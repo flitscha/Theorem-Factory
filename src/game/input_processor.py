@@ -117,7 +117,31 @@ class InputProcessor:
     
 
     def _handle_q_down(self):
-        self.placement_preview.stop_preview()
-        self.machine_selection_bar.set_tool("None")
-        self.current_tool = self.empty_tool
-                
+        """
+        select the machine, that is under the mouse.
+        No machine -> empyt_tool
+        Same machine, as already selected -> empty tool
+        """
+        machine = self.machine_manager.get_machine_at_mouse()
+
+        if machine is None:
+            # no machine -> empty tool
+            self.placement_preview.stop_preview()
+            self.machine_selection_bar.set_tool("None")
+            self.current_tool = self.empty_tool
+            return
+
+
+        machine_id = machine.data.id
+
+        # if the same machine is already selected -> empty tool
+        if self.machine_selection_bar.selected_machine_id == machine_id:
+            self.placement_preview.stop_preview()
+            self.machine_selection_bar.set_tool("None")
+            self.current_tool = self.empty_tool
+        else:
+            # select new machine, and adopt the rotation
+            self.machine_selection_bar.set_tool(machine_id)
+            self.placement_preview.start_preview(machine_id)
+            self.placement_preview.set_rotation(machine.rotation)
+            self.current_tool = self.placement_tool

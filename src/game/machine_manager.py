@@ -3,6 +3,7 @@ from core.utils import get_grid_coordinates_when_placing_machine, get_mouse_grid
 from machines.types.generator import Generator
 from machines.menu.generator_menu import GeneratorMenu
 from machines.types.conveyor_belt.conveyor_belt import ConveyorBelt
+from core.utils import get_mouse_grid_pos
 
 class MachineManager:
     """Handles all machine-related operations. 
@@ -70,10 +71,15 @@ class MachineManager:
                 
         return None
     
+    
+    def get_machine_at_mouse(self):
+        grid_x, grid_y = get_mouse_grid_pos(self.camera)
+        machine = self.grid.get_block(grid_x, grid_y)
+        return machine
+    
 
     def rotate_machine_at_mouse(self):
         """Rotate the machine under the mouse cursor if any exists"""
-        from core.utils import get_mouse_grid_pos
 
         # get the grid-coordinates under the mouse
         grid_x, grid_y = get_mouse_grid_pos(self.camera)
