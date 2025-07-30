@@ -27,7 +27,7 @@ class MachineSelectionBar:
         # Add empty selection button
         none_rect = pygame.Rect(x, y, self.icon_size, self.icon_size)
         buttons.append({
-            "id": None,
+            "id": "None",
             "image": self.make_empty_icon(),  # helper function below
             "rect": none_rect
         })
@@ -90,4 +90,4 @@ class MachineSelectionBar:
             if btn["rect"].collidepoint(mouse_pos):
                 self.selected_machine_id = btn["id"]
                 return btn["id"]
-        return "MISS" # no icon clicked
+        return None # no icon clicked
