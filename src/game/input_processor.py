@@ -15,6 +15,11 @@ class InputProcessor:
         # helper variables
         self.is_placing = False # True when placing a machine.
         # this is used to prevent placing machines, when lmb is held down, but the click started in a menu
+        self.is_deleting = False
+        self.shift_active = False
+        self.prev_selected_id = None # used for shift-hotkey. While shift is held, you can delete.
+
+        # TODO: timer for eraser. It should take about 0.3s to delete a machine. (to avoid accidental deletes)
         
     def process_input(self, screen, events, pause_menu):
         """Process all input and execute corresponding actions"""
@@ -76,6 +81,31 @@ class InputProcessor:
             self.machine_manager.try_place_machine(pygame.mouse.get_pos())
         else:
             self.is_placing = False
+        if self.is_deleting and self.input_handler.is_key_held('mouse_1'):
+            self.machine_manager.remove_machine_at_mouse()
+        else:
+            self.is_deleting = False
+        
+
+        # Shift gedrückt
+        for event in events:
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_LSHIFT:
+                if not self.shift_active:
+                    self.shift_active = True
+                    # remember current selection
+                    self.prev_selected_id = self.machine_selection_bar.selected_machine_id
+                    # activate eraser
+                    self.machine_selection_bar.selected_machine_id = "eraser"
+                    self.placement_preview.active_preview = None
+
+            # release shift
+            elif event.type == pygame.KEYUP and event.key == pygame.K_LSHIFT:
+                if self.shift_active:
+                    self.shift_active = False
+                    # recover previous selection
+                    self.machine_selection_bar.selected_machine_id = self.prev_selected_id
+                    if self.prev_selected_id and self.prev_selected_id != "eraser":
+                        self.placement_preview.start_preview(self.prev_selected_id)
             
         return {}
     
@@ -86,16 +116,27 @@ class InputProcessor:
         if mouse_pos[1] > SCREEN_HEIGHT - MACHINE_SELECTION_GUI_HEIGHT:
             selected = self.machine_selection_bar.handle_click(mouse_pos)
             if selected != "MISS":
-                self.placement_preview.start_preview(selected)
+                if selected == "eraser":
+                    # deactivate preview
+                    self.placement_preview.active_preview = None
+                else:
+                    self.placement_preview.start_preview(selected)
+
+        # if eraser is active -> remove the machine
+        elif self.machine_selection_bar.selected_machine_id == "eraser":
+            self.machine_manager.remove_machine_at_mouse()
+            self.is_deleting = True
+            return
+        
+        # Try to place machine or open menu
+        elif self.placement_preview.active_preview:
+            # If a preview is active, try to place it
+            self.machine_manager.try_place_machine(mouse_pos)
+            self.is_placing = True
         else:
-            # Try to place machine or open menu
-            if self.placement_preview.active_preview:
-                # If a preview is active, try to place it
-                self.machine_manager.try_place_machine(mouse_pos)
-                self.is_placing = True
-            else:
-                # If no preview, check if we clicked on a machine
-                self._open_machine_menu(mouse_pos, screen)
+            # If no preview, check if we clicked on a machine
+            self._open_machine_menu(mouse_pos, screen)
+
                
     def _open_machine_menu(self, mouse_pos, screen):
         """Open a machine menu (small menu for individual machines)"""

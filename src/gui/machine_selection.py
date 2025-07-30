@@ -33,6 +33,15 @@ class MachineSelectionBar:
         })
         x += self.icon_size + self.margin
 
+        # Eraser tool
+        eraser_rect = pygame.Rect(x, y, self.icon_size, self.icon_size)
+        buttons.append({
+            "id": "eraser",
+            "image": self.make_eraser_icon(),
+            "rect": eraser_rect
+        })
+        x += self.icon_size + self.margin
+
         # all other slots: use the database (later we will distinguish between unlocked machines, and not unlocked)
         for machine_id, data in self.machine_database.machines.items():
             rect = pygame.Rect(x, y, self.icon_size, self.icon_size)
@@ -55,7 +64,11 @@ class MachineSelectionBar:
         pygame.draw.line(surface, (100, 100, 100), (0, self.icon_size), (self.icon_size, 0), 3)
 
         return surface
-
+    
+    def make_eraser_icon(self):
+        surface = pygame.Surface((self.icon_size, self.icon_size))
+        surface.fill((80, 30, 30))
+        return surface
 
     def draw(self):
         # Background bar
