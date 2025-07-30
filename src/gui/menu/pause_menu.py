@@ -2,6 +2,7 @@ from config.constants import *
 from gui.elements.button import Button
 from gui.menu.settings_menu import SettingsMenu
 from gui.menu.abstract_menu import AbstractMenu
+from gui.menu.controls_menu import ControlsMenu
 
 class PauseMenu(AbstractMenu):
     """Pause menu overlay - separate from machine menus"""
@@ -15,6 +16,7 @@ class PauseMenu(AbstractMenu):
 
         # Submenus
         self.settings_menu = SettingsMenu(screen, on_back=self.close_submenu)
+        self.controls_menu = ControlsMenu(screen, on_back=self.close_submenu)
         
 
     def _create_buttons(self):
@@ -42,11 +44,20 @@ class PauseMenu(AbstractMenu):
             button_height
         )
         buttons.append(Button(settings_rect, "Settings", self._open_settings, self.font))
+
+        # Controls button
+        controls_rect = (
+            resume_rect[0],
+            start_y + button_spacing * 2,
+            button_width,
+            button_height
+        )
+        buttons.append(Button(controls_rect, "Controls", self._open_controls, self.font))
         
         # Save button (placeholder)
         save_rect = (
             resume_rect[0],
-            start_y + button_spacing * 2,
+            start_y + button_spacing * 3,
             button_width,
             button_height
         )
@@ -55,7 +66,7 @@ class PauseMenu(AbstractMenu):
         # Load button (placeholder)
         load_rect = (
             resume_rect[0],
-            start_y + button_spacing * 3,
+            start_y + button_spacing * 4,
             button_width,
             button_height
         )
@@ -64,7 +75,7 @@ class PauseMenu(AbstractMenu):
         # Quit button
         quit_rect = (
             resume_rect[0],
-            start_y + button_spacing * 4,
+            start_y + button_spacing * 5,
             button_width,
             button_height
         )
@@ -74,25 +85,23 @@ class PauseMenu(AbstractMenu):
     
     
     def _resume_game(self):
-        """Resume the game"""
         self.close()
         
     def _open_settings(self):
-        """Open settings menu"""
         self.open_submenu(self.settings_menu)
-        
+    
+    def _open_controls(self):
+        self.open_submenu(self.controls_menu)
+
     def _save_game(self):
-        """Save the game (placeholder)"""
         print("Save game - TODO: Implement")
         # TODO: Implement save functionality
         
     def _load_game(self):
-        """Load a game (placeholder)"""
         print("Load game - TODO: Implement")
         # TODO: Implement load functionality
         
     def _quit_game(self):
-        """Quit the game"""
         if self.game_instance:
             self.game_instance.running = False
         self.close()
