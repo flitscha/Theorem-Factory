@@ -87,14 +87,17 @@ class MachineManager:
 
         # rotate the machine
         machine.rotate(1)
+        machine.clear_ports()
+        machine.init_ports()
+        machine.rotate_ports()
+
         # if the machine is a conveyor belt, we have to do more. We have to reset the ports, inputs and outputs
         if isinstance(machine, ConveyorBelt):
-            machine.clear_ports()
-            machine.init_ports()
             machine.inputs = []
             machine.outputs = []
+            self.grid.connection_system.handle_placing_conveyor_belt(machine)
 
         # update the connections
-        self.grid.connection_system.handle_placing_conveyor_belt(machine)
+        self.grid.connection_system.update_neighboring_belts_when_placing(machine)
         self.grid.connection_system.update_connections_at(grid_x, grid_y)
         return True
