@@ -1,6 +1,9 @@
 import pygame
+import math
+import time
 from config.constants import TILE_SIZE, GRID_LINE_COLOR
 from machines.types.conveyor_belt.conveyor_belt import ConveyorBelt
+from core.utils import get_mouse_grid_pos, grid_to_screen_coordinates
 
 class GridRenderer:
     """Handles rendering of the grid and its contents"""
@@ -45,8 +48,55 @@ class GridRenderer:
             # Draw the block
             if not isinstance(block, ConveyorBelt):
                 block.draw(screen, camera, tile_x, tile_y)
-        
     
+
+    def draw_highlight(self, screen, camera, active_tool, grid_manager):
+        """Draw a highlight depending on the current tool (e.g., eraser, empty tool)"""
+        grid_x, grid_y = get_mouse_grid_pos(camera)
+        block = grid_manager.get_block(grid_x, grid_y)
+        if not block:
+            return
+
+        screen_x, screen_y = grid_to_screen_coordinates(block.origin[0], block.origin[1], camera)
+        block_width = block.size[0] * TILE_SIZE * camera.zoom
+        block_height = block.size[1] * TILE_SIZE * camera.zoom
+
+        # select alpha, and color, based on tool
+        if active_tool == "eraser":
+            alpha = 80 + int(20 * math.sin(time.time() * 5))
+            base_color = (255, 50, 50)
+        elif active_tool == "None":
+            alpha = 90 + int(20 * math.sin(time.time() * 5))
+            base_color = (200, 200, 200)
+        else:
+            return
+
+        sprite = block.image
+        if sprite is None:
+            return
+        sprite_width, sprite_height = sprite.get_size()
+
+        scale_x = block_width / sprite_width
+        scale_y = block_height / sprite_height
+        scale = min(scale_x, scale_y)  # proportional skalieren (kann angepasst werden)
+
+        scaled_sprite = pygame.transform.smoothscale(sprite, (int(sprite_width * scale), int(sprite_height * scale)))
+
+        overlay = pygame.Surface((block_width, block_height), pygame.SRCALPHA)
+
+        overlay.fill((*base_color, alpha))
+
+        # use the sprite as mask
+        sprite_mask = pygame.mask.from_surface(scaled_sprite)
+        mask_surface = sprite_mask.to_surface(setcolor=(*base_color, alpha), unsetcolor=(0, 0, 0, 0))
+
+        sprite_pos_x = (block_width - scaled_sprite.get_width()) // 2
+        sprite_pos_y = (block_height - scaled_sprite.get_height()) // 2
+
+        overlay.blit(mask_surface, (sprite_pos_x, sprite_pos_y), special_flags=pygame.BLEND_RGBA_MULT)
+        screen.blit(overlay, (screen_x, screen_y))
+
+
     def draw_items(self, screen, camera):
         """Draw all items on the grid"""
         for block in self.grid_manager.blocks.values():

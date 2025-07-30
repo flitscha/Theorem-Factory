@@ -65,6 +65,9 @@ class GridCoordinator:
     def draw_machines(self, screen, camera):
         self.renderer.draw_machines(screen, camera)
     
+    def draw_highlight(self, screen, camera, active_tool):
+        self.renderer.draw_highlight(screen, camera, active_tool, self.grid_manager)
+    
     def draw_items(self, screen, camera):
         self.renderer.draw_items(screen, camera)
     

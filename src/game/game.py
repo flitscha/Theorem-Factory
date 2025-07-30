@@ -89,7 +89,7 @@ class Game:
         self.renderer.clear_screen(BACKGROUND_COLOR)
         
         # Render game world
-        self.renderer.render_game_world(self.grid, self.camera)
+        self.renderer.render_game_world(self.grid, self.camera, self.machine_selection_bar.selected_machine_id)
         
         # Select gui components, based on the game-state
         gui_components = []

@@ -11,12 +11,14 @@ class Renderer:
         """Clear screen with specified color"""
         self.screen.fill(color)
         
-    def render_game_world(self, grid, camera):
+    def render_game_world(self, grid, camera, active_tool):
         """Render the main game world elements"""
         grid.draw_grid_lines(self.screen, camera)
         grid.draw_conveyor_belts(self.screen, camera)
         grid.draw_items(self.screen, camera)
         grid.draw_machines(self.screen, camera)
+
+        grid.draw_highlight(self.screen, camera, active_tool)
         
     def render_gui_components(self, components):
         """Render all GUI components"""
