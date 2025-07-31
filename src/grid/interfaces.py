@@ -29,6 +29,6 @@ class IReceiver(ABC):
     input_ports: List[Port] # List of input ports for receiving items
 
     @abstractmethod
-    def receive_item_at_port(self, port, item) -> bool:
+    def receive_item_at_port(self, item, port) -> bool:
         """Called when an input port receives an item"""
         pass

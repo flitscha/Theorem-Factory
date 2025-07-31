@@ -68,7 +68,6 @@ class ConveyorBelt(Machine, IUpdatable, IProvider, IReceiver):
 
     # IProvider interface implementation
     def provide_item_from_port(self, port):
-        """Nur der 'dran'-Port darf aktuell ein Item liefern (Round Robin)."""
         if not self.item or self.item_progress < 1.0:
             return None
 
@@ -79,7 +78,6 @@ class ConveyorBelt(Machine, IUpdatable, IProvider, IReceiver):
         if port != self.output_ports[self.next_output_index]:
             return None
 
-        # Item abgeben und Index weiterschalten
         item = self.item
         self.item = None
         self.item_progress = 0.0
@@ -102,7 +100,7 @@ class ConveyorBelt(Machine, IUpdatable, IProvider, IReceiver):
     
 
     # IReceiver interface implementation
-    def receive_item_at_port(self, port: Port, item: Item) -> bool:
+    def receive_item_at_port(self, item: Item, port: Port) -> bool:
         """Receive item at the specified port"""
         if self.item is not None:
             return False

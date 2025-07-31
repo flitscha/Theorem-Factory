@@ -113,7 +113,7 @@ class Port:
         """Default receive behavior – pass to machine."""
         if self.port_type != "input":
             return False
-        return self.machine.receive_item_at_port(self, item)
+        return self.machine.receive_item_at_port(item, self)
 
     def provide_item(self) -> Optional['Item']:
         """Default provide behavior – get from machine."""
