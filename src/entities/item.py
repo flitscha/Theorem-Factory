@@ -8,12 +8,18 @@ class Item:
         self.position = pygame.Vector2(position)
         self.font = pygame.font.SysFont(None, 28)
         self.color = (200, 200, 255) if is_theorem else (255, 255, 255)
-        self.radius = 20  # For example, draw as circle
+        self.radius = 10
+        self.font_size = 15
+
+        # generate the text only once to save computing time
+        font = pygame.font.SysFont("arial", self.font_size*10, bold=True)
+        self.text_surface = font.render(self.formula, True, (0, 0, 0))
 
     def update(self, dt):
         # example: update the position, if the item is on a belt.
         pass
 
+    """
     def draw(self, screen, camera):
         # Draw a circle with the formula text centered
         # TODO: This is not possible, if the formulas are big.
@@ -24,3 +30,28 @@ class Item:
         text_surf = self.font.render(self.formula, True, (0, 0, 0))
         text_rect = text_surf.get_rect(center=(screen_x, screen_y))
         screen.blit(text_surf, text_rect)
+    """
+
+    def draw(self, screen, camera):
+        # Draw a circle with the formula text centered
+        # TODO: This is not possible, if the formulas are big.
+        # Idea: procedually generate an icon based on the formula. 
+        # So you can still distinguish different formulas.
+        screen_x, screen_y = world_to_screen(self.position.x, self.position.y, camera)
+        radius = int(self.radius * camera.zoom)
+        font_size = int(self.font_size * camera.zoom)
+
+        # choose color
+        color = (240, 200, 80)
+
+        # draw shape
+        pygame.draw.circle(screen, color, (screen_x, screen_y), radius)
+
+        scaled_text = pygame.transform.smoothscale(
+            self.text_surface,
+            (int(self.text_surface.get_width() * camera.zoom / 10),
+             int(self.text_surface.get_height() * camera.zoom) / 10)
+        )
+
+        text_rect = scaled_text.get_rect(center=(screen_x, screen_y))
+        screen.blit(scaled_text, text_rect)

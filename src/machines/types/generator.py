@@ -15,6 +15,8 @@ class Generator(Machine, IUpdatable, IProvider):
         self.production_interval = 2.0  # seconds between productions
         self.time_since_last_production = 0.0
 
+        #self.font = pygame.font.Font("assets/fonts/PressStart2P-Regular.ttf", zoomed_font_size)
+
         super().__init__(machine_data, rotation=rotation)
     
     def init_ports(self):
