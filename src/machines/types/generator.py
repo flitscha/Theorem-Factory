@@ -1,7 +1,11 @@
+import pygame
+
 from machines.base.machine import Machine
 from entities.item import Item
 from entities.port import Port, Direction
 from grid.interfaces import IUpdatable, IProvider
+from core.utils import world_to_screen
+from config.constants import TILE_SIZE, GENERATOR_LETTER_OFFSETS
 
 class Generator(Machine, IUpdatable, IProvider):
     def __init__(self, machine_data, rotation=0):
@@ -27,12 +31,6 @@ class Generator(Machine, IUpdatable, IProvider):
     def change_letter(self, new_letter):
         """ Change the letter produced by the generator and update the image accordingly. """
         self.produced_letter = new_letter
-        """ this does not work currently.
-        font = pygame.font.SysFont(None, 34)
-        text_surface = font.render(self.produced_letter, True, (255, 255, 255))
-        text_rect = text_surface.get_rect(center=(self.image.get_width()//2, self.image.get_height()//2+13))
-        self.image = pygame.image.load("assets/sprites/generator.png").convert_alpha()  # Reload the base image
-        self.image.blit(text_surface, text_rect)"""
 
 
     # IProvider interface implementation
@@ -61,3 +59,37 @@ class Generator(Machine, IUpdatable, IProvider):
     def update(self, dt):
         """Call this every frame with dt = time elapsed since last call in seconds."""
         self.time_since_last_production += dt
+    
+
+    def draw(self, screen, camera):
+        # Erst das normale Maschinenbild zeichnen
+        super().draw(screen, camera)
+
+        if self.produced_letter:
+            base_x, base_y = world_to_screen(self.origin[0] * TILE_SIZE, self.origin[1] * TILE_SIZE, camera)
+
+            """
+            sprite_w = self.size[0] * TILE_SIZE
+            sprite_h = self.size[1] * TILE_SIZE
+            center_x = sprite_w / 2
+            center_y = sprite_h / 2
+            rel_offset_x = 49 - center_x
+            rel_offset_y = 44 - center_y
+            rot_x, rot_y = rotate_point(rel_offset_x, rel_offset_y, self.rotation)
+            offset_x = center_x + rot_x
+            offset_y = center_y + rot_y
+            """
+            offset_x, offset_y = GENERATOR_LETTER_OFFSETS[self.rotation]
+
+            letter_x = base_x + offset_x * camera.zoom
+            letter_y = base_y + offset_y * camera.zoom
+
+            # render letter
+            zoomed_font_size = int(22 * camera.zoom)
+            font = pygame.font.Font("assets/fonts/PressStart2P-Regular.ttf", zoomed_font_size)
+
+            text_surface = font.render(self.produced_letter, True, (15, 15, 15))
+            text_rect = text_surface.get_rect(center=(letter_x, letter_y))
+
+            screen.blit(text_surface, text_rect)
+

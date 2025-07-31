@@ -165,8 +165,3 @@ class ConveyorBelt(Machine, IUpdatable, IProvider, IReceiver):
         and moves in this direction, until it reaches the center of this belt.
         """
         self.item.position = self.item_start_position.lerp(self.item_end_position, self.item_progress)
-
-        
-    def draw(self, screen, camera, grid_x, grid_y):
-        """Draw the conveyor belt"""
-        super().draw(screen, camera, grid_x, grid_y)

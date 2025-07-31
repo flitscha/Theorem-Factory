@@ -20,3 +20,7 @@ BACKGROUND_COLOR = (51, 77, 59) #(80, 115, 91)
 GRID_LINE_COLOR = (35, 65, 45)
 ITEM_SELECTION_COLOR = (20, 30, 30) # item selection bar at the bottom
 ITEM_SELECTION_ICON_BACKGROUND_COLOR = (80, 110, 90)
+
+
+# letter offset, for each rotation.
+GENERATOR_LETTER_OFFSETS = [(49, 44), (52, 49), (47, 52), (44, 47)]

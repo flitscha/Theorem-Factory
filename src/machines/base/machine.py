@@ -95,10 +95,8 @@ class Machine:
         pass
 
     
-    def draw(self, screen, camera, grid_x, grid_y):
-        screen_x, screen_y = world_to_screen(grid_x * TILE_SIZE, grid_y * TILE_SIZE, camera)
-        screen_x = int(screen_x)
-        screen_y = int(screen_y)
+    def draw(self, screen, camera):
+        screen_x, screen_y = world_to_screen(self.origin[0] * TILE_SIZE, self.origin[1] * TILE_SIZE, camera)
 
         # Scale the size based on TILE_SIZE and camera zoom (+1 to avoid gaps)
         scaled_width = int(self.size[0] * TILE_SIZE * camera.zoom) + 1
@@ -121,10 +119,10 @@ class Machine:
             )
         # Draw ports for debugging
         if settings_manager.get("debug.show_ports"):
-            self.draw_ports(screen, camera, grid_x, grid_y)
+            self.draw_ports(screen, camera)
     
 
-    def draw_ports(self, screen, camera, grid_x, grid_y):
+    def draw_ports(self, screen, camera):
         """Draw ports for debugging purposes"""
         for port in self.ports:
             # get a position in between the port-position and the connection position

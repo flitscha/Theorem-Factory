@@ -47,7 +47,7 @@ class GridRenderer:
 
             # Draw the block
             if not isinstance(block, ConveyorBelt):
-                block.draw(screen, camera, tile_x, tile_y)
+                block.draw(screen, camera)
     
 
     def draw_highlight(self, screen, camera, active_tool, grid_manager):
@@ -119,5 +119,5 @@ class GridRenderer:
             
             # Draw the conveyor belt
             if isinstance(block, ConveyorBelt):
-                block.draw(screen, camera, tile_x, tile_y)
+                block.draw(screen, camera)
     
