@@ -2,6 +2,7 @@ import pygame
 
 from machines.types.generator import Generator
 from machines.types.conveyor_belt.conveyor_belt import ConveyorBelt
+from machines.types.negator import Negator
 
 class MachineData:
     def __init__(self, id, name, size, sprite_path, cls, icon_path=None):
@@ -53,12 +54,12 @@ database.register_machine(MachineData(
     cls=ConveyorBelt
 ))
 
-# test machine
+# Negator
 database.register_machine(MachineData(
-    id="machine2",
-    name="Machine2",
-    size=(3, 2),
-    sprite_path="assets/sprites/generator.png",
-    icon_path=None,
-    cls=Generator
+    id="negator",
+    name="Negator",
+    size=(2, 2),
+    sprite_path="assets/sprites/negator.png",
+    icon_path=None,  # Optional: eigenes Icon
+    cls=Negator
 ))

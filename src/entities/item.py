@@ -19,18 +19,6 @@ class Item:
         # example: update the position, if the item is on a belt.
         pass
 
-    """
-    def draw(self, screen, camera):
-        # Draw a circle with the formula text centered
-        # TODO: This is not possible, if the formulas are big.
-        # Idea: procedually generate an icon based on the formula. 
-        # So you can still distinguish different formulas.
-        screen_x, screen_y = world_to_screen(self.position.x, self.position.y, camera)
-        pygame.draw.circle(screen, self.color, (screen_x, screen_y), self.radius)
-        text_surf = self.font.render(self.formula, True, (0, 0, 0))
-        text_rect = text_surf.get_rect(center=(screen_x, screen_y))
-        screen.blit(text_surf, text_rect)
-    """
 
     def draw(self, screen, camera):
         # Draw a circle with the formula text centered
@@ -39,7 +27,6 @@ class Item:
         # So you can still distinguish different formulas.
         screen_x, screen_y = world_to_screen(self.position.x, self.position.y, camera)
         radius = int(self.radius * camera.zoom)
-        font_size = int(self.font_size * camera.zoom)
 
         # choose color
         color = (240, 200, 80)
