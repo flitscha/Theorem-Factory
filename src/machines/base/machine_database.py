@@ -3,6 +3,7 @@ import pygame
 from machines.types.generator import Generator
 from machines.types.conveyor_belt.conveyor_belt import ConveyorBelt
 from machines.types.negator import Negator
+from machines.types.binary_connective import BinaryConnective
 
 class MachineData:
     def __init__(self, id, name, size, sprite_path, cls, icon_path=None):
@@ -60,6 +61,16 @@ database.register_machine(MachineData(
     name="Negator",
     size=(2, 2),
     sprite_path="assets/sprites/negator.png",
-    icon_path=None,  # Optional: eigenes Icon
+    icon_path=None,
     cls=Negator
+))
+
+# Binary connectives
+database.register_machine(MachineData(
+    id="binary_connective",
+    name="Binary Connective",
+    size=(2, 3),
+    sprite_path="assets/sprites/conveyorbelts/normal/horizontal.png",
+    icon_path=None,
+    cls=BinaryConnective
 ))
