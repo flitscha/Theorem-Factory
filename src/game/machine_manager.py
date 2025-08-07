@@ -4,6 +4,8 @@ from machines.types.generator import Generator
 from machines.menu.generator_menu import GeneratorMenu
 from machines.types.conveyor_belt.conveyor_belt import ConveyorBelt
 from core.utils import get_mouse_grid_pos
+from machines.types.binary_connective import BinaryConnective
+from machines.menu.binary_connective_menu import BinaryConnectiveMenu
 
 class MachineManager:
     """Handles all machine-related operations. 
@@ -65,9 +67,10 @@ class MachineManager:
         block = self.grid.get_block(grid_x, grid_y)
         
         if block:
-            # TODO: Make this more generic with a registry system
             if isinstance(block, Generator):
                 return GeneratorMenu(screen, (500, 300), block)
+            elif isinstance(block, BinaryConnective):
+                return BinaryConnectiveMenu(screen, (500, 300), block)
                 
         return None
     

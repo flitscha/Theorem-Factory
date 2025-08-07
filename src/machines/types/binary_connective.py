@@ -1,16 +1,24 @@
+from enum import Enum
 from machines.base.machine import Machine
 from entities.item import Item
 from entities.port import Port, Direction
 from grid.interfaces import IUpdatable, IReceiver, IProvider
 from config.constants import TILE_SIZE
 
+class BinaryConnectiveType(Enum):
+    AND = "*"
+    OR = "+"
+    IMPLIES = "->"
 
+    def apply(self, a: str, b: str) -> str:
+        return f"({a} {self.value} {b})"
+    
 class BinaryConnective(Machine, IUpdatable, IReceiver, IProvider):
     # binary connectives: or, and, implication
     # the player can select one of the connectives in a machine-menu
     def __init__(self, machine_data, rotation=0):
         super().__init__(machine_data, rotation=rotation)
-        self.selected_connective = None
+        self.selected_connective = BinaryConnectiveType.AND
         self.input_items = [None, None] # two inputs
         self.input_offsets = [0.0, 0.0] # keep track, how far an item moved into the machine
         self.timer = 0.0
@@ -88,7 +96,9 @@ class BinaryConnective(Machine, IUpdatable, IReceiver, IProvider):
         if self.input_items[0] and self.input_items[1]:
             self.timer += dt
             if self.timer >= self.processing_duration:
-                new_formula = f"{self.input_items[0].formula}*{self.input_items[1].formula}"
+                new_formula = self.selected_connective.apply(
+                    self.input_items[0].formula, self.input_items[1].formula
+                )
                 self.output_item = Item(
                     formula=new_formula,
                     is_theorem=False,
@@ -118,26 +128,6 @@ class BinaryConnective(Machine, IUpdatable, IReceiver, IProvider):
         for i, item in enumerate(self.input_items):
             if item:
                 item.draw(screen, camera)
-                """
-                # Offset in Pixel umwandeln
-                draw_x = item.position.x
-                draw_y = item.position.y
 
-                # Richtung bestimmen: immer nach rechts in die Maschine
-                if self.rotation == 0:      # Standard: Input von links
-                    draw_x += self.input_offsets[i]
-                elif self.rotation == 1:    # Input von oben
-                    draw_y += self.input_offsets[i]
-                elif self.rotation == 2:    # Input von rechts
-                    draw_x -= self.input_offsets[i]
-                else:                       # Input von unten
-                    draw_y -= self.input_offsets[i]
-
-                # Temporär verschieben beim Zeichnen
-                old_pos = (item.position.x, item.position.y)
-                item.position.x = draw_x
-                item.position.y = draw_y
-                item.draw(screen, camera)
-                item.position.x, item.position.y = old_pos
-                """
+        # draw the machine
         super().draw(screen, camera)
