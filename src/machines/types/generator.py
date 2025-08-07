@@ -6,6 +6,7 @@ from entities.port import Port, Direction
 from grid.interfaces import IUpdatable, IProvider
 from core.utils import world_to_screen
 from config.constants import TILE_SIZE, GENERATOR_LETTER_OFFSETS
+from core.formula import Variable
 
 class Generator(Machine, IUpdatable, IProvider):
     def __init__(self, machine_data, rotation=0):
@@ -42,8 +43,9 @@ class Generator(Machine, IUpdatable, IProvider):
     
         # Create item at the output port position
         port_world_x, port_world_y = port.get_grid_position()
+        formula = Variable(self.produced_letter)
         item = Item(
-            formula=self.produced_letter, 
+            formula=formula, 
             is_theorem=False,
             position=(port_world_x * 32 + 16, port_world_y * 32 + 16)
         )

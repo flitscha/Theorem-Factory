@@ -1,9 +1,10 @@
 import pygame
 from core.utils import world_to_screen
+from core.formula import Formula
 
 class Item:
-    def __init__(self, formula, is_theorem=False, position=(0, 0)):
-        self.formula = formula # right now, it is just a str. Later, i will implement a formula-class.
+    def __init__(self, formula: Formula, is_theorem=False, position=(0, 0)):
+        self.formula = formula
         self.is_theorem = is_theorem # There are 2 types of items: formulas and theorems
         self.position = pygame.Vector2(position)
         self.font = pygame.font.SysFont(None, 28)
@@ -13,7 +14,7 @@ class Item:
 
         # generate the text only once to save computing time
         font = pygame.font.SysFont("arial", self.font_size*10, bold=True)
-        self.text_surface = font.render(self.formula, True, (0, 0, 0))
+        self.text_surface = font.render(str(self.formula), True, (0, 0, 0))
 
     def update(self, dt):
         # example: update the position, if the item is on a belt.

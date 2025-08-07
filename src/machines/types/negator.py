@@ -3,6 +3,7 @@ from entities.item import Item
 from entities.port import Port, Direction
 from grid.interfaces import IUpdatable, IReceiver, IProvider
 from config.constants import TILE_SIZE
+from core.formula import Not
 
 class Negator(Machine, IUpdatable, IReceiver, IProvider):
     def __init__(self, machine_data, rotation=0):
@@ -63,9 +64,9 @@ class Negator(Machine, IUpdatable, IReceiver, IProvider):
             self._update_processing_item_position()
             if self.timer >= self.processing_duration:
                 # Processing complete: create negated formula
-                new_formula = f"-{self.processing_item.formula}"
+                output_formula = Not(self.processing_item.formula)
                 self.output_item = Item(
-                    formula=new_formula,
+                    formula=output_formula,
                     is_theorem=False,
                     position=(
                         self.origin[0] * TILE_SIZE + TILE_SIZE, 

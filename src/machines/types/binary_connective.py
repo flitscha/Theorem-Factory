@@ -4,6 +4,7 @@ from entities.item import Item
 from entities.port import Port, Direction
 from grid.interfaces import IUpdatable, IReceiver, IProvider
 from config.constants import TILE_SIZE
+from core.formula import BinaryOp
 
 class BinaryConnectiveType(Enum):
     AND = "*"
@@ -12,6 +13,9 @@ class BinaryConnectiveType(Enum):
 
     def apply(self, a: str, b: str) -> str:
         return f"({a} {self.value} {b})"
+    
+    def symbol(self):
+        return self.value
     
 class BinaryConnective(Machine, IUpdatable, IReceiver, IProvider):
     # binary connectives: or, and, implication
@@ -96,11 +100,13 @@ class BinaryConnective(Machine, IUpdatable, IReceiver, IProvider):
         if self.input_items[0] and self.input_items[1]:
             self.timer += dt
             if self.timer >= self.processing_duration:
-                new_formula = self.selected_connective.apply(
-                    self.input_items[0].formula, self.input_items[1].formula
+                output_formula = BinaryOp(
+                    self.selected_connective.symbol(), 
+                    self.input_items[0].formula, 
+                    self.input_items[1].formula
                 )
                 self.output_item = Item(
-                    formula=new_formula,
+                    formula=output_formula,
                     is_theorem=False,
                     position=(
                         self.origin[0] * TILE_SIZE + TILE_SIZE,

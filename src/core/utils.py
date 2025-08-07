@@ -84,3 +84,37 @@ def can_overwrite_belt(existing_block, new_rotation):
 
     # all other cases: the existing belt can be overwritten
     return True
+
+
+
+def simplify_formula(formula: str) -> str:
+    """
+    remove unnecessary brackets.
+    Example: "((A + B))"        ->      "A + B"
+    Example: "(A + (B * (-C)))" ->      "A + B * -C"
+    Example: "(A * ((-B) + C)"  ->      "A * (-B + C)"    
+    """
+    formula = formula.strip()
+
+    # remove outer brackets
+    while formula.startswith("(") and formula.endswith(")"):
+        inner = formula[1:-1].strip()
+        depth = 0
+        valid = True
+
+        for i, c in enumerate(inner):
+            if c == "(":
+                depth += 1
+            elif c == ")":
+                depth -= 1
+
+            if depth < 0 or (depth == 0 and i != len(inner) - 1):
+                valid = False
+                break
+
+        if valid:
+            formula = inner
+        else:
+            break
+
+    return formula
