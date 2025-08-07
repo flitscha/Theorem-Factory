@@ -66,19 +66,19 @@ class Machine:
 
             # update position
             if self.rotation == 1:
-                port.relative_x = self.size[1] - 1 - old_y
+                port.relative_x = self.data.size[1] - 1 - old_y
                 port.relative_y = old_x
             elif self.rotation == 2:
-                port.relative_x = self.size[0] - 1 - old_x
-                port.relative_y = self.size[1] - 1 - old_y
+                port.relative_x = self.data.size[0] - 1 - old_x
+                port.relative_y = self.data.size[1] - 1 - old_y
             elif self.rotation == 3:
                 port.relative_x = old_y
-                port.relative_y = self.size[0] - 1 - old_x
+                port.relative_y = self.data.size[0] - 1 - old_x
 
             # Update direction
             if port.direction:
                 port.direction = port.direction.rotate(self.rotation)
-            
+        
 
     def update_rotated_size(self, n):
         """update the size, if the machine got rotated by n * 90°"""
