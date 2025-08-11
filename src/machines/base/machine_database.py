@@ -70,7 +70,7 @@ database.register_machine(MachineData(
     id="binary_connective",
     name="Binary Connective",
     size=(2, 3),
-    sprite_path="assets/sprites/conveyorbelts/normal/horizontal.png",
+    sprite_path="assets/sprites/binary_connective.png",
     icon_path=None,
     cls=BinaryConnective
 ))
