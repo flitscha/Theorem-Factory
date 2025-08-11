@@ -6,18 +6,17 @@ from config.constants import TILE_SIZE
 from core.formula import BinaryOp
 
 
-class OrIntroduction(Machine, IUpdatable, IReceiver, IProvider):
+class AndIntroduction(Machine, IUpdatable, IReceiver, IProvider):
     """
-    Or-Introduction machine (3x3).
+    And-Introduction machine (3x3).
     - Two inputs: left-top (index 0), left-bottom (index 1), both West-facing.
     - One output: right-middle, East-facing.
-    Rule: It must never be that both inputs contain plain formulas (is_theorem == False).
-          If one input already contains a formula, the other input only accepts THEOREMS.
-    Produces: BinaryOp('+', left.formula, right.formula) with is_theorem = True
+    Rule: Both inputs must be THEOREMS
+    Produces: BinaryOp('*', left.formula, right.formula) with is_theorem = True
     """
     def __init__(self, machine_data, rotation=0):
         super().__init__(machine_data, rotation=rotation)
-        self.input_items = [None, None] # two inputs (index 0 = top, 1 = bottom)
+        self.input_items = [None, None]  # two inputs (index 0 = top, 1 = bottom)
         self.input_offsets = [0.0, 0.0]
         self.timer = 0.0
         self.processing_duration = 3.0
@@ -49,33 +48,24 @@ class OrIntroduction(Machine, IUpdatable, IReceiver, IProvider):
 
     # IReceiver: Accept items
     def receive_item_at_port(self, item, port):
-        # don't accept while there's an output waiting
-        if self.output_item:
+        # only accept theorems
+        if not item.is_theorem or self.output_item:
             return False
 
         index = self.ports.index(port)
-
-        # if slot already occupied, reject
-        if self.input_items[index]:
+        if index == 0 and self.input_items[0] is None:
+            self.input_items[0] = item
+        elif index == 1 and self.input_items[1] is None:
+            self.input_items[1] = item
+        else:
             return False
 
-        other_index = 1 - index
-        other = self.input_items[other_index]
-
-        if other is None:
-            # first item: accept anything (theorem or formula)
-            self.input_items[index] = item
-            return True
-        else:
-            # second item: enforce "at least one theorem" rule
-            # if the other is a plain formula and this item is also a plain formula => reject
-            if (not other.is_theorem) and (not item.is_theorem):
-                return False
-
-            # otherwise accept and start processing timer
-            self.input_items[index] = item
+        # if both inputs are ready, start timer
+        if self.input_items[0] and self.input_items[1]:
             self.timer = 0.0
-            return True
+
+        return True
+    
 
     # IProvider: Provide output to the right
     def provide_item_from_port(self, port):
@@ -90,7 +80,7 @@ class OrIntroduction(Machine, IUpdatable, IReceiver, IProvider):
             self.output_item = item
             self.timer = self.processing_duration
         else:
-            print("Warning: (handle_backpressure) OR-INTRO already has an output item, ignoring new item.")
+            print("Warning: (handle_backpressure) AND-INTRO already has an output item, ignoring new item.")
 
     def update(self, dt):
         # slide-in animation for items that are entering
@@ -106,7 +96,7 @@ class OrIntroduction(Machine, IUpdatable, IReceiver, IProvider):
                 left = self.input_items[0]
                 right = self.input_items[1]
 
-                output_formula = BinaryOp("+", left.formula, right.formula)
+                output_formula = BinaryOp("*", left.formula, right.formula)
 
                 self.output_item = Item(
                     formula=output_formula,
@@ -117,7 +107,6 @@ class OrIntroduction(Machine, IUpdatable, IReceiver, IProvider):
                     )
                 )
 
-                # reset inputs and offsets
                 self.input_items = [None, None]
                 self.input_offsets = [0.0, 0.0]
                 self.timer = 0.0
@@ -134,10 +123,8 @@ class OrIntroduction(Machine, IUpdatable, IReceiver, IProvider):
             item.position.y -= move_speed
 
     def draw(self, screen, camera):
-        # draw items
         for item in self.input_items:
             if item:
                 item.draw(screen, camera)
 
-        # draw machine sprite
         super().draw(screen, camera)
