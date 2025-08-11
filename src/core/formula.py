@@ -20,6 +20,16 @@ class Variable(Formula):
     def __eq__(self, other):
         return isinstance(other, Variable) and self.name == other.name
 
+class Constant(Formula):
+    def __init__(self, value: bool):
+        self.value = value
+
+    def __str__(self):
+        return "T" if self.value else "F"
+
+    def __eq__(self, other):
+        return isinstance(other, Constant) and self.value == other.value
+
 
 class Not(Formula):
     def __init__(self, inner: Formula):

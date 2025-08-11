@@ -68,7 +68,7 @@ class MachineManager:
         
         if block:
             if isinstance(block, Generator):
-                return GeneratorMenu(screen, (500, 300), block)
+                return GeneratorMenu(screen, (500, 360), block)
             elif isinstance(block, BinaryConnective):
                 return BinaryConnectiveMenu(screen, (500, 300), block)
                 

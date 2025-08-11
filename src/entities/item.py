@@ -33,7 +33,10 @@ class Item:
         color = (240, 200, 80)
 
         # draw shape
-        pygame.draw.circle(screen, color, (screen_x, screen_y), radius)
+        if self.is_theorem:
+            pygame.draw.rect(screen, color, (screen_x-radius, screen_y-radius, 2*radius, 2*radius))
+        else:
+            pygame.draw.circle(screen, color, (screen_x, screen_y), radius)
 
         scaled_text = pygame.transform.smoothscale(
             self.text_surface,
