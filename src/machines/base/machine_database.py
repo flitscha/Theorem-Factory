@@ -4,6 +4,7 @@ from machines.types.generator import Generator
 from machines.types.conveyor_belt.conveyor_belt import ConveyorBelt
 from machines.types.negator import Negator
 from machines.types.binary_connective import BinaryConnective
+from machines.types.or_introduction import OrIntroduction
 
 class MachineData:
     def __init__(self, id, name, size, sprite_path, cls, icon_path=None):
@@ -73,4 +74,15 @@ database.register_machine(MachineData(
     sprite_path="assets/sprites/binary_connective.png",
     icon_path=None,
     cls=BinaryConnective
+))
+
+# or introduction
+# maybe it will be the general introduction, and you can select the connective in a menu
+database.register_machine(MachineData(
+    id="or_intro",
+    name="Or Introduction",
+    size=(3, 3),
+    sprite_path="assets/sprites/or_intro.png",
+    icon_path=None,
+    cls=OrIntroduction
 ))
