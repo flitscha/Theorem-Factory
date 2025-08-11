@@ -6,6 +6,8 @@ from machines.types.conveyor_belt.conveyor_belt import ConveyorBelt
 from core.utils import get_mouse_grid_pos
 from machines.types.binary_connective import BinaryConnective
 from machines.menu.binary_connective_menu import BinaryConnectiveMenu
+from machines.menu.and_elimination_menu import AndEliminationMenu
+from machines.types.and_elimination import AndElimination
 
 class MachineManager:
     """Handles all machine-related operations. 
@@ -71,6 +73,8 @@ class MachineManager:
                 return GeneratorMenu(screen, (500, 360), block)
             elif isinstance(block, BinaryConnective):
                 return BinaryConnectiveMenu(screen, (500, 300), block)
+            elif isinstance(block, AndElimination):
+                return AndEliminationMenu(screen, (500, 200), block)
                 
         return None
     

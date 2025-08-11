@@ -6,6 +6,7 @@ from machines.types.negator import Negator
 from machines.types.binary_connective import BinaryConnective
 from machines.types.or_introduction import OrIntroduction
 from machines.types.and_introduction import AndIntroduction
+from machines.types.and_elimination import AndElimination
 
 class MachineData:
     def __init__(self, id, name, size, sprite_path, cls, icon_path=None):
@@ -96,4 +97,14 @@ database.register_machine(MachineData(
     sprite_path="assets/sprites/and_intro.png",
     icon_path=None,
     cls=AndIntroduction
+))
+
+# and elimination
+database.register_machine(MachineData(
+    id="and_elim",
+    name="And Elimination",
+    size=(3, 3),
+    sprite_path="assets/sprites/and_elim.png",
+    icon_path=None,
+    cls=AndElimination
 ))
