@@ -66,7 +66,7 @@ class Assumption(Machine, IUpdatable, IReceiver, IProvider):
             self.output_item = item
             self.timer = self.processing_duration
         else:
-            print("Warning: (handle_backpressure) negator already has an item, ignoring new item.")
+            print("Warning: (handle_backpressure) ASSUMPTION already has an item, ignoring new item.")
             pass
 
 
