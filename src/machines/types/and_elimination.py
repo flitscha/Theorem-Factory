@@ -73,7 +73,7 @@ class AndElimination(Machine, IUpdatable, IReceiver, IProvider):
         if not isinstance(item.formula, BinaryOp):
             return False
 
-        if item.formula.op is not "*":
+        if item.formula.op != "*":
             return False
 
         # accept
@@ -108,10 +108,12 @@ class AndElimination(Machine, IUpdatable, IReceiver, IProvider):
             self.timer += dt
             if self.timer >= self.processing_duration:
                 # extract conjunct
-                binop = self.input_item.formula
+                item = self.input_item
+                binop = item.formula
                 left = binop.left
                 right = binop.right
                 chosen = left if self.selected_side == 0 else right
+                assumptions = item.assumptions
 
                 # produce chosen conjunct as theorem
                 self.output_item = Item(
@@ -120,7 +122,8 @@ class AndElimination(Machine, IUpdatable, IReceiver, IProvider):
                     position=(
                         self.origin[0] * TILE_SIZE + TILE_SIZE,
                         self.origin[1] * TILE_SIZE + TILE_SIZE
-                    )
+                    ),
+                    assumptions=assumptions
                 )
 
                 # clear input

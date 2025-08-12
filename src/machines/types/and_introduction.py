@@ -97,6 +97,11 @@ class AndIntroduction(Machine, IUpdatable, IReceiver, IProvider):
                 right = self.input_items[1]
 
                 output_formula = BinaryOp("*", left.formula, right.formula)
+                assumptions = set()
+                if left.assumptions:
+                    assumptions.update(left.assumptions)
+                if right.assumptions:
+                    assumptions.update(right.assumptions)
 
                 self.output_item = Item(
                     formula=output_formula,
@@ -104,7 +109,8 @@ class AndIntroduction(Machine, IUpdatable, IReceiver, IProvider):
                     position=(
                         self.origin[0] * TILE_SIZE + TILE_SIZE,
                         self.origin[1] * TILE_SIZE + TILE_SIZE
-                    )
+                    ),
+                    assumptions=assumptions
                 )
 
                 self.input_items = [None, None]
