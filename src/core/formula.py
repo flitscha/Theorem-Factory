@@ -9,6 +9,10 @@ class Formula(ABC):
     def __eq__(self, other):
         pass
 
+    @abstractmethod
+    def __hash__(self):
+        pass
+
 
 class Variable(Formula):
     def __init__(self, name: str):
@@ -20,6 +24,10 @@ class Variable(Formula):
     def __eq__(self, other):
         return isinstance(other, Variable) and self.name == other.name
 
+    def __hash__(self):
+        return hash(self.name)
+
+
 class Constant(Formula):
     def __init__(self, value: bool):
         self.value = value
@@ -29,6 +37,9 @@ class Constant(Formula):
 
     def __eq__(self, other):
         return isinstance(other, Constant) and self.value == other.value
+
+    def __hash__(self):
+        return hash(self.value)
 
 
 class Not(Formula):
@@ -43,6 +54,9 @@ class Not(Formula):
 
     def __eq__(self, other):
         return isinstance(other, Not) and self.inner == other.inner
+
+    def __hash__(self):
+        return hash(self.inner)
 
 
 class BinaryOp(Formula):
@@ -77,3 +91,6 @@ class BinaryOp(Formula):
             '+': 1,
             '->': 0,
         }.get(op, -1)
+
+    def __hash__(self):
+        return hash((self.op, self.left, self.right))

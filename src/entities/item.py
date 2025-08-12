@@ -3,9 +3,10 @@ from core.utils import world_to_screen
 from core.formula import Formula
 
 class Item:
-    def __init__(self, formula: Formula, is_theorem=False, position=(0, 0)):
+    def __init__(self, formula: Formula, is_theorem=False, position=(0, 0), assumptions=None):
         self.formula = formula
         self.is_theorem = is_theorem # There are 2 types of items: formulas and theorems
+        self.assumptions = set() if assumptions is None else set(assumptions) # Theorems can depend on assumptions
         self.position = pygame.Vector2(position)
         self.font = pygame.font.SysFont(None, 28)
         self.color = (200, 200, 255) if is_theorem else (255, 255, 255)
