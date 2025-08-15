@@ -10,6 +10,7 @@ from machines.types.and_elimination import AndElimination
 from machines.types.assumption import Assumption
 from machines.types.implication_introduction import ImplicationIntroduction
 from machines.types.implication_elimination import ImplicationElimination
+from machines.types.not_introduction import NotIntroduction
 
 class MachineData:
     def __init__(self, id, name, size, sprite_path, cls, icon_path=None):
@@ -140,4 +141,14 @@ database.register_machine(MachineData(
     sprite_path="assets/sprites/implication_elim.png",
     icon_path=None,
     cls=ImplicationElimination
+))
+
+# not introduction
+database.register_machine(MachineData(
+    id="not_intro",
+    name="Not Introduction",
+    size=(3, 3),
+    sprite_path="assets/sprites/not_intro.png",
+    icon_path=None,
+    cls=NotIntroduction
 ))
