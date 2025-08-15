@@ -9,6 +9,7 @@ from machines.types.and_introduction import AndIntroduction
 from machines.types.and_elimination import AndElimination
 from machines.types.assumption import Assumption
 from machines.types.implication_introduction import ImplicationIntroduction
+from machines.types.implication_elimination import ImplicationElimination
 
 class MachineData:
     def __init__(self, id, name, size, sprite_path, cls, icon_path=None):
@@ -129,4 +130,14 @@ database.register_machine(MachineData(
     sprite_path="assets/sprites/implication_intro.png",
     icon_path=None,
     cls=ImplicationIntroduction
+))
+
+# implication elimination
+database.register_machine(MachineData(
+    id="implication_elim",
+    name="Implication Elimination",
+    size=(3, 3),
+    sprite_path="assets/sprites/implication_elim.png",
+    icon_path=None,
+    cls=ImplicationElimination
 ))
