@@ -11,6 +11,7 @@ from machines.types.assumption import Assumption
 from machines.types.implication_introduction import ImplicationIntroduction
 from machines.types.implication_elimination import ImplicationElimination
 from machines.types.not_introduction import NotIntroduction
+from machines.types.false_introduction import FalseIntroduction
 
 class MachineData:
     def __init__(self, id, name, size, sprite_path, cls, icon_path=None):
@@ -151,4 +152,14 @@ database.register_machine(MachineData(
     sprite_path="assets/sprites/not_intro.png",
     icon_path=None,
     cls=NotIntroduction
+))
+
+# false introduction
+database.register_machine(MachineData(
+    id="false_intro",
+    name="False Introduction",
+    size=(3, 3),
+    sprite_path="assets/sprites/false_intro.png",
+    icon_path=None,
+    cls=FalseIntroduction
 ))
