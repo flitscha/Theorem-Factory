@@ -35,7 +35,17 @@ class Item:
 
         # draw shape
         if self.is_theorem:
-            pygame.draw.rect(screen, color, (screen_x-radius, screen_y-radius, 2*radius, 2*radius))
+            # if there are no assumptions, draw a square
+            if not self.assumptions or len(self.assumptions) == 0:
+                pygame.draw.rect(screen, color, (screen_x-radius, screen_y-radius, 2*radius, 2*radius))
+            else:
+                # if there are assumptions, draw a triangle
+                points = [
+                    (screen_x, screen_y - radius),
+                    (screen_x - radius, screen_y + radius),
+                    (screen_x + radius, screen_y + radius)
+                ]
+                pygame.draw.polygon(screen, color, points)
         else:
             pygame.draw.circle(screen, color, (screen_x, screen_y), radius)
 
