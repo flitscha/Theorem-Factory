@@ -12,6 +12,7 @@ from machines.types.implication_introduction import ImplicationIntroduction
 from machines.types.implication_elimination import ImplicationElimination
 from machines.types.not_introduction import NotIntroduction
 from machines.types.false_introduction import FalseIntroduction
+from machines.types.or_elimination import OrElimination
 
 class MachineData:
     def __init__(self, id, name, size, sprite_path, cls, icon_path=None):
@@ -162,4 +163,14 @@ database.register_machine(MachineData(
     sprite_path="assets/sprites/false_intro.png",
     icon_path=None,
     cls=FalseIntroduction
+))
+
+# or elimination
+database.register_machine(MachineData(
+    id="or_elimination",
+    name="Or Elimination",
+    size=(3, 5),
+    sprite_path="assets/sprites/or_elim.png",
+    icon_path=None,
+    cls=OrElimination
 ))
