@@ -9,11 +9,11 @@ class LogicMachine(Machine, IUpdatable, IReceiver, IProvider):
     Base class for the natural-deduction machines.
     A lot is the same for all machines, so this class provides the common functionality.
     """
-    def __init__(self, machine_data, rotation=0):
+    def __init__(self, machine_data, num_inputs=0, rotation=0):
         super().__init__(machine_data, rotation=rotation)
         
-        self.input_items = []
-        self.input_offsets = []
+        self.input_items = [None] * num_inputs
+        self.input_offsets = [0.0] * num_inputs
         self.output_item = None
         self.timer = 0.0
         self.processing_duration = 3.0
