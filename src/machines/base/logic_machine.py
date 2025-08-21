@@ -64,7 +64,7 @@ class LogicMachine(Machine, IUpdatable, IReceiver, IProvider):
     def handle_backpressure(self, item, port):
         if self.output_item is None:
             self.output_item = item
-            self.timer = self.processing_duration
+            #self.timer = self.processing_duration # problems: it could happen, that the timer jumps from 0 to 3 instantly
         else:
             print(f"Warning: {self.__class__.__name__} already has an output item, ignoring new item.")
 
