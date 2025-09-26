@@ -14,7 +14,9 @@ class LogicMachine(Machine, IUpdatable, IReceiver, IProvider):
         
         self.input_items = [None] * num_inputs
         self.input_offsets = [0.0] * num_inputs
+        self.input_roles = ["input"] * num_inputs # e.g. for Implication-Elimination: ["implication", "premise"]
         self.output_item = None
+        self.last_output_item = None
         self.timer = 0.0
         self.processing_duration = 3.0
 
@@ -57,6 +59,7 @@ class LogicMachine(Machine, IUpdatable, IReceiver, IProvider):
     def provide_item_from_port(self, port):
         if self.output_item:
             item = self.output_item
+            self.last_output_item = self.output_item
             self.output_item = None
             return item
         return None
