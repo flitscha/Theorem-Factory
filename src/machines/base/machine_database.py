@@ -13,6 +13,7 @@ from machines.types.implication_elimination import ImplicationElimination
 from machines.types.not_introduction import NotIntroduction
 from machines.types.false_introduction import FalseIntroduction
 from machines.types.or_elimination import OrElimination
+from machines.types.double_not_elimination import DoubleNotElimination
 
 class MachineData:
     def __init__(self, id, name, size, sprite_path, cls, icon_path=None):
@@ -173,4 +174,14 @@ database.register_machine(MachineData(
     sprite_path="assets/sprites/or_elim.png",
     icon_path=None,
     cls=OrElimination
+))
+
+# double not elimination
+database.register_machine(MachineData(
+    id="double_not_elimination",
+    name="Double-Not-Elimination",
+    size=(3, 3),
+    sprite_path="assets/sprites/double_not_elim.png",
+    icon_path=None,
+    cls=DoubleNotElimination
 ))
