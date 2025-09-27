@@ -8,6 +8,8 @@ from machines.types.binary_connective import BinaryConnective
 from machines.menu.binary_connective_menu import BinaryConnectiveMenu
 from machines.menu.and_elimination_menu import AndEliminationMenu
 from machines.types.and_elimination import AndElimination
+from machines.menu.machine_menu import MachineMenu
+from machines.base.logic_machine import LogicMachine
 
 class MachineManager:
     """Handles all machine-related operations. 
@@ -68,15 +70,17 @@ class MachineManager:
         grid_x, grid_y = get_mouse_grid_pos(self.camera)
         block = self.grid.get_block(grid_x, grid_y)
         
-        if block:
-            if isinstance(block, Generator):
-                return GeneratorMenu(screen, (500, 360), block)
-            elif isinstance(block, BinaryConnective):
-                return BinaryConnectiveMenu(screen, (500, 300), block)
-            elif isinstance(block, AndElimination):
-                return AndEliminationMenu(screen, (500, 200), block)
-                
-        return None
+        if not block:
+            return None
+
+        if isinstance(block, Generator):
+            return GeneratorMenu(screen, (500, 360), block)
+        elif isinstance(block, BinaryConnective):
+            return BinaryConnectiveMenu(screen, (500, 300), block)
+        elif isinstance(block, AndElimination):
+            return AndEliminationMenu(screen, (500, 200), block)
+        elif isinstance(block, LogicMachine):
+            return MachineMenu(screen, (500, 300), block)
     
     
     def get_machine_at_mouse(self):
