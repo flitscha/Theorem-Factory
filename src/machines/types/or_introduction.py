@@ -16,6 +16,7 @@ class OrIntroduction(LogicMachine):
     """
     def __init__(self, machine_data, rotation=0):
         super().__init__(machine_data, num_inputs=2, rotation=rotation)
+        self.input_roles = ["left", "right"]
 
     def init_ports(self):
         self.add_port(Port(0, 0, Direction.WEST, "input"))

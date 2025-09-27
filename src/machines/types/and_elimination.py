@@ -1,7 +1,5 @@
-from machines.base.machine import Machine
 from entities.item import Item
 from entities.port import Port, Direction
-from grid.interfaces import IUpdatable, IReceiver, IProvider
 from config.constants import TILE_SIZE
 from core.formula import BinaryOp
 from machines.base.logic_machine import LogicMachine
@@ -19,6 +17,7 @@ class AndElimination(LogicMachine):
 
         # 0 = left, 1 = right (default left)
         self.selected_side = 0
+        self.input_roles = ["conjunction"]
 
     def init_ports(self):
         self.add_port(Port(0, 1, Direction.WEST, "input"))

@@ -16,6 +16,7 @@ class NotIntroduction(LogicMachine):
         # input_items[0]: False (theorem)
         # input_items[1]: assumption (to be negated)
         # output_item: Not(assumption)
+        self.input_roles = ["false", "assumption"]
 
 
     def init_ports(self):

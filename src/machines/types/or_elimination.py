@@ -20,6 +20,7 @@ class OrElimination(LogicMachine):
         # input_items[0]: theorem C with assumption A
         # input_items[1]: theorem C with assumption B
         # input_items[2]: theorem A or B
+        self.input_roles = ["theorem-from-A", "theorem-from-B", "A-or-B"]
         
 
     def init_ports(self):

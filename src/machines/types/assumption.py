@@ -15,6 +15,7 @@ class Assumption(LogicMachine):
     def __init__(self, machine_data, rotation=0):
         super().__init__(machine_data, num_inputs=1, rotation=rotation)
         self.processing_duration = 1.5
+        self.input_roles = ["formula"]
 
     def init_ports(self):
         self.add_port(Port(0, 1, Direction.WEST, "input"))

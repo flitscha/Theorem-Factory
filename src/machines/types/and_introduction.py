@@ -1,7 +1,5 @@
-from machines.base.machine import Machine
 from entities.item import Item
 from entities.port import Port, Direction
-from grid.interfaces import IUpdatable, IReceiver, IProvider
 from config.constants import TILE_SIZE
 from core.formula import BinaryOp
 from machines.base.logic_machine import LogicMachine
@@ -17,6 +15,7 @@ class AndIntroduction(LogicMachine):
     """
     def __init__(self, machine_data, rotation=0):
         super().__init__(machine_data, num_inputs=2, rotation=rotation)
+        self.input_roles = ["left", "right"]
 
     def init_ports(self):
         self.add_port(Port(0, 0, Direction.WEST, "input"))

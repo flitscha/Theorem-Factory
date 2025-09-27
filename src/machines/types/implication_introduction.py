@@ -15,6 +15,7 @@ class ImplicationIntroduction(LogicMachine):
         super().__init__(machine_data, num_inputs=2, rotation=rotation)
         # input_items[0]: premise (not a theorem)
         # input_items[1]: conclusion (a theorem)
+        self.input_roles = ["premise", "conclusion"]
 
     def init_ports(self):
         self.add_port(Port(0, 0, Direction.WEST, "input"))

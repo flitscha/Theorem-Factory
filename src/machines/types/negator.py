@@ -8,6 +8,7 @@ class Negator(LogicMachine):
     def __init__(self, machine_data, rotation=0):
         super().__init__(machine_data, num_inputs=1, rotation=rotation)
         #self.processing_item = None # item without the negation
+        self.input_roles = ["input"]
 
     def init_ports(self):
         """Initialize 1 input (left) and 1 output (right)"""

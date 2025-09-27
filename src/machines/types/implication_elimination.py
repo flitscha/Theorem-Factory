@@ -12,6 +12,7 @@ class ImplicationElimination(LogicMachine):
     """
     def __init__(self, machine_data, rotation=0):
         super().__init__(machine_data, num_inputs=2, rotation=rotation)
+        self.input_roles = ["implication", "premise"]
         # input_item[0]: implication (A -> B)
         # input_item[1]: premise (A)
         # output_item: conclusion (B)
