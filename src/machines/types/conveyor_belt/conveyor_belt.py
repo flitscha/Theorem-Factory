@@ -163,3 +163,12 @@ class ConveyorBelt(Machine, IUpdatable, IProvider, IReceiver):
         and moves in this direction, until it reaches the center of this belt.
         """
         self.item.position = self.item_start_position.lerp(self.item_end_position, self.item_progress)
+    
+
+    # used to write the item on the belt to the save-file
+    def _add_item_data(self, data: dict):
+        if self.item:
+            data["item"] = {
+                "data": self.item.to_data(),
+                "progress": self.item_progress,
+            }

@@ -86,5 +86,17 @@ class LogicMachine(Machine, IUpdatable, IReceiver, IProvider):
 
     def _process_items(self) -> Item:
         raise NotImplementedError
+    
+
+    # used to write the items in the machine to the save-file
+    def _add_item_data(self, data: dict):
+        data["items"] = {
+            "inputs": [
+                item.to_data() if item else None
+                for item in self.input_items
+            ],
+            "output": self.output_item.to_data() if self.output_item else None,
+            "progress": self.timer,
+        }
 
     

@@ -110,3 +110,13 @@ class GridManager:
                 neighbors[Direction.EAST].add(right_neighbor)
 
         return neighbors
+    
+
+    # save the machines of the grid to a json file
+    def to_data(self) -> dict:
+        return {
+            "machines": [
+                machine.to_data()
+                for machine in self.blocks.values()
+            ]
+        }

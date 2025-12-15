@@ -150,3 +150,17 @@ class Machine:
             if port.connected_port:
                 pygame.draw.circle(screen, (255, 255, 255), (int(port_screen_x), int(port_screen_y)), radius + 2, 3)
 
+
+    # save logic
+    def to_data(self) -> dict:
+        data = {
+            "type": self.data.id,
+            "origin": list(self.origin),
+            "rotation": self.rotation,
+        }
+        self._add_item_data(data)
+        return data
+
+    def _add_item_data(self, data: dict):
+        """Hook for subclasses that contain items."""
+        pass

@@ -73,3 +73,6 @@ class GridCoordinator:
     
     def draw_conveyor_belts(self, screen, camera):
         self.renderer.draw_conveyor_belts(screen, camera)
+    
+    def to_data(self) -> dict: # save everything on the grid to a json file
+        return self.grid_manager.to_data()

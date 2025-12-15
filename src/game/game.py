@@ -119,6 +119,13 @@ class Game:
         while self.running:
             # Handle input
             events = pygame.event.get()
+
+            # temporary test of the to_data() function
+            for event in events:
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_o:
+                    import json
+                    print(json.dumps(self.to_data(), indent=2))
+
             self.input_handler.update(events)
 
             # Process input events
@@ -139,3 +146,9 @@ class Game:
         # save the settings, when quitting the game
         settings_manager.save_to_file() 
         pygame.quit()
+    
+
+    def to_data(self) -> dict:
+        return {
+            "grid": self.grid.to_data(),
+        }

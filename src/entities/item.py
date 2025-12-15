@@ -57,3 +57,13 @@ class Item:
 
         text_rect = scaled_text.get_rect(center=(screen_x, screen_y))
         screen.blit(scaled_text, text_rect)
+    
+    
+    def to_data(self) -> dict:
+        return {
+            "type": "item",
+            "formula": str(self.formula),
+            "is_theorem": self.is_theorem,
+            "assumptions": list(self.assumptions),
+            "position": [self.position.x, self.position.y],
+        }
