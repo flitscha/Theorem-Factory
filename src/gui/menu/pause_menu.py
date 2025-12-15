@@ -1,3 +1,6 @@
+import json
+import os
+
 from config.constants import *
 from gui.elements.button import Button
 from gui.menu.settings_menu import SettingsMenu
@@ -94,12 +97,39 @@ class PauseMenu(AbstractMenu):
         self.open_submenu(self.controls_menu)
 
     def _save_game(self):
-        print("Save game - TODO: Implement")
-        # TODO: Implement save functionality
+        if not self.game_instance:
+            print("No game instance available!")
+            return
+
+        # create saves-folder
+        os.makedirs("saves", exist_ok=True)
+        save_path = os.path.join("saves", "save.json")
+
+        # save the game-state
+        try:
+            with open(save_path, "w") as f:
+                json.dump(self.game_instance.to_data(), f, indent=2)
+            print(f"Game successfully saved to {save_path}")
+        except Exception as e:
+            print(f"Failed to save game: {e}")
         
+
     def _load_game(self):
-        print("Load game - TODO: Implement")
-        # TODO: Implement load functionality
+        save_path = os.path.join("saves", "save.json")
+        if not os.path.exists(save_path):
+            print("No save file found!")
+            return
+
+        try:
+            with open(save_path, "r") as f:
+                data = json.load(f)
+        except Exception as e:
+            print(f"Failed to load save file: {e}")
+            return
+
+        self.game_instance.from_data(data)
+        print("Game successfully loaded.")
+
         
     def _quit_game(self):
         if self.game_instance:

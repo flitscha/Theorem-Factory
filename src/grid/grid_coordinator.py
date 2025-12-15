@@ -7,6 +7,8 @@ from grid.connection_system import ConnectionSystem
 from machines.types.conveyor_belt.conveyor_belt import ConveyorBelt
 from machines.base.machine import Machine
 from machines.types.conveyor_belt.belt_autoconnect import ConveyorBeltAutoConnector
+from machines.base.machine_database import MachineDatabase
+from machines.base.machine_factory import MachineFactory
 
 class GridCoordinator:
     """Main coordinator for the grid system"""
@@ -56,6 +58,9 @@ class GridCoordinator:
     def is_empty(self, grid_x: int, grid_y: int, size=(1, 1)):
         return self.grid_manager.is_empty(grid_x, grid_y, size)
     
+    def reset(self):
+        self.grid_manager.reset()
+    
     def update(self, dt: float):
         self.update_system.update(dt)
     
@@ -76,3 +81,12 @@ class GridCoordinator:
     
     def to_data(self) -> dict: # save everything on the grid to a json file
         return self.grid_manager.to_data()
+    
+    def from_data(this, data: dict, machine_database: MachineDatabase):
+        #coordinator = cls()
+        this.grid_manager.reset()
+
+        for machine_data in data.get("machines", []):
+            machine = MachineFactory.from_data(machine_data, machine_database)
+            origin_x, origin_y = machine.origin
+            this.add_block(origin_x, origin_y, machine) # like this, also the ports get connected

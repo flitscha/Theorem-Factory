@@ -112,6 +112,12 @@ class GridManager:
         return neighbors
     
 
+    def reset(self):
+        """Remove all machines and clear the grid."""
+        self.blocks.clear()
+        self.occupied_tiles.clear()
+
+
     # save the machines of the grid to a json file
     def to_data(self) -> dict:
         return {

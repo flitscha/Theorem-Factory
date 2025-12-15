@@ -1,6 +1,7 @@
 import pygame
 from core.utils import world_to_screen
 from core.formula import Formula
+from core.formula_parser import parse_formula
 
 class Item:
     def __init__(self, formula: Formula, is_theorem=False, position=(0, 0), assumptions=None):
@@ -67,3 +68,12 @@ class Item:
             "assumptions": list(self.assumptions),
             "position": [self.position.x, self.position.y],
         }
+
+    @classmethod
+    def from_data(cls, data):
+        formula = parse_formula(data["formula"])
+        is_theorem = data.get("is_theorem", False)
+        assumptions_strings = data.get("assumptions", [])
+        assumptions = set(parse_formula(s) for s in assumptions_strings)
+        position = tuple(data.get("position", (0, 0)))
+        return cls(formula, is_theorem=is_theorem, position=position, assumptions=assumptions)

@@ -1,0 +1,104 @@
+{
+  "grid": {
+    "machines": [
+      {
+        "type": "generator",
+        "origin": [
+          11,
+          9
+        ],
+        "rotation": 3
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          14,
+          10
+        ],
+        "rotation": 0,
+        "item": {
+          "data": {
+            "type": "item",
+            "formula": "n",
+            "is_theorem": false,
+            "assumptions": [],
+            "position": [
+              459.36,
+              336.0
+            ]
+          },
+          "progress": 0.8550000000000005
+        }
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          15,
+          10
+        ],
+        "rotation": 0
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          16,
+          10
+        ],
+        "rotation": 0,
+        "item": {
+          "data": {
+            "type": "item",
+            "formula": "n",
+            "is_theorem": false,
+            "assumptions": [],
+            "position": [
+              522.5600000000001,
+              336.0
+            ]
+          },
+          "progress": 0.8300000000000004
+        }
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          17,
+          10
+        ],
+        "rotation": 0
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          18,
+          10
+        ],
+        "rotation": 0
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          19,
+          10
+        ],
+        "rotation": 1
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          19,
+          11
+        ],
+        "rotation": 1
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          19,
+          12
+        ],
+        "rotation": 1
+      }
+    ]
+  }
+}

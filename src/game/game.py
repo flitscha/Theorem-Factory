@@ -152,3 +152,9 @@ class Game:
         return {
             "grid": self.grid.to_data(),
         }
+    
+    def from_data(self, data: dict):
+        self.grid.from_data(
+            data["grid"], 
+            machine_database=machine_data
+        )
