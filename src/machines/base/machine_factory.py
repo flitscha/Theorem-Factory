@@ -25,6 +25,10 @@ class MachineFactory:
         # restore items
         MachineFactory._load_items(machine, data)
 
+        # restore machine-specific selections / state
+        if hasattr(machine, "_load_custom_data"):
+            machine._load_custom_data(data)
+
         return machine
 
     @staticmethod

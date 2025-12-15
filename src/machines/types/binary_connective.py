@@ -63,3 +63,11 @@ class BinaryConnective(LogicMachine):
                 self.origin[1] * TILE_SIZE + TILE_SIZE
             )
         )
+    
+    # save / load stuff
+    def _add_custom_data(self, data: dict):
+        data["selected_connective"] = self.selected_connective.name
+
+    def _load_custom_data(self, data: dict):
+        name = data.get("selected_connective", "AND")
+        self.selected_connective = BinaryConnectiveType[name]

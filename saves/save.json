@@ -4,37 +4,1306 @@
       {
         "type": "generator",
         "origin": [
-          11,
+          6,
           9
+        ],
+        "rotation": 3,
+        "produced_letter": "a"
+      },
+      {
+        "type": "generator",
+        "origin": [
+          6,
+          13
+        ],
+        "rotation": 3,
+        "produced_letter": "b"
+      },
+      {
+        "type": "binary_connective",
+        "origin": [
+          11,
+          11
+        ],
+        "rotation": 0,
+        "items": {
+          "inputs": [
+            {
+              "type": "item",
+              "formula": "a",
+              "is_theorem": false,
+              "assumptions": [],
+              "position": [
+                368.0,
+                368.0
+              ]
+            },
+            {
+              "type": "item",
+              "formula": "b",
+              "is_theorem": false,
+              "assumptions": [],
+              "position": [
+                368.0,
+                432.0
+              ]
+            }
+          ],
+          "output": null,
+          "progress": 2.202999999999998
+        },
+        "selected_connective": "OR"
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          9,
+          14
+        ],
+        "rotation": 0
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          10,
+          14
+        ],
+        "rotation": 3,
+        "item": {
+          "data": {
+            "type": "item",
+            "formula": "b",
+            "is_theorem": false,
+            "assumptions": [],
+            "position": [
+              311.29600000000005,
+              464.0
+            ]
+          },
+          "progress": 0.228
+        }
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          10,
+          13
+        ],
+        "rotation": 0
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          9,
+          10
+        ],
+        "rotation": 0
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          10,
+          10
+        ],
+        "rotation": 1,
+        "item": {
+          "data": {
+            "type": "item",
+            "formula": "a",
+            "is_theorem": false,
+            "assumptions": [],
+            "position": [
+              311.29600000000005,
+              336.0
+            ]
+          },
+          "progress": 0.228
+        }
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          10,
+          11
+        ],
+        "rotation": 0
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          9,
+          15
+        ],
+        "rotation": 1
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          9,
+          9
+        ],
+        "rotation": 3
+      },
+      {
+        "type": "assumption",
+        "origin": [
+          14,
+          6
+        ],
+        "rotation": 0,
+        "items": {
+          "inputs": [
+            null
+          ],
+          "output": {
+            "type": "item",
+            "formula": "a",
+            "is_theorem": true,
+            "assumptions": [
+              "a"
+            ],
+            "position": [
+              480.0,
+              224.0
+            ]
+          },
+          "progress": 0.0
+        }
+      },
+      {
+        "type": "assumption",
+        "origin": [
+          14,
+          16
+        ],
+        "rotation": 0,
+        "items": {
+          "inputs": [
+            null
+          ],
+          "output": {
+            "type": "item",
+            "formula": "b",
+            "is_theorem": true,
+            "assumptions": [
+              "b"
+            ],
+            "position": [
+              480.0,
+              544.0
+            ]
+          },
+          "progress": 0.0
+        }
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          9,
+          16
+        ],
+        "rotation": 1
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          9,
+          17
+        ],
+        "rotation": 0,
+        "item": {
+          "data": {
+            "type": "item",
+            "formula": "b",
+            "is_theorem": false,
+            "assumptions": [],
+            "position": [
+              304.0,
+              534.6560000000001
+            ]
+          },
+          "progress": 0.208
+        }
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          10,
+          17
+        ],
+        "rotation": 0,
+        "item": {
+          "data": {
+            "type": "item",
+            "formula": "b",
+            "is_theorem": false,
+            "assumptions": [],
+            "position": [
+              336.0,
+              560.0
+            ]
+          },
+          "progress": 1.0
+        }
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          11,
+          17
+        ],
+        "rotation": 0,
+        "item": {
+          "data": {
+            "type": "item",
+            "formula": "b",
+            "is_theorem": false,
+            "assumptions": [],
+            "position": [
+              368.0,
+              560.0
+            ]
+          },
+          "progress": 1.0
+        }
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          12,
+          17
+        ],
+        "rotation": 0,
+        "item": {
+          "data": {
+            "type": "item",
+            "formula": "b",
+            "is_theorem": false,
+            "assumptions": [],
+            "position": [
+              400.0,
+              560.0
+            ]
+          },
+          "progress": 1.0
+        }
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          13,
+          17
+        ],
+        "rotation": 0,
+        "item": {
+          "data": {
+            "type": "item",
+            "formula": "b",
+            "is_theorem": false,
+            "assumptions": [],
+            "position": [
+              432.0,
+              560.0
+            ]
+          },
+          "progress": 1.0
+        }
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          9,
+          8
         ],
         "rotation": 3
       },
       {
         "type": "conveyor",
         "origin": [
-          14,
+          9,
+          7
+        ],
+        "rotation": 0,
+        "item": {
+          "data": {
+            "type": "item",
+            "formula": "a",
+            "is_theorem": false,
+            "assumptions": [],
+            "position": [
+              304.0,
+              265.344
+            ]
+          },
+          "progress": 0.208
+        }
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          10,
+          7
+        ],
+        "rotation": 0,
+        "item": {
+          "data": {
+            "type": "item",
+            "formula": "a",
+            "is_theorem": false,
+            "assumptions": [],
+            "position": [
+              336.0,
+              240.0
+            ]
+          },
+          "progress": 1.0
+        }
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          11,
+          7
+        ],
+        "rotation": 0,
+        "item": {
+          "data": {
+            "type": "item",
+            "formula": "a",
+            "is_theorem": false,
+            "assumptions": [],
+            "position": [
+              368.0,
+              240.0
+            ]
+          },
+          "progress": 1.0
+        }
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          12,
+          7
+        ],
+        "rotation": 0,
+        "item": {
+          "data": {
+            "type": "item",
+            "formula": "a",
+            "is_theorem": false,
+            "assumptions": [],
+            "position": [
+              400.0,
+              240.0
+            ]
+          },
+          "progress": 1.0
+        }
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          13,
+          7
+        ],
+        "rotation": 0,
+        "item": {
+          "data": {
+            "type": "item",
+            "formula": "a",
+            "is_theorem": false,
+            "assumptions": [],
+            "position": [
+              432.0,
+              240.0
+            ]
+          },
+          "progress": 1.0
+        }
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          16,
+          7
+        ],
+        "rotation": 0,
+        "item": {
+          "data": {
+            "type": "item",
+            "formula": "a",
+            "is_theorem": true,
+            "assumptions": [
+              "a"
+            ],
+            "position": [
+              528.0,
+              240.0
+            ]
+          },
+          "progress": 1.0
+        }
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          17,
+          7
+        ],
+        "rotation": 0,
+        "item": {
+          "data": {
+            "type": "item",
+            "formula": "a",
+            "is_theorem": true,
+            "assumptions": [
+              "a"
+            ],
+            "position": [
+              560.0,
+              240.0
+            ]
+          },
+          "progress": 1.0
+        }
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          18,
+          7
+        ],
+        "rotation": 0,
+        "item": {
+          "data": {
+            "type": "item",
+            "formula": "a",
+            "is_theorem": true,
+            "assumptions": [
+              "a"
+            ],
+            "position": [
+              592.0,
+              240.0
+            ]
+          },
+          "progress": 1.0
+        }
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          16,
+          17
+        ],
+        "rotation": 0,
+        "item": {
+          "data": {
+            "type": "item",
+            "formula": "b",
+            "is_theorem": true,
+            "assumptions": [
+              "b"
+            ],
+            "position": [
+              528.0,
+              560.0
+            ]
+          },
+          "progress": 1.0
+        }
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          17,
+          17
+        ],
+        "rotation": 0,
+        "item": {
+          "data": {
+            "type": "item",
+            "formula": "b",
+            "is_theorem": true,
+            "assumptions": [
+              "b"
+            ],
+            "position": [
+              560.0,
+              560.0
+            ]
+          },
+          "progress": 1.0
+        }
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          18,
+          17
+        ],
+        "rotation": 0,
+        "item": {
+          "data": {
+            "type": "item",
+            "formula": "b",
+            "is_theorem": true,
+            "assumptions": [
+              "b"
+            ],
+            "position": [
+              592.0,
+              560.0
+            ]
+          },
+          "progress": 1.0
+        }
+      },
+      {
+        "type": "generator",
+        "origin": [
+          15,
+          3
+        ],
+        "rotation": 3,
+        "produced_letter": "b"
+      },
+      {
+        "type": "generator",
+        "origin": [
+          15,
+          19
+        ],
+        "rotation": 3,
+        "produced_letter": "a"
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          18,
+          4
+        ],
+        "rotation": 1,
+        "item": {
+          "data": {
+            "type": "item",
+            "formula": "b",
+            "is_theorem": false,
+            "assumptions": [],
+            "position": [
+              592.0,
+              144.0
+            ]
+          },
+          "progress": 1.0
+        }
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          18,
+          5
+        ],
+        "rotation": 0,
+        "item": {
+          "data": {
+            "type": "item",
+            "formula": "b",
+            "is_theorem": false,
+            "assumptions": [],
+            "position": [
+              592.0,
+              176.0
+            ]
+          },
+          "progress": 1.0
+        }
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          18,
+          20
+        ],
+        "rotation": 3,
+        "item": {
+          "data": {
+            "type": "item",
+            "formula": "a",
+            "is_theorem": false,
+            "assumptions": [],
+            "position": [
+              592.0,
+              656.0
+            ]
+          },
+          "progress": 1.0
+        }
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          18,
+          19
+        ],
+        "rotation": 0,
+        "item": {
+          "data": {
+            "type": "item",
+            "formula": "a",
+            "is_theorem": false,
+            "assumptions": [],
+            "position": [
+              592.0,
+              624.0
+            ]
+          },
+          "progress": 1.0
+        }
+      },
+      {
+        "type": "or_elimination",
+        "origin": [
+          23,
+          10
+        ],
+        "rotation": 0,
+        "items": {
+          "inputs": [
+            {
+              "type": "item",
+              "formula": "b + a",
+              "is_theorem": true,
+              "assumptions": [
+                "a"
+              ],
+              "position": [
+                752.0,
+                336.0
+              ]
+            },
+            {
+              "type": "item",
+              "formula": "b + a",
+              "is_theorem": true,
+              "assumptions": [
+                "b"
+              ],
+              "position": [
+                752.0,
+                464.0
+              ]
+            },
+            {
+              "type": "item",
+              "formula": "a + b",
+              "is_theorem": true,
+              "assumptions": [
+                "a + b"
+              ],
+              "position": [
+                752.0,
+                400.0
+              ]
+            }
+          ],
+          "output": null,
+          "progress": 2.6519999999999966
+        }
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          22,
+          6
+        ],
+        "rotation": 1,
+        "item": {
+          "data": {
+            "type": "item",
+            "formula": "b + a",
+            "is_theorem": true,
+            "assumptions": [
+              "a"
+            ],
+            "position": [
+              720.0,
+              208.0
+            ]
+          },
+          "progress": 1.0
+        }
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          22,
+          7
+        ],
+        "rotation": 1,
+        "item": {
+          "data": {
+            "type": "item",
+            "formula": "b + a",
+            "is_theorem": true,
+            "assumptions": [
+              "a"
+            ],
+            "position": [
+              720.0,
+              240.0
+            ]
+          },
+          "progress": 1.0
+        }
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          22,
+          8
+        ],
+        "rotation": 1,
+        "item": {
+          "data": {
+            "type": "item",
+            "formula": "b + a",
+            "is_theorem": true,
+            "assumptions": [
+              "a"
+            ],
+            "position": [
+              720.0,
+              272.0
+            ]
+          },
+          "progress": 1.0
+        }
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          22,
+          9
+        ],
+        "rotation": 1,
+        "item": {
+          "data": {
+            "type": "item",
+            "formula": "b + a",
+            "is_theorem": true,
+            "assumptions": [
+              "a"
+            ],
+            "position": [
+              720.0,
+              304.0
+            ]
+          },
+          "progress": 1.0
+        }
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          22,
           10
         ],
         "rotation": 0,
         "item": {
           "data": {
             "type": "item",
-            "formula": "n",
-            "is_theorem": false,
-            "assumptions": [],
+            "formula": "b + a",
+            "is_theorem": true,
+            "assumptions": [
+              "a"
+            ],
             "position": [
-              459.36,
+              720.0,
               336.0
             ]
           },
-          "progress": 0.8550000000000005
+          "progress": 1.0
         }
       },
       {
         "type": "conveyor",
         "origin": [
-          15,
+          22,
+          18
+        ],
+        "rotation": 3,
+        "item": {
+          "data": {
+            "type": "item",
+            "formula": "b + a",
+            "is_theorem": true,
+            "assumptions": [
+              "b"
+            ],
+            "position": [
+              720.0,
+              592.0
+            ]
+          },
+          "progress": 1.0
+        }
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          22,
+          17
+        ],
+        "rotation": 3,
+        "item": {
+          "data": {
+            "type": "item",
+            "formula": "b + a",
+            "is_theorem": true,
+            "assumptions": [
+              "b"
+            ],
+            "position": [
+              720.0,
+              560.0
+            ]
+          },
+          "progress": 1.0
+        }
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          22,
+          16
+        ],
+        "rotation": 3,
+        "item": {
+          "data": {
+            "type": "item",
+            "formula": "b + a",
+            "is_theorem": true,
+            "assumptions": [
+              "b"
+            ],
+            "position": [
+              720.0,
+              528.0
+            ]
+          },
+          "progress": 1.0
+        }
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          22,
+          15
+        ],
+        "rotation": 3,
+        "item": {
+          "data": {
+            "type": "item",
+            "formula": "b + a",
+            "is_theorem": true,
+            "assumptions": [
+              "b"
+            ],
+            "position": [
+              720.0,
+              496.0
+            ]
+          },
+          "progress": 1.0
+        }
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          22,
+          14
+        ],
+        "rotation": 0,
+        "item": {
+          "data": {
+            "type": "item",
+            "formula": "b + a",
+            "is_theorem": true,
+            "assumptions": [
+              "b"
+            ],
+            "position": [
+              720.0,
+              464.0
+            ]
+          },
+          "progress": 1.0
+        }
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          26,
+          12
+        ],
+        "rotation": 0
+      },
+      {
+        "type": "binary_connective",
+        "origin": [
+          28,
+          9
+        ],
+        "rotation": 0,
+        "items": {
+          "inputs": [
+            {
+              "type": "item",
+              "formula": "a",
+              "is_theorem": false,
+              "assumptions": [],
+              "position": [
+                883.0,
+                304.0
+              ]
+            },
+            {
+              "type": "item",
+              "formula": "b",
+              "is_theorem": false,
+              "assumptions": [],
+              "position": [
+                883.0,
+                368.0
+              ]
+            }
+          ],
+          "output": null,
+          "progress": 0.11000000000000001
+        },
+        "selected_connective": "OR"
+      },
+      {
+        "type": "implication_intro",
+        "origin": [
+          31,
           10
+        ],
+        "rotation": 0,
+        "items": {
+          "inputs": [
+            {
+              "type": "item",
+              "formula": "a + b",
+              "is_theorem": false,
+              "assumptions": [],
+              "position": [
+                1008.0,
+                336.0
+              ]
+            },
+            {
+              "type": "item",
+              "formula": "b + a",
+              "is_theorem": true,
+              "assumptions": [
+                "a + b"
+              ],
+              "position": [
+                1008.0,
+                400.0
+              ]
+            }
+          ],
+          "output": null,
+          "progress": 1.6609999999999996
+        }
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          27,
+          12
+        ],
+        "rotation": 0
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          28,
+          12
+        ],
+        "rotation": 0,
+        "item": {
+          "data": {
+            "type": "item",
+            "formula": "b + a",
+            "is_theorem": true,
+            "assumptions": [
+              "a + b"
+            ],
+            "position": [
+              901.088,
+              400.0
+            ]
+          },
+          "progress": 0.6590000000000003
+        }
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          29,
+          12
+        ],
+        "rotation": 0
+      },
+      {
+        "type": "or_intro",
+        "origin": [
+          19,
+          17
+        ],
+        "rotation": 0,
+        "items": {
+          "inputs": [
+            {
+              "type": "item",
+              "formula": "b",
+              "is_theorem": true,
+              "assumptions": [
+                "b"
+              ],
+              "position": [
+                624.0,
+                560.0
+              ]
+            },
+            {
+              "type": "item",
+              "formula": "a",
+              "is_theorem": false,
+              "assumptions": [],
+              "position": [
+                624.0,
+                624.0
+              ]
+            }
+          ],
+          "output": null,
+          "progress": 2.5199999999999965
+        }
+      },
+      {
+        "type": "or_intro",
+        "origin": [
+          19,
+          5
+        ],
+        "rotation": 0,
+        "items": {
+          "inputs": [
+            {
+              "type": "item",
+              "formula": "b",
+              "is_theorem": false,
+              "assumptions": [],
+              "position": [
+                624.0,
+                176.0
+              ]
+            },
+            {
+              "type": "item",
+              "formula": "a",
+              "is_theorem": true,
+              "assumptions": [
+                "a"
+              ],
+              "position": [
+                624.0,
+                240.0
+              ]
+            }
+          ],
+          "output": null,
+          "progress": 2.5199999999999965
+        }
+      },
+      {
+        "type": "generator",
+        "origin": [
+          26,
+          6
+        ],
+        "rotation": 0,
+        "produced_letter": "a"
+      },
+      {
+        "type": "generator",
+        "origin": [
+          23,
+          6
+        ],
+        "rotation": 0,
+        "produced_letter": "b"
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          27,
+          9
+        ],
+        "rotation": 0,
+        "item": {
+          "data": {
+            "type": "item",
+            "formula": "a",
+            "is_theorem": false,
+            "assumptions": [],
+            "position": [
+              880.0,
+              272.608
+            ]
+          },
+          "progress": 0.019
+        }
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          24,
+          9
+        ],
+        "rotation": 0
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          25,
+          9
+        ],
+        "rotation": 0,
+        "item": {
+          "data": {
+            "type": "item",
+            "formula": "b",
+            "is_theorem": false,
+            "assumptions": [],
+            "position": [
+              784.6080000000001,
+              304.0
+            ]
+          },
+          "progress": 0.019
+        }
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          26,
+          9
+        ],
+        "rotation": 1,
+        "item": {
+          "data": {
+            "type": "item",
+            "formula": "b",
+            "is_theorem": false,
+            "assumptions": [],
+            "position": [
+              817.216,
+              304.0
+            ]
+          },
+          "progress": 0.038
+        }
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          26,
+          10
+        ],
+        "rotation": 1,
+        "item": {
+          "data": {
+            "type": "item",
+            "formula": "b",
+            "is_theorem": false,
+            "assumptions": [],
+            "position": [
+              847.9999999999999,
+              305.856
+            ]
+          },
+          "progress": 0.057999999999999996
+        }
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          26,
+          11
+        ],
+        "rotation": 0,
+        "item": {
+          "data": {
+            "type": "item",
+            "formula": "b",
+            "is_theorem": false,
+            "assumptions": [],
+            "position": [
+              848.0000000000001,
+              338.40000000000003
+            ]
+          },
+          "progress": 0.07500000000000001
+        }
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          27,
+          11
+        ],
+        "rotation": 0,
+        "item": {
+          "data": {
+            "type": "item",
+            "formula": "b",
+            "is_theorem": false,
+            "assumptions": [],
+            "position": [
+              850.912,
+              368.0
+            ]
+          },
+          "progress": 0.09100000000000001
+        }
+      },
+      {
+        "type": "assumption",
+        "origin": [
+          14,
+          11
+        ],
+        "rotation": 0,
+        "items": {
+          "inputs": [
+            null
+          ],
+          "output": null,
+          "progress": 0.0
+        }
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          13,
+          12
         ],
         "rotation": 0
       },
@@ -42,54 +1311,24 @@
         "type": "conveyor",
         "origin": [
           16,
-          10
+          12
         ],
         "rotation": 0,
         "item": {
           "data": {
             "type": "item",
-            "formula": "n",
-            "is_theorem": false,
-            "assumptions": [],
+            "formula": "a + b",
+            "is_theorem": true,
+            "assumptions": [
+              "a + b"
+            ],
             "position": [
-              522.5600000000001,
-              336.0
+              519.008,
+              400.0
             ]
           },
-          "progress": 0.8300000000000004
+          "progress": 0.7190000000000003
         }
-      },
-      {
-        "type": "conveyor",
-        "origin": [
-          17,
-          10
-        ],
-        "rotation": 0
-      },
-      {
-        "type": "conveyor",
-        "origin": [
-          18,
-          10
-        ],
-        "rotation": 0
-      },
-      {
-        "type": "conveyor",
-        "origin": [
-          19,
-          10
-        ],
-        "rotation": 1
-      },
-      {
-        "type": "conveyor",
-        "origin": [
-          19,
-          11
-        ],
-        "rotation": 1
       },
       {
         "type": "conveyor",
@@ -97,7 +1336,174 @@
           19,
           12
         ],
-        "rotation": 1
+        "rotation": 0,
+        "item": {
+          "data": {
+            "type": "item",
+            "formula": "a + b",
+            "is_theorem": true,
+            "assumptions": [
+              "a + b"
+            ],
+            "position": [
+              619.904,
+              400.0
+            ]
+          },
+          "progress": 0.8720000000000004
+        }
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          20,
+          12
+        ],
+        "rotation": 0
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          21,
+          12
+        ],
+        "rotation": 0
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          22,
+          12
+        ],
+        "rotation": 0,
+        "item": {
+          "data": {
+            "type": "item",
+            "formula": "a + b",
+            "is_theorem": true,
+            "assumptions": [
+              "a + b"
+            ],
+            "position": [
+              714.4960000000001,
+              400.0
+            ]
+          },
+          "progress": 0.8280000000000004
+        }
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          18,
+          12
+        ],
+        "rotation": 0
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          17,
+          12
+        ],
+        "rotation": 0
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          30,
+          10
+        ],
+        "rotation": 0,
+        "item": {
+          "data": {
+            "type": "item",
+            "formula": "a + b",
+            "is_theorem": false,
+            "assumptions": [],
+            "position": [
+              947.52,
+              336.0
+            ]
+          },
+          "progress": 0.11000000000000001
+        }
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          30,
+          12
+        ],
+        "rotation": 0,
+        "item": {
+          "data": {
+            "type": "item",
+            "formula": "b + a",
+            "is_theorem": true,
+            "assumptions": [
+              "a + b"
+            ],
+            "position": [
+              976.0,
+              400.0
+            ]
+          },
+          "progress": 1.0
+        }
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          36,
+          11
+        ],
+        "rotation": 0
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          37,
+          11
+        ],
+        "rotation": 0
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          34,
+          11
+        ],
+        "rotation": 0
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          35,
+          11
+        ],
+        "rotation": 0,
+        "item": {
+          "data": {
+            "type": "item",
+            "formula": "a + b -> b + a",
+            "is_theorem": true,
+            "assumptions": [],
+            "position": [
+              1125.088,
+              368.0
+            ]
+          },
+          "progress": 0.6590000000000003
+        }
+      },
+      {
+        "type": "conveyor",
+        "origin": [
+          38,
+          11
+        ],
+        "rotation": 0
       }
     ]
   }

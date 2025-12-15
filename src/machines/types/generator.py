@@ -118,3 +118,10 @@ class Generator(Machine, IUpdatable, IProvider):
 
             screen.blit(text_surface, text_rect)
 
+    # save / load stuff
+    def _add_custom_data(self, data: dict):
+        data["produced_letter"] = self.produced_letter
+    
+    def _load_custom_data(self, data: dict):
+        self.produced_letter = data.get("produced_letter", None)
+

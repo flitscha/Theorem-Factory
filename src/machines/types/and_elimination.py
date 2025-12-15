@@ -79,3 +79,10 @@ class AndElimination(LogicMachine):
             ),
             assumptions=assumptions
         )
+
+    # save / load stuff
+    def _add_custom_data(self, data: dict):
+        data["selected_side"] = self.selected_side
+
+    def _load_custom_data(self, data: dict):
+        self.selected_side = data.get("selected_side", 0)

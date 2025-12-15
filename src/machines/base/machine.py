@@ -159,8 +159,13 @@ class Machine:
             "rotation": self.rotation,
         }
         self._add_item_data(data)
+        self._add_custom_data(data)
         return data
 
     def _add_item_data(self, data: dict):
         """Hook for subclasses that contain items."""
+        pass
+
+    def _add_custom_data(self, data: dict):
+        """Hook for subclasses that have custom selection/state"""
         pass

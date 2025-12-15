@@ -65,7 +65,7 @@ class Item:
             "type": "item",
             "formula": str(self.formula),
             "is_theorem": self.is_theorem,
-            "assumptions": list(self.assumptions),
+            "assumptions": [str(a) for a in self.assumptions],
             "position": [self.position.x, self.position.y],
         }
 
