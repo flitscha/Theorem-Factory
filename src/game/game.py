@@ -13,6 +13,7 @@ from machines.base.machine_database import database as machine_data
 from gui.machine_selection import MachineSelectionBar
 from gui.menu.pause_menu import PauseMenu
 from config.settings_manager import settings_manager
+from core.performance_tracker import performance_tracker
 
 class Game:
     """Main game class that coordinates all systems"""
@@ -91,6 +92,7 @@ class Game:
         # Render game world
         self.renderer.render_game_world(self.grid, self.camera)
         
+        performance_tracker.start("render.ui")
         # render highlights
         if self.game_state.current_state == GameState.PLAYING:
             self.renderer.render_highlights(self.grid, self.camera, self.machine_selection_bar.selected_machine_id)
@@ -110,6 +112,7 @@ class Game:
         
         # Render debug overlay
         self.renderer.render_debug_info(self.debug, self.camera, self.clock)
+        performance_tracker.end("render.ui")
         
         # Present frame
         self.renderer.present()
@@ -117,14 +120,9 @@ class Game:
     def run(self):
         """Main game loop"""
         while self.running:
+            
             # Handle input
             events = pygame.event.get()
-
-            # temporary test of the to_data() function
-            for event in events:
-                if event.type == pygame.KEYDOWN and event.key == pygame.K_o:
-                    import json
-                    print(json.dumps(self.to_data(), indent=2))
 
             self.input_handler.update(events)
 
@@ -138,10 +136,16 @@ class Game:
                 
             # Update game state
             dt = self.clock.tick(60) / 1000.0
+            performance_tracker.start("update.total")
             self.update(dt)
+            performance_tracker.end("update.total")
             
             # Render frame
+            performance_tracker.start("render.total")
             self.render()
+            performance_tracker.end("render.total")
+
+            performance_tracker.end_frame()
 
         # save the settings, when quitting the game
         settings_manager.save_to_file() 

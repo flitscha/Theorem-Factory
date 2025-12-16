@@ -1,4 +1,5 @@
 from grid.interfaces import IUpdatable
+from core.performance_tracker import performance_tracker
 
 class UpdateSystem:
     """Coordinates updates for all grid objects"""
@@ -10,10 +11,14 @@ class UpdateSystem:
     def update(self, dt: float):
         """Update all systems"""
         # Update all updatable blocks
+        performance_tracker.start("update.blocks")
         for block in self.grid_manager.blocks.values():
             if isinstance(block, IUpdatable):
                 # Call update method if block implements IUpdatable
                 block.update(dt)
+        performance_tracker.end("update.blocks")
         
         # Update item transfer system
+        performance_tracker.start("update.item_transfer")
         self.item_transfer_system.update(dt)
+        performance_tracker.end("update.item_transfer")

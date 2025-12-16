@@ -47,6 +47,7 @@ settings_manager = SettingsManager()
 settings_manager.register("debug.show_fps", True)
 settings_manager.register("debug.show_coords", False)
 settings_manager.register("debug.show_ports", False)
+settings_manager.register("debug.show_performance", False)
 
 # load the settings when starting the game
 settings_manager.load_from_file()

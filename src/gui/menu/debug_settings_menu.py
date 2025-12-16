@@ -28,7 +28,8 @@ class DebugSettingsMenu(AbstractMenu):
         settings_list = [
             ("debug.show_fps", "FPS"),
             ("debug.show_coords", "Coords"),
-            ("debug.show_ports", "Ports")
+            ("debug.show_ports", "Ports"),
+            ("debug.show_performance", "Show performance"),
         ]
 
         for i, (path, label) in enumerate(settings_list):
