@@ -1,4 +1,5 @@
 import pygame
+from machines.menu.elements.tool_tip import Tooltip
 
 class ItemSlot:
     # An item slot (used in machine menus) to display an item. Optionally with a label on the left. (e.g "Input", "Output")
@@ -8,8 +9,29 @@ class ItemSlot:
         self.item = item
         self.hovered = False
 
-    def update(self, mouse_pos):
+        self.small_font = pygame.font.SysFont(None, 20)
+        self.tooltip = Tooltip(self.small_font)
+
+
+    def update(self, mouse_pos=None):
+        if mouse_pos is None:
+            mouse_pos = pygame.mouse.get_pos()
+
         self.hovered = self.rect.collidepoint(mouse_pos)
+
+        # update Tooltip
+        self.tooltip.hide()
+        if self.hovered and self.item:
+            if self.item.is_theorem:
+                lines = ["Theorem: " + str(self.item.formula)]
+            else:
+                lines = ["Formula: " + str(self.item.formula)]
+            if self.item.assumptions:
+                lines.append("")
+                lines.append("Assumptions:")
+                lines.extend([str(a) for a in self.item.assumptions])
+            self.tooltip.show(lines, (mouse_pos[0] + 16, mouse_pos[1] + 12))
+
 
     def draw(self, surface, font, small_font):
         # draw border
@@ -28,3 +50,7 @@ class ItemSlot:
             empty_txt = small_font.render("–", True, (120, 120, 120))
             surface.blit(empty_txt, (self.rect.centerx - empty_txt.get_width() // 2,
                                      self.rect.centery - empty_txt.get_height() // 2))
+
+        # draw the tooltip
+        self.tooltip.draw(surface)
+

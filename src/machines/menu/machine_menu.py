@@ -67,6 +67,7 @@ class MachineMenu(AbstractMenu):
 
         # update slot item references
         for slot in self.slots:
+            slot.update()
             if slot.label == "output":
                 if self.machine.output_item:
                     slot.item = self.machine.output_item
@@ -85,30 +86,12 @@ class MachineMenu(AbstractMenu):
         if self._output_flash_counter > 0:
             self._output_flash_counter -= 1
 
-        # Hover logic for tooltip
-        mouse_pos = pygame.mouse.get_pos()
-        self.tooltip.hide()
-        for slot in self.slots:
-            slot.update(mouse_pos)
-            if slot.hovered and slot.item:
-                if slot.item.is_theorem:
-                    lines = ["Theorem: " + str(slot.item.formula)]
-                else:
-                    lines = ["Formula: " + str(slot.item.formula)]
-                if slot.item.assumptions:
-                    lines.append("")
-                    lines.append("Assumptions:")
-                    lines.extend([str(a) for a in slot.item.assumptions])
-                self.tooltip.show(lines, (mouse_pos[0] + 16, mouse_pos[1] + 12))
-                break
-
       
     def draw_progress_bar(self, surface, rect, progress):
         """Draw a simple progress bar [0.0 - 1.0]."""
         pygame.draw.rect(surface, (100, 100, 100), rect)
         fill_width = int(rect.width * max(0, min(1, progress)))
         pygame.draw.rect(surface, (80, 180, 250), (rect.x, rect.y, fill_width, rect.height))
-
 
 
     def draw(self):
@@ -147,7 +130,8 @@ class MachineMenu(AbstractMenu):
             hover_rect = prev_rect.inflate(60, 20)
             self.screen.blit(prev_render, prev_rect)
 
-            # Tooltip on hover
+            # Tooltip to show the assumptions of the previous produced item
+            self.tooltip.hide()
             mouse_pos = pygame.mouse.get_pos()
             if hover_rect.collidepoint(mouse_pos) and item.assumptions:
                 if item.assumptions:
@@ -160,3 +144,4 @@ class MachineMenu(AbstractMenu):
 
         # Tooltip drawn last (on top)
         self.tooltip.draw(self.screen)
+
