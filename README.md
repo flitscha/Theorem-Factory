@@ -6,6 +6,13 @@ In the example image below, the game shows a proof of the formula **`(a or b) im
 
 <img width="1281" height="718" alt="image" src="https://github.com/user-attachments/assets/c6b5194f-e575-47d4-b2c7-1e327dda60df" />
 
+## Running the Game
+
+From the project root directory, run:
+
+```bash
+python3 src/main.py
+```
 
 ## What is Natural Deduction?
 
