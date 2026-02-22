@@ -145,3 +145,4 @@ class InputProcessor:
             self.placement_preview.start_preview(machine_id)
             self.placement_preview.set_rotation(machine.rotation)
             self.current_tool = self.placement_tool
+

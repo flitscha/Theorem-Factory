@@ -162,3 +162,4 @@ class Game:
             data["grid"], 
             machine_database=machine_data
         )
+

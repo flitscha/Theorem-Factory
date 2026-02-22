@@ -3,7 +3,6 @@ from core.utils import get_grid_coordinates_when_placing_machine, get_mouse_grid
 from machines.types.generator import Generator
 from machines.menu.generator_menu import GeneratorMenu
 from machines.types.conveyor_belt.conveyor_belt import ConveyorBelt
-from core.utils import get_mouse_grid_pos
 from machines.types.binary_connective import BinaryConnective
 from machines.menu.binary_connective_menu import BinaryConnectiveMenu
 from machines.menu.and_elimination_menu import AndEliminationMenu
@@ -22,16 +21,22 @@ class MachineManager:
         self.machine_database = machine_database
     
     def try_place_machine(self, mouse_pos):
-        """Attempt to place a machine at the given position"""
+        """
+        Attempt to place a machine at the given position
+        Returns: 
+            0 if it was sucessful
+            1 if the position is occupied
+            2 if you tried to place at GUI-area, of no machine_id is selected
+        """
         # Don't place if clicking on GUI area
         if mouse_pos[1] > SCREEN_HEIGHT - MACHINE_SELECTION_GUI_HEIGHT:
-            return False
+            return 2
             
         machine_id = self.placement_preview.active_preview
         rotation = self.placement_preview.rotation
         
         if not machine_id:
-            return False
+            return 2
             
         # Get machine data and calculate rotated size
         data = self.machine_database.get(machine_id)
@@ -49,12 +54,12 @@ class MachineManager:
                 self.grid.remove_block(grid_x, grid_y)
             else:
                 # if we cannot overwrite, do nothing
-                return False
+                return 1
 
         # Place new machine
         machine = data.cls(data, rotation=rotation)
         self.grid.add_block(grid_x, grid_y, machine)
-        return True
+        return 0
     
         
     def remove_machine_at_mouse(self):
@@ -118,3 +123,4 @@ class MachineManager:
         self.grid.connection_system.update_neighboring_belts_when_placing(machine)
         self.grid.connection_system.update_connections_at(grid_x, grid_y)
         return True
+

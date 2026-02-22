@@ -20,8 +20,10 @@ class PlacementTool(AbstractTool):
 
             # place machines
             if self.placement_preview.active_preview:
-                if self.machine_manager.try_place_machine(mouse_pos):
-                    self.is_placing = True
+                s = self.machine_manager.try_place_machine(mouse_pos)
+                # when the left mouse button is held, keep placing, if the current placement was either succesful,
+                # or if the current position is occupied. (state s=0 or s=1)
+                self.is_placing = (s == 0 or s == 1)
 
 
     def update(self, input_handler):
@@ -30,3 +32,4 @@ class PlacementTool(AbstractTool):
             self.machine_manager.try_place_machine(pygame.mouse.get_pos())
         else:
             self.is_placing = False
+
