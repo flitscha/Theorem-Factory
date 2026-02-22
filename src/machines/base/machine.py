@@ -90,6 +90,9 @@ class Machine:
         """rotate the current image by n * 90°"""
         if self.image:
             self.image = pygame.transform.rotate(self.image, -90 * n)
+
+    def get_info_text(self) -> str:
+        return self.data.description
     
     def update(self):
         pass

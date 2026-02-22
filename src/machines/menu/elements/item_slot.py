@@ -9,7 +9,7 @@ class ItemSlot:
         self.item = item
         self.hovered = False
 
-        self.small_font = pygame.font.SysFont(None, 20)
+        self.small_font = pygame.font.SysFont(None, 24)
         self.tooltip = Tooltip(self.small_font)
 
 

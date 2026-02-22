@@ -8,7 +8,7 @@ class GeneratorMenu(AbstractMenu):
         super().__init__(screen, size)
         self.generator = generator_instance
         self.font = pygame.font.SysFont(None, 28)
-        self.small_font = pygame.font.SysFont(None, 22)
+        self.small_font = pygame.font.SysFont(None, 24)
         self.variable_buttons = [] # variables 'a' - 'z', excluding 't' and 'f'
         self.constant_buttons = [] # constants 'T' and 'F'
         self.t_mode_buttons = [] # 'T' can be a formula, of a theorem

@@ -2,6 +2,7 @@ import pygame
 from machines.menu.abstract_menu import AbstractMenu
 from machines.menu.elements.tool_tip import Tooltip
 from machines.menu.elements.item_slot import ItemSlot
+from machines.menu.elements.info import Info
 
 class MachineMenu(AbstractMenu):
     """
@@ -22,12 +23,15 @@ class MachineMenu(AbstractMenu):
         super().__init__(screen, size)
         self.machine = machine
         self.font = pygame.font.SysFont(None, 28)
-        self.small_font = pygame.font.SysFont(None, 20)
+        self.small_font = pygame.font.SysFont(None, 24)
         self.progress = 0.0
         self.title_str = machine.data.name if hasattr(self.machine, "data") else machine.__class__.__name__
         self.input_start_y = self._calculate_input_start_y()
-        self.tooltip = Tooltip(self.small_font)
+        self.tooltip = Tooltip(self.small_font) # tooltip to show the assumptions of the previous produced item
 
+        rect = pygame.Rect(self.rect.x + self.PADDING, self.rect.y + self.PADDING, 24, 24)
+        self.machine_info = Info(rect=rect, text=self.machine.get_info_text())
+        
         self._last_seen_prev = self.machine.last_output_item
         self._output_flash_counter = 0
 
@@ -47,7 +51,7 @@ class MachineMenu(AbstractMenu):
         # Inputs
         for idx, role in enumerate(self.machine.input_roles):
             rect = pygame.Rect(
-                self.rect.x + self.PADDING + 100,
+                self.rect.x + self.PADDING + 125,
                 self.input_start_y + idx * (self.SLOT_SIZE + self.GAP),
                 self.SLOT_SIZE, self.SLOT_SIZE
             )
@@ -63,6 +67,7 @@ class MachineMenu(AbstractMenu):
     
     def update(self):
         super().update()
+        self.machine_info.update()
         self.progress = self.machine.timer / self.machine.processing_duration
 
         # update slot item references
@@ -141,6 +146,9 @@ class MachineMenu(AbstractMenu):
         else:
             prev_render = self.small_font.render(prev_txt + "–", True, (220, 220, 220))
             self.screen.blit(prev_render, (self.rect.x + self.PADDING, prev_y))
+
+        # machine info
+        self.machine_info.draw(self.screen)
 
         # Tooltip drawn last (on top)
         self.tooltip.draw(self.screen)

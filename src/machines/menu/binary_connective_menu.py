@@ -8,7 +8,7 @@ class BinaryConnectiveMenu(AbstractMenu):
         super().__init__(screen, size)
         self.machine = machine_instance
         self.font = pygame.font.SysFont(None, 28)
-        self.small_font = pygame.font.SysFont(None, 22)
+        self.small_font = pygame.font.SysFont(None, 24)
         self.buttons = []
         self._create_buttons()
 

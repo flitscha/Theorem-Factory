@@ -16,13 +16,14 @@ from machines.types.or_elimination import OrElimination
 from machines.types.double_not_elimination import DoubleNotElimination
 
 class MachineData:
-    def __init__(self, id, name, size, sprite_path, cls, icon_path=None):
+    def __init__(self, id, name, size, sprite_path, cls, icon_path=None, description=""):
         self.id = id
         self.name = name
         self.size = size
         self.sprite_path = sprite_path
         self.icon_path = icon_path or sprite_path
         self.cls = cls
+        self.description = description
         self.image = None
         self.icon_image = None
 
@@ -52,7 +53,8 @@ database.register_machine(MachineData(
     size=(3, 3),
     sprite_path="assets/sprites/generator.png",
     icon_path=None, # add later
-    cls=Generator # class
+    cls=Generator, # class
+    description="Choose which letter should be generated"
 ))
 
 # Conveyor Belt
@@ -72,7 +74,11 @@ database.register_machine(MachineData(
     size=(2, 2),
     sprite_path="assets/sprites/negator.png",
     icon_path=None,
-    cls=Negator
+    cls=Negator,
+    description=(
+        "Machine to negate a formula \n"
+        "the input must be a formula (Not a Theorem!)"
+    )
 ))
 
 # Binary connectives
@@ -82,7 +88,11 @@ database.register_machine(MachineData(
     size=(2, 3),
     sprite_path="assets/sprites/binary_connective.png",
     icon_path=None,
-    cls=BinaryConnective
+    cls=BinaryConnective,
+    description=(
+        "Machine to connect two formulas \n"
+        "both inputs must be formulas (Not Theorems)"
+    )
 ))
 
 # or introduction
@@ -93,7 +103,13 @@ database.register_machine(MachineData(
     size=(3, 3),
     sprite_path="assets/sprites/or_intro.png",
     icon_path=None,
-    cls=OrIntroduction
+    cls=OrIntroduction,
+    description=(
+        "Machine to prove a Or-Statement \n"
+        "One of the two inputs must be a theorem. \n"
+        "The other input can be a formula or theorem. \n"
+        "The output will be the or-connection of the two inputs as a Theorem."
+    )
 ))
 
 # and introduction
@@ -103,7 +119,12 @@ database.register_machine(MachineData(
     size=(3, 3),
     sprite_path="assets/sprites/and_intro.png",
     icon_path=None,
-    cls=AndIntroduction
+    cls=AndIntroduction,
+    description=(
+        "Machine to prova a And-Statement \n"
+        "Both inputs must be theorems. \n"
+        "The output will be the And-connection of the two inputs."
+    )
 ))
 
 # and elimination
@@ -113,7 +134,12 @@ database.register_machine(MachineData(
     size=(3, 3),
     sprite_path="assets/sprites/and_elim.png",
     icon_path=None,
-    cls=AndElimination
+    cls=AndElimination,
+    description=(
+        "Machine to extract information of an And-Theorem \n"
+        "The input must be a theorem of the form 'A and B'.\n"
+        "You can select the output: Either 'A' or 'B'."
+    )
 ))
 
 # assumption machine
@@ -123,7 +149,12 @@ database.register_machine(MachineData(
     size=(2, 3),
     sprite_path="assets/sprites/assumption.png",
     icon_path=None,
-    cls=Assumption
+    cls=Assumption,
+    description=(
+        "Machine to make assumptions. \n"
+        "The input must be a formula (not a theorem). \n"
+        "The output will be the same thing, but as Theorem that relies on its own assumption."
+    )
 ))
 
 # implication introduction
@@ -133,7 +164,13 @@ database.register_machine(MachineData(
     size=(3, 3),
     sprite_path="assets/sprites/implication_intro.png",
     icon_path=None,
-    cls=ImplicationIntroduction
+    cls=ImplicationIntroduction,
+    description=(
+        "Machine to prove an Implication-Theorem. \n"
+        "The premise-input must be a formula. \n"
+        "The conclusion-input must be a theorem that has the premise in its assumptions. \n"
+        "The output will be 'premise implies conclusion'"
+    )
 ))
 
 # implication elimination
@@ -143,7 +180,13 @@ database.register_machine(MachineData(
     size=(3, 3),
     sprite_path="assets/sprites/implication_elim.png",
     icon_path=None,
-    cls=ImplicationElimination
+    cls=ImplicationElimination,
+    description=(
+        "Machine to extract information from an Implication-Theorem. \n"
+        "The implication-input must be a implication-theorem. \n"
+        "The premise-input must be the premise of the implication (As theorem) \n"
+        "The output will be the conclusion of the implication."
+    )
 ))
 
 # not introduction
@@ -153,7 +196,13 @@ database.register_machine(MachineData(
     size=(3, 3),
     sprite_path="assets/sprites/not_intro.png",
     icon_path=None,
-    cls=NotIntroduction
+    cls=NotIntroduction,
+    description=(
+        "Machine to prove a Not-Theorem. \n"
+        "The Assumption-input 'A' must be a formula (not a theorem). \n"
+        "The False-Input must be 'False' as theorem with 'A' in its assumptions. \n"
+        "The output will be the theorem 'not A'"
+    )
 ))
 
 # false introduction
@@ -163,7 +212,13 @@ database.register_machine(MachineData(
     size=(3, 3),
     sprite_path="assets/sprites/false_intro.png",
     icon_path=None,
-    cls=FalseIntroduction
+    cls=FalseIntroduction,
+    description=(
+        "Machine to prove the Theorem 'False'. \n"
+        "The inputs must be theorems that contradict each other, \n"
+        "meaning input1 = 'A'; input2 = 'not A'. \n"
+        "The output will be 'False' as theorem."
+    )
 ))
 
 # or elimination
@@ -173,7 +228,14 @@ database.register_machine(MachineData(
     size=(3, 5),
     sprite_path="assets/sprites/or_elim.png",
     icon_path=None,
-    cls=OrElimination
+    cls=OrElimination,
+    description=(
+        "Machine to extract information from an or-theorem. \n"
+        "The middle input must be a theorem of the form 'A or B'. \n"
+        "The input above must be a theorem of the form 'A -> C'. \n"
+        "The input below must be a theorem of the form 'B -> C'. \n"
+        "The output will be the theorem 'C'."
+    )
 ))
 
 # double not elimination
@@ -183,5 +245,10 @@ database.register_machine(MachineData(
     size=(3, 3),
     sprite_path="assets/sprites/double_not_elim.png",
     icon_path=None,
-    cls=DoubleNotElimination
+    cls=DoubleNotElimination,
+    description=(
+        "Machine to get rid of double negations. \n"
+        "The input must be a theorem of the form 'not not A'. \n"
+        "The output will be the theorem 'A'."
+    )
 ))
