@@ -51,9 +51,12 @@ class LogicMachine(Machine, IUpdatable, IReceiver, IProvider):
         if self._ready_to_process():
             self.timer += dt
             if self.timer >= self.processing_duration:
-                self.output_item = self._process_items()
-                # reset
-                self._reset_inputs()
+                if self.output_item: # if there is already an output item, dont process
+                    self.timer = self.processing_duration
+                else:
+                    self.output_item = self._process_items()
+                    # reset
+                    self._reset_inputs()
 
     # IProvider implementation
     def provide_item_from_port(self, port):
@@ -86,7 +89,6 @@ class LogicMachine(Machine, IUpdatable, IReceiver, IProvider):
 
     def _process_items(self) -> Item:
         raise NotImplementedError
-    
 
     # used to write the items in the machine to the save-file
     def _add_item_data(self, data: dict):

@@ -25,9 +25,6 @@ class ImplicationIntroduction(LogicMachine):
 
     # IReceiver: Accept items
     def receive_item_at_port(self, item, port):
-        if self.output_item:
-            return False
-
         if port == self.ports[0]: # premise input
             if self.input_items[0] is None and not item.is_theorem:
                 self.input_items[0] = item

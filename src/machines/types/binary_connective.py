@@ -31,7 +31,7 @@ class BinaryConnective(LogicMachine):
 
     # IReceiver: Accept items
     def receive_item_at_port(self, item, port):
-        if item.is_theorem or self.output_item: #or not self.selected_connective:
+        if item.is_theorem: # or not self.selected_connective:
             return False
 
         index = self.ports.index(port)

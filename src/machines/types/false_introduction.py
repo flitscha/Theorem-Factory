@@ -10,6 +10,7 @@ class FalseIntroduction(LogicMachine):
     False-Introduction machine.
     Rule: If we have a theorem and the same theorem with "not" applied, the output is False.
     """
+
     def __init__(self, machine_data, rotation=0):
         super().__init__(machine_data, num_inputs=2, rotation=rotation)
         self.input_roles = ["input", "negation"]
@@ -21,7 +22,7 @@ class FalseIntroduction(LogicMachine):
 
     # IReceiver: Accept items
     def receive_item_at_port(self, item, port):
-        if not item.is_theorem or self.output_item:
+        if not item.is_theorem:
             return False
         
         index = self.ports.index(port)

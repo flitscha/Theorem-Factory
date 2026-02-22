@@ -39,7 +39,7 @@ class AndElimination(LogicMachine):
     # IReceiver: accept input item
     def receive_item_at_port(self, item, port):
         # don't accept while there's an output waiting to be taken, or the input is already occupied
-        if self.output_item or self.input_items[0]:
+        if self.input_items[0]:
             return False
 
         # strict acceptance rule:

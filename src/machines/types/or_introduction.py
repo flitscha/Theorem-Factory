@@ -26,10 +26,6 @@ class OrIntroduction(LogicMachine):
 
     # IReceiver: Accept items
     def receive_item_at_port(self, item, port):
-        # don't accept while there's an output waiting
-        if self.output_item:
-            return False
-
         index = self.ports.index(port)
 
         # if slot already occupied, reject

@@ -27,9 +27,6 @@ class NotIntroduction(LogicMachine):
 
     # IReceiver: Accept items
     def receive_item_at_port(self, item, port):
-        if self.output_item:
-            return False
-
         if port == self.ports[0]: # assumption input
             if self.input_items[1] is None and self.input_items[0] and item.formula in self.input_items[0].assumptions:
                 self.input_items[1] = item

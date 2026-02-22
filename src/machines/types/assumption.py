@@ -23,7 +23,7 @@ class Assumption(LogicMachine):
 
     # IReceiver: Accept items
     def receive_item_at_port(self, item, port):
-        if self.output_item or self.input_items[0]:
+        if self.input_items[0]:
             return False
 
         if not item.is_theorem: # input should be a formula

@@ -26,9 +26,6 @@ class ImplicationElimination(LogicMachine):
 
     # IReceiver: Accept items TODO: update
     def receive_item_at_port(self, item, port):
-        if self.output_item:
-            return False
-
         if port == self.ports[0]: # implication input
             if self.input_items[0] is None and item.is_theorem and isinstance(item.formula, BinaryOp) and item.formula.op == "->":
                 self.input_items[0] = item

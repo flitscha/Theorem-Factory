@@ -17,7 +17,7 @@ class Negator(LogicMachine):
 
     # IReceiver: Accept items
     def receive_item_at_port(self, item, port):
-        if item.is_theorem or self.input_items[0] or self.output_item:
+        if item.is_theorem or self.input_items[0]:
             return False
 
         # Start processing this formula

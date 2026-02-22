@@ -25,7 +25,7 @@ class AndIntroduction(LogicMachine):
     # IReceiver: Accept items
     def receive_item_at_port(self, item, port):
         # only accept theorems
-        if not item.is_theorem or self.output_item:
+        if not item.is_theorem:
             return False
 
         index = self.ports.index(port)

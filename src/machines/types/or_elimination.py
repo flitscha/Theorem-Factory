@@ -32,9 +32,6 @@ class OrElimination(LogicMachine):
 
     # IReceiver: Accept items 
     def receive_item_at_port(self, item, port):
-        if self.output_item:
-            return False
-
         # accept the or-input, if the item is an or-theorem
         if port == self.ports[2]:
             if self.input_items[2] is None and item.is_theorem and isinstance(item.formula, BinaryOp) and item.formula.op == '+':
