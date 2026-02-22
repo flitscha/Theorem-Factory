@@ -43,6 +43,10 @@ class InputProcessor:
                 self.game_state.pause_game()
                 pause_menu.open()
 
+        if self.input_handler.was_key_pressed(pygame.K_e):
+            if self.game_state.is_menu_open():
+                self.game_state.close_menu()
+
         # pause menu, and machine menu
         if self.game_state.is_paused():
             return {}
