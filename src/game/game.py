@@ -1,5 +1,6 @@
 import pygame
-from config.constants import *
+
+from config.constants import SCREEN_WIDTH, SCREEN_HEIGHT, BACKGROUND_COLOR, GAME_NAME
 from grid.grid_coordinator import GridCoordinator
 from core.camera import Camera
 from core.debug import Debug
@@ -27,7 +28,10 @@ class Game:
     def _initialize_pygame(self):
         """Initialize pygame and create main window"""
         pygame.init()
-        self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+        self.screen = pygame.display.set_mode(
+            (SCREEN_WIDTH, SCREEN_HEIGHT),
+            pygame.RESIZABLE
+        )
         pygame.display.set_caption(GAME_NAME)
         self.clock = pygame.time.Clock()
         self.running = True
@@ -83,7 +87,12 @@ class Game:
         # Update active menu if open
         if self.game_state.is_menu_open() and self.game_state.active_menu:
             self.game_state.active_menu.update()
-            
+
+
+    def _handle_resize(self):
+        self._initialize_gui()
+        self.machine_selection_bar.selected_machine_id = "None"
+
 
     def render(self):
         """Render the complete frame"""
@@ -117,14 +126,17 @@ class Game:
         # Present frame
         self.renderer.present()
         
+
     def run(self):
         """Main game loop"""
         while self.running:
             
             # Handle input
             events = pygame.event.get()
-
             self.input_handler.update(events)
+            resize = self.input_handler.events_this_frame.get("resize")
+            if resize:
+                self._handle_resize()
 
             # Process input events
             result = self.input_processor.process_input(self.screen, events, pause_menu=self.pause_menu)

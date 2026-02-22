@@ -1,5 +1,4 @@
-from config.constants import *
-from core.utils import get_grid_coordinates_when_placing_machine, get_mouse_grid_pos, can_overwrite_belt
+from core.utils import get_grid_coordinates_when_placing_machine, get_mouse_grid_pos, can_overwrite_belt, mouse_in_machine_selection_menu
 from machines.types.generator import Generator
 from machines.menu.generator_menu import GeneratorMenu
 from machines.types.conveyor_belt.conveyor_belt import ConveyorBelt
@@ -29,7 +28,7 @@ class MachineManager:
             2 if you tried to place at GUI-area, of no machine_id is selected
         """
         # Don't place if clicking on GUI area
-        if mouse_pos[1] > SCREEN_HEIGHT - MACHINE_SELECTION_GUI_HEIGHT:
+        if mouse_in_machine_selection_menu(mouse_pos):
             return 2
             
         machine_id = self.placement_preview.active_preview

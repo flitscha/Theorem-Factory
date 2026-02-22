@@ -4,6 +4,7 @@ from game.game_state import GameState
 from game.tools.placement_tool import PlacementTool
 from game.tools.eraser_tool import EraserTool
 from game.tools.empty_tool import EmptyTool
+from core.utils import mouse_in_machine_selection_menu
 
 # idea: game-class as input
 class InputProcessor:
@@ -18,7 +19,7 @@ class InputProcessor:
         self.placement_tool = PlacementTool(machine_manager, placement_preview, machine_selection_bar, game_state)
         self.eraser_tool = EraserTool(machine_manager, placement_preview, machine_selection_bar, game_state)
         self.empty_tool = EmptyTool(machine_manager, placement_preview, machine_selection_bar, game_state)
-        self.current_tool = self.placement_tool
+        self.current_tool = self.empty_tool
 
         # Shift-Handling
         self.shift_active = False
@@ -75,7 +76,7 @@ class InputProcessor:
     def _handle_left_mouse_button(self):
         # click in GUI-Bar -> change selected tool
         mouse_pos = pygame.mouse.get_pos()
-        if mouse_pos[1] > SCREEN_HEIGHT - MACHINE_SELECTION_GUI_HEIGHT:
+        if mouse_in_machine_selection_menu(mouse_pos):
             selected = self.machine_selection_bar.handle_click(mouse_pos)
 
             # change tool + preview

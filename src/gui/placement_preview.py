@@ -1,8 +1,7 @@
 import pygame
 
 from config.constants import TILE_SIZE
-from core.utils import get_grid_coordinates_when_placing_machine, grid_to_screen_coordinates, can_overwrite_belt
-from config.constants import SCREEN_HEIGHT, MACHINE_SELECTION_GUI_HEIGHT
+from core.utils import get_grid_coordinates_when_placing_machine, grid_to_screen_coordinates, can_overwrite_belt, mouse_in_machine_selection_menu
 from machines.types.conveyor_belt.conveyor_belt import ConveyorBelt
 from machines.types.conveyor_belt.belt_autoconnect import ConveyorBeltAutoConnector
 
@@ -75,7 +74,7 @@ class PlacementPreview():
 
     # --------- Main draw function -----------
     def draw(self):
-        if pygame.mouse.get_pos()[1] > SCREEN_HEIGHT - MACHINE_SELECTION_GUI_HEIGHT:
+        if mouse_in_machine_selection_menu():
             return
         
         if not self.active_preview:

@@ -1,6 +1,6 @@
 import pygame
 
-from config.constants import TILE_SIZE
+from config.constants import TILE_SIZE, MACHINE_SELECTION_GUI_HEIGHT 
 
 
 def screen_to_world(screen_x, screen_y, camera):
@@ -118,3 +118,13 @@ def simplify_formula(formula: str) -> str:
             break
 
     return formula
+
+
+def mouse_in_machine_selection_menu(mouse_pos=None) -> bool:
+    if mouse_pos is None:
+        mouse_pos = pygame.mouse.get_pos()
+
+    w, h = pygame.display.get_surface().get_size()
+
+    return mouse_pos[1] >= h - MACHINE_SELECTION_GUI_HEIGHT 
+

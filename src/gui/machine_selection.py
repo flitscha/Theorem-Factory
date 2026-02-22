@@ -21,8 +21,9 @@ class MachineSelectionBar:
 
     def generate_buttons(self):
         buttons = [] # list of dictionarys
+        w, h = pygame.display.get_surface().get_size()
         x = self.margin
-        y = self.screen.get_height() - self.height + (self.height - self.icon_size) // 2
+        y = h - self.height + (self.height - self.icon_size) // 2
 
         # Add empty selection button
         none_rect = pygame.Rect(x, y, self.icon_size, self.icon_size)
@@ -72,7 +73,8 @@ class MachineSelectionBar:
 
     def draw(self):
         # Background bar
-        bar_rect = pygame.Rect(0, self.screen.get_height() - self.height, self.screen.get_width(), self.height)
+        w, h = pygame.display.get_surface().get_size()
+        bar_rect = pygame.Rect(0, h - self.height, w, self.height)
         pygame.draw.rect(self.screen, ITEM_SELECTION_COLOR, bar_rect)
 
         # Buttons

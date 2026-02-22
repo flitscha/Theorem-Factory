@@ -1,11 +1,10 @@
 import pygame
-from config.constants import *
 
 class AbstractMenu:
     def __init__(self, screen, width=800, height=600, on_back=None, title="MENU"):
         self.screen = screen
         self.width = width
-        self.height=height
+        self.height = height
         self.on_back = on_back
         self.font = pygame.font.Font(None, 36)
         self.title_font = pygame.font.Font(None, 72)
@@ -13,8 +12,9 @@ class AbstractMenu:
         self.opened_this_frame = False # flank for is_open
 
         # layout
-        self.menu_x = (SCREEN_WIDTH - self.width) // 2
-        self.menu_y = (SCREEN_HEIGHT - self.height) // 2
+        w, h = pygame.display.get_surface().get_size()
+        self.menu_x = (w - self.width) // 2
+        self.menu_y = (h - self.height) // 2
 
         # submenu
         self.active_submenu = None

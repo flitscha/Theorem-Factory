@@ -42,6 +42,9 @@ class InputHandler:
             elif event.type == pygame.MOUSEBUTTONUP:
                 self.events_this_frame[f'mouse_up_{event.button}'] = True
                 self.keys_pressed.discard(f'mouse_{event.button}')
+
+            elif event.type == pygame.WINDOWRESIZED:
+                self.events_this_frame["resize"] = (event.x, event.y)
                     
                     
     def was_key_pressed(self, key):
@@ -66,3 +69,4 @@ class InputHandler:
     def should_quit(self):
         """Check if quit was requested this frame"""
         return self.events_this_frame.get('quit', False)
+

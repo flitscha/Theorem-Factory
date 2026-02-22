@@ -1,6 +1,6 @@
 import pygame
 
-from config.constants import *
+from config.constants import TILE_SIZE, CAMERA_ZOOM_FACTOR, CAMERA_MIN_ZOOM, CAMERA_MAX_ZOOM, CAMERA_SPEED
 from core.utils import get_mouse_world_pos
 from typing import Tuple
 
@@ -16,10 +16,11 @@ class Camera():
     
     def get_visible_tile_bounds(self) -> Tuple[int, int, int, int]:
         """Get the bounds of the visible area in tile coordinates"""
+        w, h = pygame.display.get_surface().get_size()
         left = int(self.offset_x // TILE_SIZE)
         top = int(self.offset_y // TILE_SIZE)
-        right = int((self.offset_x + SCREEN_WIDTH / self.zoom) // TILE_SIZE) + 1
-        bottom = int((self.offset_y + SCREEN_HEIGHT / self.zoom) // TILE_SIZE) + 1
+        right = int((self.offset_x + w / self.zoom) // TILE_SIZE) + 1
+        bottom = int((self.offset_y + h / self.zoom) // TILE_SIZE) + 1
         return left, right, top, bottom
 
     def move(self, dx, dy):
@@ -77,3 +78,4 @@ class Camera():
             self.change_zoom(zoom_dir)
 
         self.move(move_x, move_y)
+
