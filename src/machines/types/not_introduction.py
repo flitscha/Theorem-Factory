@@ -46,8 +46,8 @@ class NotIntroduction(LogicMachine):
 
     def _process_items(self) -> Item:
         assumption = self.input_items[1].formula
-        assumptions = set(self.input_items[0].assumptions)
-        assumptions.remove(assumption)
+        old_assumptions = set(self.input_items[0].assumptions)
+        new_assumptions = old_assumptions - {assumption}
 
         output_formula = Not(assumption)
 
@@ -58,5 +58,5 @@ class NotIntroduction(LogicMachine):
                 self.origin[0] * TILE_SIZE + TILE_SIZE,
                 self.origin[1] * TILE_SIZE + TILE_SIZE
             ),
-            assumptions=assumptions
+            assumptions=new_assumptions
         )

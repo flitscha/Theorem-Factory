@@ -87,21 +87,21 @@ class OrElimination(LogicMachine):
         right_formula = self.input_items[2].formula.right
 
         or_assumptions = self.input_items[2].assumptions
-
         assumptions0 = self.input_items[0].assumptions
         assumptions1 = self.input_items[1].assumptions
 
         # remove some assumptions
         if left_formula in assumptions0 and right_formula in assumptions1:
-            assumptions0.remove(left_formula)
-            assumptions1.remove(right_formula)
+            new_assumptions0 = assumptions0 - {left_formula}
+            new_assumptions1 = assumptions1 - {right_formula}
         elif right_formula in assumptions0 and left_formula in assumptions1:
-            assumptions0.remove(right_formula)
-            assumptions1.remove(left_formula)
+            new_assumptions0 = assumptions0 - {right_formula}
+            new_assumptions1 = assumptions1 - {left_formula}
         else:
             print("ERROR in or_elimination: Wrong assumptions in the inputs. Should not happen. This should be avoided by receive_item_at_port()")
+            return None
 
-        output_assumptions = or_assumptions | assumptions0 | assumptions1
+        output_assumptions = or_assumptions | new_assumptions0 | new_assumptions1
 
         # create the output item
         return Item(

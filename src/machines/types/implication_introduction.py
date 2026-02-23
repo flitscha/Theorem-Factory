@@ -43,10 +43,9 @@ class ImplicationIntroduction(LogicMachine):
     def _process_items(self) -> Item:
         premise = self.input_items[0].formula
         conclusion = self.input_items[1].formula
-        assumptions = self.input_items[1].assumptions
+        old_assumptions = self.input_items[1].assumptions
 
-        if premise in assumptions:
-            assumptions.remove(premise)
+        new_assumptions = old_assumptions - {premise}
 
         output_formula = BinaryOp("->", premise, conclusion)
 
@@ -57,6 +56,6 @@ class ImplicationIntroduction(LogicMachine):
                 self.origin[0] * TILE_SIZE + TILE_SIZE,
                 self.origin[1] * TILE_SIZE + TILE_SIZE
             ),
-            assumptions=assumptions
+            assumptions=new_assumptions
         )
 
