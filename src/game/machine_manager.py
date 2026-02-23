@@ -8,6 +8,7 @@ from machines.menu.and_elimination_menu import AndEliminationMenu
 from machines.types.and_elimination import AndElimination
 from machines.menu.machine_menu import MachineMenu
 from machines.base.logic_machine import LogicMachine
+from machines.types.hub import Hub
 
 class MachineManager:
     """Handles all machine-related operations. 
@@ -100,7 +101,7 @@ class MachineManager:
         grid_x, grid_y = get_mouse_grid_pos(self.camera)
 
         machine = self.grid.get_block(grid_x, grid_y)
-        if not machine:
+        if not machine or isinstance(machine, Hub):
             return False
 
         # update the neighboring belts, BEFORE rotating

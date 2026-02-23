@@ -144,7 +144,7 @@ class InputProcessor:
             self.placement_preview.stop_preview()
             self.machine_selection_bar.set_tool("None")
             self.current_tool = self.empty_tool
-        else:
+        elif machine_id != "hub":
             # select new machine, and adopt the rotation
             self.machine_selection_bar.set_tool(machine_id)
             self.placement_preview.start_preview(machine_id)
