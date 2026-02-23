@@ -1,4 +1,3 @@
-import pygame
 from game.tools.abstract_tool import AbstractTool
 
 class EraserTool(AbstractTool):

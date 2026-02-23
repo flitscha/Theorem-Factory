@@ -14,9 +14,10 @@ from machines.types.not_introduction import NotIntroduction
 from machines.types.false_introduction import FalseIntroduction
 from machines.types.or_elimination import OrElimination
 from machines.types.double_not_elimination import DoubleNotElimination
+from machines.types.hub import Hub
 
 class MachineData:
-    def __init__(self, id, name, size, sprite_path, cls, icon_path=None, description=""):
+    def __init__(self, id, name, size, sprite_path, cls, icon_path=None, description="", appear_in_machine_selection=True):
         self.id = id
         self.name = name
         self.size = size
@@ -26,6 +27,7 @@ class MachineData:
         self.description = description
         self.image = None
         self.icon_image = None
+        self.appear_in_machine_selection = appear_in_machine_selection
 
     def load_image(self):
         self.image = pygame.image.load(self.sprite_path).convert_alpha()
@@ -251,4 +253,18 @@ database.register_machine(MachineData(
         "The input must be a theorem of the form 'not not A'. \n"
         "The output will be the theorem 'A'."
     )
+))
+
+
+database.register_machine(MachineData(
+    id="hub",
+    name="Hub",
+    size=(7, 7),
+    sprite_path="assets/sprites/conveyorbelts/normal/horizontal.png",
+    icon_path=None,
+    cls=Hub,
+    description=(
+        ""
+    ),
+    appear_in_machine_selection=False
 ))

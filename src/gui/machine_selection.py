@@ -45,6 +45,9 @@ class MachineSelectionBar:
 
         # all other slots: use the database (later we will distinguish between unlocked machines, and not unlocked)
         for machine_id, data in self.machine_database.machines.items():
+            if not data.appear_in_machine_selection:
+                continue
+
             rect = pygame.Rect(x, y, self.icon_size, self.icon_size)
             buttons.append({
                 "id": machine_id,

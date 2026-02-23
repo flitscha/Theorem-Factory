@@ -1,6 +1,7 @@
-from typing import Dict, List, Tuple, Optional
+from typing import Dict, Tuple, Optional
 from machines.base.machine import Machine
 from entities.port import Direction
+from machines.types.hub import Hub
 
 class GridManager:
     """Manages the placement and removal of blocks on the grid"""
@@ -22,7 +23,7 @@ class GridManager:
     def remove_block(self, grid_x: int, grid_y: int) -> Optional[Machine]:
         """Remove block at position"""
         block = self.occupied_tiles.get((grid_x, grid_y))
-        if not block:
+        if not block or isinstance(block, Hub):
             return None
         
         # disconnect ports

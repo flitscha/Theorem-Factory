@@ -15,6 +15,7 @@ from gui.machine_selection import MachineSelectionBar
 from gui.menu.pause_menu import PauseMenu
 from config.settings_manager import settings_manager
 from core.performance_tracker import performance_tracker
+from machines.types.hub import Hub
 
 class Game:
     """Main game class that coordinates all systems"""
@@ -24,6 +25,7 @@ class Game:
         self._initialize_core_systems()
         self._initialize_game_systems()
         self._initialize_gui()
+        self._initialize_hub()
         
     def _initialize_pygame(self):
         """Initialize pygame and create main window"""
@@ -69,7 +71,13 @@ class Game:
             self.input_handler, self.placement_preview, self.machine_selection_bar,
             self.machine_manager, self.game_state
         )
+
+    def _initialize_hub(self):
+        # build the hub
+        machine = Hub(machine_data.get("hub"))
+        self.grid.add_block(10, 10, machine)
         
+
     def update(self, dt):
         """Update all game systems"""
         # Update pause menu
