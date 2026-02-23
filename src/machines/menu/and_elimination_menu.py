@@ -1,23 +1,24 @@
 import pygame
-from machines.menu.abstract_menu import AbstractMenu
+from machines.menu.machine_menu import MachineMenu
 from gui.elements.button import Button
 
-class AndEliminationMenu(AbstractMenu):
+class AndEliminationMenu(MachineMenu):
     """
     Simple menu to choose which conjunct to output (Left / Right).
     Default: Left selected.
     """
+
     def __init__(self, screen, size, machine_instance):
-        super().__init__(screen, size)
+        super().__init__(screen, size, machine_instance, y_offset=65)
         self.machine = machine_instance
         self.font = pygame.font.SysFont(None, 28)
-        self.small_font = pygame.font.SysFont(None, 20)
+        self.small_font = pygame.font.SysFont(None, 24)
 
         btn_w = 120
         btn_h = 40
         gap = 12
         center_x = self.rect.centerx
-        y = self.rect.y + 90
+        y = self.rect.y + 100
 
         # left button
         left_rect = (center_x - btn_w - gap//2, y, btn_w, btn_h)
@@ -59,19 +60,15 @@ class AndEliminationMenu(AbstractMenu):
         self.right_button.handle_events(events)
 
     def draw(self):
-        super().draw()
-        # Title
-        title = self.font.render("And-Elimination", True, (255,255,255))
-        self.screen.blit(title, (self.rect.x + self.PADDING, self.rect.y + 10))
-
+        super().draw_content()
+        
         # Instruction
-        instr = self.small_font.render("Select which conjunct the machine should output:", True, (200,200,200))
-        self.screen.blit(instr, (self.rect.x + self.PADDING, self.rect.y + 50))
+        instr = self.small_font.render("Select which conjunct the machine should output:", True, (200, 200, 200))
+        self.screen.blit(instr, (self.rect.x + self.PADDING, self.rect.y + 60))
 
         # Draw buttons
         self.left_button.draw(self.screen)
         self.right_button.draw(self.screen)
 
-        # small hint about requirement
-        hint = self.small_font.render("Input must be a THEOREM of the form (A * B).", True, (150,150,150))
-        self.screen.blit(hint, (self.rect.x + self.PADDING, self.rect.y + 150))
+        super().draw_overlay() # draw tooltips above
+

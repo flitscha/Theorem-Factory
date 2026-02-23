@@ -1,11 +1,11 @@
 import pygame
-from machines.menu.abstract_menu import AbstractMenu
+from machines.menu.machine_menu import MachineMenu
 from gui.elements.button import Button
 from machines.types.binary_connective import BinaryConnectiveType
 
-class BinaryConnectiveMenu(AbstractMenu):
+class BinaryConnectiveMenu(MachineMenu):
     def __init__(self, screen, size, machine_instance):
-        super().__init__(screen, size)
+        super().__init__(screen, size, machine_instance, y_offset=55)
         self.machine = machine_instance
         self.font = pygame.font.SysFont(None, 28)
         self.small_font = pygame.font.SysFont(None, 24)
@@ -17,7 +17,7 @@ class BinaryConnectiveMenu(AbstractMenu):
         btn_width = 100
         btn_height = 40
         start_x = self.rect.centerx - (btn_width * 1.5 + margin)
-        start_y = self.rect.y + 90
+        start_y = self.rect.y + 100
 
         self.buttons.clear()
 
@@ -59,12 +59,12 @@ class BinaryConnectiveMenu(AbstractMenu):
             btn.handle_events(events)
 
     def draw(self):
-        super().draw()
-        title_text = self.font.render("Connective Settings", True, (255, 255, 255))
-        self.screen.blit(title_text, (self.rect.x + self.PADDING, self.rect.y + 10))
-
+        super().draw_content()
         instruction = self.small_font.render("Select a logical connective:", True, (180, 180, 180))
-        self.screen.blit(instruction, (self.rect.x + self.PADDING, self.rect.y + 50))
+        self.screen.blit(instruction, (self.rect.x + self.PADDING, self.rect.y + 60))
 
         for btn in self.buttons:
             btn.draw(self.screen)
+
+        super().draw_overlay() # draw tooltips above
+

@@ -33,7 +33,11 @@ class ItemSlot:
             self.tooltip.show(lines, (mouse_pos[0] + 16, mouse_pos[1] + 12))
 
 
-    def draw(self, surface, font, small_font):
+    def draw_overlay(self, surface):
+        self.tooltip.draw(surface)
+
+
+    def draw_content(self, surface, font, small_font):
         # draw border
         pygame.draw.rect(surface, (180, 180, 180), self.rect, 2)
 
@@ -50,7 +54,4 @@ class ItemSlot:
             empty_txt = small_font.render("–", True, (120, 120, 120))
             surface.blit(empty_txt, (self.rect.centerx - empty_txt.get_width() // 2,
                                      self.rect.centery - empty_txt.get_height() // 2))
-
-        # draw the tooltip
-        self.tooltip.draw(surface)
 

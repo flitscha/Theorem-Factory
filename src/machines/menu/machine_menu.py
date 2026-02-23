@@ -19,9 +19,12 @@ class MachineMenu(AbstractMenu):
     PADDING = 20
     OUTPUT_FLASH_FRAMES = 20 # when an item was just produced, show the item in the output slot for these many frames
 
-    def __init__(self, screen, size, machine):
-        super().__init__(screen, size)
+    def __init__(self, screen, size, machine, y_offset=0):
+        x, y = size
+        new_size = (x, y + 2 * y_offset)
+        super().__init__(screen, new_size)
         self.machine = machine
+        self.y_offset = y_offset
         self.font = pygame.font.SysFont(None, 28)
         self.small_font = pygame.font.SysFont(None, 24)
         self.progress = 0.0
@@ -42,7 +45,7 @@ class MachineMenu(AbstractMenu):
     def _calculate_input_start_y(self):
         num_inputs = len(self.machine.input_items)
         total_height = num_inputs * self.SLOT_SIZE + (num_inputs - 1) * self.GAP
-        return self.rect.centery - total_height // 2 - 30
+        return self.rect.centery - total_height // 2 - 30 + self.y_offset
 
 
     def _create_slots(self):
@@ -99,17 +102,29 @@ class MachineMenu(AbstractMenu):
         pygame.draw.rect(surface, (80, 180, 250), (rect.x, rect.y, fill_width, rect.height))
 
 
-    def draw(self):
+    def draw_overlay(self):
+        # tooltips of item slots
+        for slot in self.slots:
+            slot.draw_overlay(self.screen)
+
+        # machine info
+        self.machine_info.draw(self.screen)
+
+        # tooltip to show assumptions of last produced item
+        self.tooltip.draw(self.screen)
+
+
+    def draw_content(self):
         super().draw()
 
         # Title
         title = self.font.render(self.title_str, True, (255, 255, 255))
         title_x = self.rect.centerx - title.get_width() // 2
         self.screen.blit(title, (title_x, self.rect.y + 10))
-
-        # Draw slots
+        
+        # item slots
         for slot in self.slots:
-            slot.draw(self.screen, self.font, self.small_font)
+            slot.draw_content(self.screen, self.font, self.small_font)
 
         # Progress bar
         bar_label = self.small_font.render("progress:", True, (220, 220, 220))
@@ -147,9 +162,8 @@ class MachineMenu(AbstractMenu):
             prev_render = self.small_font.render(prev_txt + "–", True, (220, 220, 220))
             self.screen.blit(prev_render, (self.rect.x + self.PADDING, prev_y))
 
-        # machine info
-        self.machine_info.draw(self.screen)
-
-        # Tooltip drawn last (on top)
-        self.tooltip.draw(self.screen)
+    # this function can be overwritten by concrete machine menus
+    def draw(self):
+        self.draw_content()
+        self.draw_overlay()
 

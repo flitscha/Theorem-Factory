@@ -186,11 +186,12 @@ class GeneratorMenu(AbstractMenu):
         super().draw()
 
         # Draw heading
-        title_text = self.font.render("Generator Settings", True, (255, 255, 255))
-        self.screen.blit(title_text, (self.rect.x + self.PADDING, self.rect.y + 10))
+        title = self.font.render("Generator", True, (255, 255, 255))
+        title_x = self.rect.centerx - title.get_width() // 2
+        self.screen.blit(title, (title_x, self.rect.y + 10))
 
         # Short instruction text
-        instruction = self.small_font.render("Select the letter (variables) or a constant (T/F):", True, (180, 180, 180))
+        instruction = self.small_font.render("Select the letter (variable) or a constant (T/F):", True, (180, 180, 180))
         self.screen.blit(instruction, (self.rect.x + self.PADDING, self.rect.y + 50))
 
         # Draw buttons
