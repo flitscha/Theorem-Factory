@@ -1,25 +1,24 @@
 import pygame
 from core.utils import world_to_screen
+from core.theorem_key import TheoremKey
 from core.formula import Formula
 from core.formula_parser import parse_formula
 
 class Item:
     def __init__(self, formula: Formula, is_theorem=False, position=(0, 0), assumptions=None):
-        self.formula = formula
-        self.is_theorem = is_theorem # There are 2 types of items: formulas and theorems
-        self.assumptions = set() if assumptions is None else set(assumptions) # Theorems can depend on assumptions
+        _assumptions = frozenset() if assumptions is None else frozenset(assumptions)
+        self.key = TheoremKey(formula=formula, assumptions=_assumptions, is_theorem=is_theorem)
         self.position = pygame.Vector2(position)
         self.font = pygame.font.SysFont(None, 28)
-        self.color = (200, 200, 255) if is_theorem else (255, 255, 255)
+        self.color = (200, 200, 255) if self.key.is_theorem else (255, 255, 255)
         self.radius = 10
         self.font_size = 15
 
         # generate the text only once to save computing time
         font = pygame.font.SysFont("arial", self.font_size*10, bold=True)
-        self.text_surface = font.render(str(self.formula), True, (0, 0, 0))
+        self.text_surface = font.render(str(self.key.formula), True, (0, 0, 0))
 
     def update(self, dt):
-        # example: update the position, if the item is on a belt.
         pass
 
 
@@ -35,9 +34,9 @@ class Item:
         color = (240, 200, 80)
 
         # draw shape
-        if self.is_theorem:
+        if self.key.is_theorem:
             # if there are no assumptions, draw a square
-            if not self.assumptions or len(self.assumptions) == 0:
+            if not self.key.assumptions or len(self.key.assumptions) == 0:
                 pygame.draw.rect(screen, color, (screen_x-radius, screen_y-radius, 2*radius, 2*radius))
             else:
                 # if there are assumptions, draw a triangle
@@ -63,9 +62,9 @@ class Item:
     def to_data(self) -> dict:
         return {
             "type": "item",
-            "formula": str(self.formula),
-            "is_theorem": self.is_theorem,
-            "assumptions": [str(a) for a in self.assumptions],
+            "formula": str(self.key.formula),
+            "is_theorem": self.key.is_theorem,
+            "assumptions": [str(a) for a in self.key.assumptions],
             "position": [self.position.x, self.position.y],
         }
 
@@ -77,3 +76,15 @@ class Item:
         assumptions = set(parse_formula(s) for s in assumptions_strings)
         position = tuple(data.get("position", (0, 0)))
         return cls(formula, is_theorem=is_theorem, position=position, assumptions=assumptions)
+
+    @property
+    def formula(self):
+        return self.key.formula
+
+    @property
+    def assumptions(self):
+        return self.key.assumptions
+
+    @property
+    def is_theorem(self):
+        return self.key.is_theorem
