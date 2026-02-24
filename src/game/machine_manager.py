@@ -5,6 +5,7 @@ from machines.types.conveyor_belt.conveyor_belt import ConveyorBelt
 from machines.types.binary_connective import BinaryConnective
 from machines.menu.binary_connective_menu import BinaryConnectiveMenu
 from machines.menu.and_elimination_menu import AndEliminationMenu
+from machines.menu.hub_menu import HubMenu
 from machines.types.and_elimination import AndElimination
 from machines.menu.machine_menu import MachineMenu
 from machines.base.logic_machine import LogicMachine
@@ -84,6 +85,8 @@ class MachineManager:
             return BinaryConnectiveMenu(screen, (500, 300), block)
         elif isinstance(block, AndElimination):
             return AndEliminationMenu(screen, (500, 200), block)
+        elif isinstance(block, Hub):
+            return HubMenu(screen, (600, 500), block)
         elif isinstance(block, LogicMachine):
             return MachineMenu(screen, (500, 300), block)
     

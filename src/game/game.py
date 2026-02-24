@@ -17,6 +17,9 @@ from config.settings_manager import settings_manager
 from core.performance_tracker import performance_tracker
 from machines.types.hub import Hub
 
+from entities.item import Item
+from core.formula_parser import parse_formula
+
 class Game:
     """Main game class that coordinates all systems"""
     
@@ -74,8 +77,20 @@ class Game:
 
     def _initialize_hub(self):
         # build the hub
-        machine = Hub(machine_data.get("hub"))
-        self.grid.add_block(10, 10, machine)
+        hub = Hub(machine_data.get("hub"))
+        self.grid.add_block(10, 10, hub)
+
+        # add some test-items
+        formula1 = parse_formula("(a*b)+c")
+        formula2 = parse_formula("d->(e+f)")
+        formula3 = parse_formula("i->j")
+        assumptions = frozenset([formula2, formula3])
+        item = Item(formula1, is_theorem=True, assumptions=assumptions)
+        hub.add(item, 10)
+
+        formula4 = parse_formula("k")
+        item2 = Item(formula4)
+        hub.add(item2, 14)
         
 
     def update(self, dt):

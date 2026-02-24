@@ -21,8 +21,6 @@ class Hub(Machine):
             if self.storage[key] <= 0:
                 del self.storage[key]
 
-    def items(self):
-        return self.storage.items()
 
     def count(self, item: Item | TheoremKey) -> int:
         key = self._to_key(item)
