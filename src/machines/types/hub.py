@@ -27,3 +27,17 @@ class Hub(Machine):
     def count(self, item: Item | TheoremKey) -> int:
         key = self._to_key(item)
         return self.storage.get(key, 0)
+    
+    # save and load logic
+    def _add_custom_data(self, data):
+        data["storage"] = [
+            {"key": key.to_data(), "amount": amount} for key, amount in self.storage.items()
+        ]
+
+
+    def _load_custom_data(self, data):
+        self.storage = {
+            TheoremKey.from_data(entry["key"]): entry["amount"]
+            for entry in data.get("storage", [])
+        }
+
