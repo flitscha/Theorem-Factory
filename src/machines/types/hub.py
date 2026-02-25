@@ -1,8 +1,11 @@
 from machines.base.machine import Machine
 from core.theorem_key import TheoremKey
 from entities.item import Item
+from grid.interfaces import IUpdatable, IProvider, IReceiver
+from entities.port import Port, Direction
+from config.constants import HUB_ORIGIN
 
-class Hub(Machine):
+class Hub(Machine, IUpdatable, IProvider, IReceiver):
     def __init__(self, machine_data, rotation=0):
         super().__init__(machine_data, rotation=rotation)
         self.storage: dict[TheoremKey, int] = {}
@@ -26,6 +29,76 @@ class Hub(Machine):
         key = self._to_key(item)
         return self.storage.get(key, 0)
     
+
+    def init_ports(self):
+        """
+        We just place ports along the border.
+        This is simpler than dynamically changing the ports depending on the neighboring belts.
+        """
+        self.origin = HUB_ORIGIN
+        origin_x, origin_y = self.origin
+        size_x, size_y = self.size
+        
+        # corners
+        self.add_port(Port(0, 0, Direction.WEST, "input"))
+        self.add_port(Port(0, 0, Direction.WEST, "output"))
+        self.add_port(Port(0, 0, Direction.NORTH, "input"))
+        self.add_port(Port(0, 0, Direction.NORTH, "output"))
+
+        self.add_port(Port(size_x-1, 0, Direction.EAST, "input"))
+        self.add_port(Port(size_x-1, 0, Direction.EAST, "output"))
+        self.add_port(Port(size_x-1, 0, Direction.NORTH, "input"))
+        self.add_port(Port(size_x-1, 0, Direction.NORTH, "output"))
+
+        self.add_port(Port(0, size_y-1, Direction.WEST, "input"))
+        self.add_port(Port(0, size_y-1, Direction.WEST, "output"))
+        self.add_port(Port(0, size_y-1, Direction.SOUTH, "input"))
+        self.add_port(Port(0, size_y-1, Direction.SOUTH, "output"))
+        
+        self.add_port(Port(size_x-1, size_y-1, Direction.EAST, "input"))
+        self.add_port(Port(size_x-1, size_y-1, Direction.EAST, "output"))
+        self.add_port(Port(size_x-1, size_y-1, Direction.SOUTH, "input"))
+        self.add_port(Port(size_x-1, size_y-1, Direction.SOUTH, "output"))
+
+        # left line
+        x = 0
+        for y in range(1, size_y - 1):
+            self.add_port(Port(x, y, Direction.WEST, "input"))
+            self.add_port(Port(x, y, Direction.WEST, "output"))
+
+        # right line
+        x = size_x - 1
+        for y in range(1, size_y - 1):
+            self.add_port(Port(x, y, Direction.EAST, "input"))
+            self.add_port(Port(x, y, Direction.EAST, "output"))
+
+        # top line
+        y = 0
+        for x in range(1, size_x - 1):
+            self.add_port(Port(x, y, Direction.NORTH, "input"))
+            self.add_port(Port(x, y, Direction.NORTH, "output"))
+
+        # bottom line
+        y = size_y - 1
+        for x in range(1, size_x - 1):
+            self.add_port(Port(x, y, Direction.SOUTH, "input"))
+            self.add_port(Port(x, y, Direction.SOUTH, "output"))
+
+
+    def update(self, dt):
+        pass
+
+    # IReceiver implementation
+    def receive_item_at_port(self, item, port):
+        self.add(item)
+
+    # IProvider implementation
+    def provide_item_from_port(self, port):
+        pass
+
+    def handle_backpressure(self, item, port):
+        pass
+
     # save and load logic
     def _add_custom_data(self, data):
         data["storage"] = [

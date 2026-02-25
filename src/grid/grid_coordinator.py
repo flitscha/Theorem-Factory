@@ -6,9 +6,9 @@ from grid.item_transfer_system import ItemTransferSystem
 from grid.connection_system import ConnectionSystem
 from machines.types.conveyor_belt.conveyor_belt import ConveyorBelt
 from machines.base.machine import Machine
-from machines.types.conveyor_belt.belt_autoconnect import ConveyorBeltAutoConnector
 from machines.base.machine_database import MachineDatabase
 from machines.base.machine_factory import MachineFactory
+from machines.types.hub import Hub
 
 class GridCoordinator:
     """Main coordinator for the grid system"""
@@ -39,7 +39,7 @@ class GridCoordinator:
     def remove_block(self, grid_x: int, grid_y: int):
         # Update connections before removing the block
         block = self.grid_manager.get_block(grid_x, grid_y)
-        if block:
+        if block and not isinstance(block, Hub):
             self.connection_system.update_neighboring_belts_when_removing(block)
         return self.grid_manager.remove_block(grid_x, grid_y)
     

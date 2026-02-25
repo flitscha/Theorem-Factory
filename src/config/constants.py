@@ -24,3 +24,7 @@ ITEM_SELECTION_ICON_BACKGROUND_COLOR = (80, 110, 90)
 
 # letter offset, for each rotation.
 GENERATOR_LETTER_OFFSETS = [(49, 44), (52, 49), (47, 52), (44, 47)]
+
+
+# Hub
+HUB_ORIGIN = (10, 10)

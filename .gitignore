@@ -1,5 +1,6 @@
 gpt_tool.py
-config
+/config/
+/saves/
 .vscode
 
 # Byte-compiled / optimized / DLL files

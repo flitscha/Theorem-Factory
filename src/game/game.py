@@ -1,6 +1,6 @@
 import pygame
 
-from config.constants import SCREEN_WIDTH, SCREEN_HEIGHT, BACKGROUND_COLOR, GAME_NAME
+from config.constants import SCREEN_WIDTH, SCREEN_HEIGHT, BACKGROUND_COLOR, GAME_NAME, HUB_ORIGIN
 from grid.grid_coordinator import GridCoordinator
 from core.camera import Camera
 from core.debug import Debug
@@ -78,7 +78,8 @@ class Game:
     def _initialize_hub(self):
         # build the hub
         hub = Hub(machine_data.get("hub"))
-        self.grid.add_block(10, 10, hub)
+        origin_x, origin_y = HUB_ORIGIN
+        self.grid.add_block(origin_x, origin_y, hub)
 
         # add some test-items
         formula1 = parse_formula("(a*b)+c")
