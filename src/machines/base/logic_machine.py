@@ -14,6 +14,7 @@ class LogicMachine(Machine, IUpdatable, IReceiver, IProvider):
         
         self.input_items = [None] * num_inputs
         self.input_offsets = [0.0] * num_inputs
+        # Note: the order of input_items, input_offsets, and input_ports should be the same!
         self.input_roles = ["input"] * num_inputs # e.g. for Implication-Elimination: ["implication", "premise"]
         self.output_item = None
         self.last_output_item = None
@@ -21,13 +22,14 @@ class LogicMachine(Machine, IUpdatable, IReceiver, IProvider):
         self.processing_duration = 3.0
 
     # slide-in animation for input items
-    def _move_item(self, item):
+    def _move_item(self, item, direction=0):
         move_speed = 0.5
-        if self.rotation == 0:
+        dir = (direction + 2) % 4
+        if dir == 0:
             item.position.x += move_speed
-        elif self.rotation == 1:
+        elif dir == 1:
             item.position.y += move_speed
-        elif self.rotation == 2:
+        elif dir == 2:
             item.position.x -= move_speed
         else:
             item.position.y -= move_speed
@@ -44,7 +46,10 @@ class LogicMachine(Machine, IUpdatable, IReceiver, IProvider):
         # slide-in animation for input items
         for i, item in enumerate(self.input_items):
             if item and self.input_offsets[i] < TILE_SIZE:
-                self._move_item(item)
+                # get the direction, by using the port
+                dir = self.input_ports[i].direction.to_rotation()
+                
+                self._move_item(item, direction=dir)
                 self.input_offsets[i] += 0.5
 
         # start processing if ready

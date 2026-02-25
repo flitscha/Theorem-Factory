@@ -1,13 +1,14 @@
-from machines.base.machine import Machine
 from core.theorem_key import TheoremKey
 from entities.item import Item
-from grid.interfaces import IUpdatable, IProvider, IReceiver
 from entities.port import Port, Direction
 from config.constants import HUB_ORIGIN
+from machines.base.logic_machine import LogicMachine
+from config.constants import TILE_SIZE
 
-class Hub(Machine, IUpdatable, IProvider, IReceiver):
+class Hub(LogicMachine):
     def __init__(self, machine_data, rotation=0):
-        super().__init__(machine_data, rotation=rotation)
+        num_inputs = machine_data.size[0] * 2 + machine_data.size[1] * 2
+        super().__init__(machine_data, num_inputs=num_inputs, rotation=rotation)
         self.storage: dict[TheoremKey, int] = {}
 
     def _to_key(self, item: Item | TheoremKey) -> TheoremKey:
@@ -86,11 +87,16 @@ class Hub(Machine, IUpdatable, IProvider, IReceiver):
 
 
     def update(self, dt):
-        pass
+        super().update(dt)
 
     # IReceiver implementation
     def receive_item_at_port(self, item, port):
         self.add(item)
+        # we need to store the input_offsets and input items for the slide-in-animation
+        idx = self.input_ports.index(port)
+        self.input_offsets[idx] = 0
+        self.input_items[idx] = item
+        return True
 
     # IProvider implementation
     def provide_item_from_port(self, port):

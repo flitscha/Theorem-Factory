@@ -19,6 +19,15 @@ class Direction(Enum):
         """Convert rotation (0,1,2,3) to Direction enum"""
         directions = [Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.NORTH]
         return directions[rotation % 4]
+
+    def to_rotation(self):
+        rotations = {
+            Direction.EAST: 0,
+            Direction.SOUTH: 1,
+            Direction.WEST: 2,
+            Direction.NORTH: 3
+        }
+        return rotations[self]
     
     def opposite(self):
         """Get the opposite direction"""
