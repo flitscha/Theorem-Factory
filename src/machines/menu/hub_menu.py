@@ -1,6 +1,7 @@
 import pygame
 
 from machines.menu.abstract_menu import AbstractMenu
+from machines.menu.elements.inventory_table import InventoryTable
 
 
 class HubMenu(AbstractMenu):
@@ -10,33 +11,24 @@ class HubMenu(AbstractMenu):
         self.font = pygame.font.SysFont(None, 28)
         self.small_font = pygame.font.SysFont(None, 24)
 
+        table_rect = pygame.Rect(
+            self.rect.x + 40,
+            self.rect.y + 70,
+            self.rect.width - 80,
+            self.rect.height - 100,
+        )
+        self.table = InventoryTable(table_rect, self.font, self.small_font)
+
+
+    def handle_events(self, events):
+        super().handle_events(events)
+        self.table.handle_events(events)
 
     def update(self):
         super().update()
-        pass
-
+        self.table.set_items(self.hub.storage)
+        self.table.update()
     
-    def _draw_item(self, item, count, y):
-        start_x = self.rect.x + 20
-        string = "Theorem:    " if item.is_theorem else "Formula:    "
-        string += str(item.formula)
-        string += "       Amount: " + str(count)
-        text = self.small_font.render(string, True, (255, 255, 255))
-        self.screen.blit(text, (start_x, y))
-        y += 25
-
-        if len(item.assumptions) != 0:
-            text = self.small_font.render("Assumptions:", True, (255, 255, 255))
-            self.screen.blit(text, (start_x + 20, y))
-            y += 25
-
-            for assumption in item.assumptions:
-                text = self.small_font.render(str(assumption), True, (255, 255, 255))
-                self.screen.blit(text, (start_x + 40, y))
-                y += 25
-
-        return y + 15
-
 
     def draw(self):
         super().draw()
@@ -46,14 +38,7 @@ class HubMenu(AbstractMenu):
         title_x = self.rect.centerx - title.get_width() // 2
         self.screen.blit(title, (title_x, self.rect.y + 10))
 
-        # draw the items
-        # TODO: do this in a table-gui-component
-        y = self.rect.y + 50
-        storage = self.hub.storage
-
-        for item, count in storage.items():
-            y_new = self._draw_item(item, count, y)
-            y = y_new
+        self.table.draw(self.screen)
 
         
 

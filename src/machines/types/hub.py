@@ -3,7 +3,6 @@ from entities.item import Item
 from entities.port import Port, Direction
 from config.constants import HUB_ORIGIN
 from machines.base.logic_machine import LogicMachine
-from config.constants import TILE_SIZE
 
 class Hub(LogicMachine):
     def __init__(self, machine_data, rotation=0):

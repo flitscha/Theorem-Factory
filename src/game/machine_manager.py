@@ -86,7 +86,7 @@ class MachineManager:
         elif isinstance(block, AndElimination):
             return AndEliminationMenu(screen, (500, 200), block)
         elif isinstance(block, Hub):
-            return HubMenu(screen, (600, 500), block)
+            return HubMenu(screen, (800, 500), block)
         elif isinstance(block, LogicMachine):
             return MachineMenu(screen, (500, 300), block)
     

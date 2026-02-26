@@ -13,7 +13,7 @@ class Tooltip:
         self.pos = (0, 0)
 
 
-    def show(self, text, pos, max_width=300):
+    def show(self, text, pos=None, max_width=300):
         """
         text: str | list[str]
         """
@@ -24,7 +24,11 @@ class Tooltip:
         else:
             raise TypeError("Tooltip text must be str or list[str]")
 
-        self.pos = pos
+        if pos is None:
+            mouse_x, mouse_y = pygame.mouse.get_pos()
+            self.pos = (mouse_x + 16, mouse_y + 12)
+        else:
+            self.pos = pos
         self.visible = True
 
 
