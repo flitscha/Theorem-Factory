@@ -149,8 +149,8 @@ class InputProcessor:
     def _handle_q_down(self):
         """
         select the machine, that is under the mouse.
-        No machine -> empyt_tool
-        Same machine, as already selected -> empty tool
+        No machine under mouse -> empyt_tool
+        Already in placement_tool -> empty tool
         """
         machine = self.machine_manager.get_machine_at_mouse()
 
@@ -165,7 +165,7 @@ class InputProcessor:
         machine_id = machine.data.id
 
         # if the same machine is already selected -> empty tool
-        if self.machine_selection_bar.selected_machine_id == machine_id:
+        if self.machine_selection_bar.selected_machine_id != "None":
             self.placement_preview.stop_preview()
             self.machine_selection_bar.set_tool("None")
             self.current_tool = self.empty_tool
