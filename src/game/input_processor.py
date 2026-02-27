@@ -1,5 +1,4 @@
 import pygame
-from config.constants import *
 from game.game_state import GameState
 from game.tools.placement_tool import PlacementTool
 from game.tools.eraser_tool import EraserTool
@@ -8,12 +7,16 @@ from core.utils import mouse_in_machine_selection_menu
 
 # idea: game-class as input
 class InputProcessor:
-    def __init__(self, input_handler, placement_preview, machine_selection_bar, machine_manager, game_state):
+    def __init__(self, input_handler, placement_preview, machine_selection_bar, machine_manager, camera, game_state):
         self.input_handler = input_handler
         self.placement_preview = placement_preview
         self.machine_selection_bar = machine_selection_bar
         self.machine_manager = machine_manager
+        self.camera = camera
         self.game_state = game_state
+
+        # The camera is only dragged, if the right mouse button was pressed down OUTSIDE a menu
+        self.camera_dragging = False
 
         # Tools
         self.placement_tool = PlacementTool(machine_manager, placement_preview, machine_selection_bar, game_state)
@@ -29,6 +32,8 @@ class InputProcessor:
         # Quit
         if self.input_handler.should_quit():
             return {"quit": True}
+
+        self._pass_events_to_camera(events)
 
         # Pause-Handling
         if self.game_state.current_state == GameState.PAUSED and not pause_menu.is_open:
@@ -75,6 +80,26 @@ class InputProcessor:
         self.current_tool.update(self.input_handler)
 
         return {}
+
+    
+    def _pass_events_to_camera(self, events):
+        if self.game_state.is_paused():
+            return
+
+        menu = self.game_state.active_menu
+        if (not menu or not menu.is_mouse_inside_menu()) and not mouse_in_machine_selection_menu():
+            self.camera.handle_mouse_wheel(zoom_dir=self.input_handler.mouse_wheel_dir)
+            if "mouse_down_3" in self.input_handler.events_this_frame:
+                self.camera_dragging = True
+            
+        elif "mouse_down_3" in self.input_handler.events_this_frame:
+            self.camera_dragging = False
+
+        if "mouse_up_3" in self.input_handler.events_this_frame:
+            self.camera_dragging = False
+
+        self.camera.handle_dragging(self.camera_dragging)
+        self.camera.handle_wasd(keys=self.input_handler.keys_pressed)
 
 
     def _handle_left_mouse_button(self):

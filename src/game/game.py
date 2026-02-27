@@ -72,7 +72,7 @@ class Game:
         
         self.input_processor = InputProcessor(
             self.input_handler, self.placement_preview, self.machine_selection_bar,
-            self.machine_manager, self.game_state
+            self.machine_manager, self.camera, self.game_state
         )
 
     def _initialize_hub(self):
@@ -101,10 +101,13 @@ class Game:
 
         # Update camera
         if self.game_state.should_update_game():
-            keys = pygame.key.get_pressed()
-            is_dragging = self.input_handler.is_key_held('mouse_3')
-            self.camera.update(keys, self.input_handler.mouse_wheel_dir, is_dragging)
+            #keys = pygame.key.get_pressed()
+            #is_dragging = self.input_handler.is_key_held('mouse_3')
+            #self.camera.update(keys, self.input_handler.mouse_wheel_dir, is_dragging)
         
+            # update camera
+            self.camera.update()
+
             # Update grid
             self.grid.update(dt)
         

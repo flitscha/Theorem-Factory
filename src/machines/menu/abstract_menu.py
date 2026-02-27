@@ -52,6 +52,11 @@ class AbstractMenu:
     def handle_events(self, events):
         self.close_button.handle_events(events)
 
+    def is_mouse_inside_menu(self, mouse_pos=None) -> bool:
+        if mouse_pos is None:
+            mouse_pos = pygame.mouse.get_pos()
+        return self.rect.collidepoint(mouse_pos)
+
     def update(self):
         self.close_button.update()
     
