@@ -12,8 +12,8 @@ class Assumption(LogicMachine):
     Rule: The input must be a formula, not a theorem, and the formula must not have an assumption.
     Produces: The same formula, but marked as an assumption.
     """
-    def __init__(self, machine_data, rotation=0):
-        super().__init__(machine_data, num_inputs=1, rotation=rotation)
+    def __init__(self, machine_data, rotation=0, origin=None):
+        super().__init__(machine_data, num_inputs=1, rotation=rotation, origin=origin)
         self.processing_duration = 1.5
         self.input_roles = ["formula"]
 

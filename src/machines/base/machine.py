@@ -7,7 +7,7 @@ from config.constants import TILE_SIZE
 from config.settings_manager import settings_manager
 
 class Machine:
-    def __init__(self, machine_data, rotation=0):
+    def __init__(self, machine_data, rotation=0, origin=None):
         self.data = machine_data
 
         self.size = machine_data.size # size in grid tiles. Can be changed by rotation
@@ -16,7 +16,7 @@ class Machine:
         self.rotation = rotation
         self.update_rotated_size(rotation)
         self.rotate_image(rotation)
-        self.origin = None  # will be set on placement
+        self.origin = origin
 
         # port system
         self.ports: List[Port] = []

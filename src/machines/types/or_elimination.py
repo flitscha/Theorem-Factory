@@ -15,8 +15,8 @@ class OrElimination(LogicMachine):
     Output:
         The Theorem C, with appropriate assumptions
     """
-    def __init__(self, machine_data, rotation=0):
-        super().__init__(machine_data, num_inputs=3, rotation=rotation)
+    def __init__(self, machine_data, rotation=0, origin=None):
+        super().__init__(machine_data, num_inputs=3, rotation=rotation, origin=origin)
         # input_items[0]: theorem C with assumption A
         # input_items[1]: theorem C with assumption B
         # input_items[2]: theorem A or B

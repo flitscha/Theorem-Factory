@@ -11,8 +11,8 @@ class FalseIntroduction(LogicMachine):
     Rule: If we have a theorem and the same theorem with "not" applied, the output is False.
     """
 
-    def __init__(self, machine_data, rotation=0):
-        super().__init__(machine_data, num_inputs=2, rotation=rotation)
+    def __init__(self, machine_data, rotation=0, origin=None):
+        super().__init__(machine_data, num_inputs=2, rotation=rotation, origin=origin)
         self.input_roles = ["input", "negation"]
 
     def init_ports(self):

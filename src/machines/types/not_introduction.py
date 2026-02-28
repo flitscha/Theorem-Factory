@@ -11,8 +11,8 @@ class NotIntroduction(LogicMachine):
     Rule: If we have the theorem "F" (False) with some assumptions, and one of its assumptions,
     the output will be "not" this assumption.
     """
-    def __init__(self, machine_data, rotation=0):
-        super().__init__(machine_data, num_inputs=2, rotation=rotation)
+    def __init__(self, machine_data, rotation=0, origin=None):
+        super().__init__(machine_data, num_inputs=2, rotation=rotation, origin=origin)
         # input_items[0]: False (theorem)
         # input_items[1]: assumption (to be negated)
         # output_item: Not(assumption)

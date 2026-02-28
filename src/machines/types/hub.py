@@ -5,9 +5,9 @@ from config.constants import HUB_ORIGIN
 from machines.base.logic_machine import LogicMachine
 
 class Hub(LogicMachine):
-    def __init__(self, machine_data, rotation=0):
+    def __init__(self, machine_data, rotation=0, origin=None):
         num_inputs = machine_data.size[0] * 2 + machine_data.size[1] * 2
-        super().__init__(machine_data, num_inputs=num_inputs, rotation=rotation)
+        super().__init__(machine_data, num_inputs=num_inputs, rotation=rotation, origin=origin)
         self.storage: dict[TheoremKey, int] = {}
 
     def _to_key(self, item: Item | TheoremKey) -> TheoremKey:

@@ -9,9 +9,9 @@ from config.constants import TILE_SIZE, GENERATOR_LETTER_OFFSETS
 from core.formula import Variable, Constant
 
 class Generator(Machine, IUpdatable, IProvider):
-    def __init__(self, machine_data, rotation=0):
+    def __init__(self, machine_data, rotation=0, origin=None):
         self.rotation = rotation
-        self.produced_letter=None
+        self.produced_letter = None
         self.produced_constant = None  # 'T' or 'F'
         self.produced_is_theorem = False  # only meaningful when produced_constant == 'T'
 
@@ -20,7 +20,7 @@ class Generator(Machine, IUpdatable, IProvider):
 
         #self.font = pygame.font.Font("assets/fonts/PressStart2P-Regular.ttf", zoomed_font_size)
 
-        super().__init__(machine_data, rotation=rotation)
+        super().__init__(machine_data, rotation=rotation, origin=origin)
     
     def init_ports(self):
         """Initialize ports for the generator"""

@@ -1,6 +1,4 @@
-from machines.types.conveyor_belt.conveyor_belt import ConveyorBelt
 from machines.base.machine import Machine
-from machines.base.logic_machine import LogicMachine
 from entities.item import Item
 from machines.base.machine_database import MachineDatabase
 
@@ -19,7 +17,7 @@ class MachineFactory:
             raise ValueError(f"Unknown machine type: {machine_type}")
 
         cls = machine_data.cls
-        machine = cls(machine_data, rotation=rotation)
+        machine = cls(machine_data, rotation=rotation, origin=origin)
         machine.origin = origin
 
         # restore items

@@ -11,8 +11,8 @@ class ImplicationIntroduction(LogicMachine):
     Rule: If the conclusion contains the premise-formula in its assumptions, 
     this assumption gets removed in the resulting implication-theorem.
     """
-    def __init__(self, machine_data, rotation=0):
-        super().__init__(machine_data, num_inputs=2, rotation=rotation)
+    def __init__(self, machine_data, rotation=0, origin=None):
+        super().__init__(machine_data, num_inputs=2, rotation=rotation, origin=origin)
         # input_items[0]: premise (not a theorem)
         # input_items[1]: conclusion (a theorem)
         self.input_roles = ["premise", "conclusion"]

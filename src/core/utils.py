@@ -1,6 +1,6 @@
 import pygame
 
-from config.constants import TILE_SIZE, MACHINE_SELECTION_GUI_HEIGHT 
+from config.constants import TILE_SIZE, MACHINE_SELECTION_GUI_HEIGHT, HUB_ORIGIN, HUB_SIZE
 
 
 def screen_to_world(screen_x, screen_y, camera):
@@ -127,4 +127,25 @@ def mouse_in_machine_selection_menu(mouse_pos=None) -> bool:
     w, h = pygame.display.get_surface().get_size()
 
     return mouse_pos[1] >= h - MACHINE_SELECTION_GUI_HEIGHT 
+
+
+def is_mouse_next_to_hub(camera, mouse_pos=None) -> bool:
+    grid_x, grid_y = get_mouse_grid_pos(camera, mouse_pos)
+    hub_origin_x, hub_origin_y = HUB_ORIGIN
+    hub_size_x, hub_size_y = HUB_SIZE
+    
+    hub_min_x = hub_origin_x
+    hub_max_x = hub_origin_x + hub_size_x - 1
+    hub_min_y = hub_origin_y
+    hub_max_y = hub_origin_y + hub_size_y - 1
+
+    if hub_min_x <= grid_x <= hub_max_x and hub_min_y <= grid_y <= hub_max_y:
+        return False
+
+    is_left = grid_x == hub_min_x - 1 and hub_min_y <= grid_y <= hub_max_y
+    is_right = grid_x == hub_max_x + 1 and hub_min_y <= grid_y <= hub_max_y
+    is_top = grid_y == hub_min_y - 1 and hub_min_x <= grid_x <= hub_max_x
+    is_bottom = grid_y == hub_max_y + 1 and hub_min_x <= grid_x <= hub_max_x
+
+    return is_left or is_right or is_top or is_bottom
 

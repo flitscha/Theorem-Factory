@@ -19,8 +19,8 @@ class BinaryConnectiveType(Enum):
 class BinaryConnective(LogicMachine):
     # binary connectives: or, and, implication
     # the player can select one of the connectives in a machine-menu
-    def __init__(self, machine_data, rotation=0):
-        super().__init__(machine_data, num_inputs=2, rotation=rotation)
+    def __init__(self, machine_data, rotation=0, origin=None):
+        super().__init__(machine_data, num_inputs=2, rotation=rotation, origin=origin)
         self.selected_connective = BinaryConnectiveType.AND
         self.input_roles = ["left", "right"]
 

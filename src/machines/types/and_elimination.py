@@ -12,8 +12,8 @@ class AndElimination(LogicMachine):
     - In the machine menu the player chooses which conjunct to output (left or right).
     - Output is the chosen conjunct, and is a THEOREM (is_theorem=True).
     """
-    def __init__(self, machine_data, rotation=0):
-        super().__init__(machine_data, num_inputs=1, rotation=rotation)
+    def __init__(self, machine_data, rotation=0, origin=None):
+        super().__init__(machine_data, num_inputs=1, rotation=rotation, origin=origin)
 
         # 0 = left, 1 = right (default left)
         self.selected_side = 0

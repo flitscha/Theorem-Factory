@@ -1,4 +1,7 @@
-from core.utils import get_grid_coordinates_when_placing_machine, get_mouse_grid_pos, can_overwrite_belt, mouse_in_machine_selection_menu
+from core.utils import (
+    get_grid_coordinates_when_placing_machine, get_mouse_grid_pos, can_overwrite_belt, 
+    mouse_in_machine_selection_menu, is_mouse_next_to_hub
+)
 from machines.types.generator import Generator
 from machines.menu.generator_menu import GeneratorMenu
 from machines.types.conveyor_belt.conveyor_belt import ConveyorBelt
@@ -10,6 +13,8 @@ from machines.types.and_elimination import AndElimination
 from machines.menu.machine_menu import MachineMenu
 from machines.base.logic_machine import LogicMachine
 from machines.types.hub import Hub
+from machines.types.conveyor_belt.output_belt import OutputBelt
+from machines.menu.output_belt_menu import OutputBeltMenu
 
 class MachineManager:
     """Handles all machine-related operations. 
@@ -57,8 +62,12 @@ class MachineManager:
                 # if we cannot overwrite, do nothing
                 return 1
 
-        # Place new machine
-        machine = data.cls(data, rotation=rotation)
+        # place the new machine
+        # special case: conveyor belt next to the hub should be an outputBelt.
+        if machine_id == 'conveyor' and is_mouse_next_to_hub(self.camera, mouse_pos):
+            machine = OutputBelt(data, rotation=rotation, origin=(grid_x, grid_y))
+        else:
+            machine = data.cls(data, rotation=rotation, origin=(grid_x, grid_y))
         self.grid.add_block(grid_x, grid_y, machine)
         return 0
     
@@ -87,6 +96,8 @@ class MachineManager:
             return AndEliminationMenu(screen, (500, 200), block)
         elif isinstance(block, Hub):
             return HubMenu(screen, (800, 500), block)
+        elif isinstance(block, OutputBelt) and block.is_active:
+            return OutputBeltMenu(screen, (800, 500), block)
         elif isinstance(block, LogicMachine):
             return MachineMenu(screen, (500, 300), block)
     

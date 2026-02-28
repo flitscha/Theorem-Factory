@@ -28,3 +28,4 @@ GENERATOR_LETTER_OFFSETS = [(49, 44), (52, 49), (47, 52), (44, 47)]
 
 # Hub
 HUB_ORIGIN = (10, 10)
+HUB_SIZE = (7, 7)

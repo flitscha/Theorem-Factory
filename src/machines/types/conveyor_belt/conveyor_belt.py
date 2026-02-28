@@ -3,12 +3,11 @@ from pygame.math import Vector2
 
 from machines.base.machine import Machine
 from entities.item import Item
-from entities.port import Direction
 from grid.interfaces import IUpdatable, IProvider, IReceiver
 from entities.port import Port
 
 class ConveyorBelt(Machine, IUpdatable, IProvider, IReceiver):
-    def __init__(self, machine_data, rotation=0):
+    def __init__(self, machine_data, rotation=0, origin=None):
         
         self.speed = 1.0  # tiles per second
         self.item = None  # Current item on this belt. (only one item at a time)
@@ -29,7 +28,7 @@ class ConveyorBelt(Machine, IUpdatable, IProvider, IReceiver):
 
         self.was_empty_last_frame = True # no item on the belt last frame
 
-        super().__init__(machine_data, rotation=rotation)
+        super().__init__(machine_data, rotation=rotation, origin=origin)
 
 
     def init_ports(self):

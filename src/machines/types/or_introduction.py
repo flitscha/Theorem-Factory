@@ -14,8 +14,8 @@ class OrIntroduction(LogicMachine):
           If one input already contains a formula, the other input only accepts THEOREMS.
     Produces: BinaryOp('+', left.formula, right.formula) with is_theorem = True
     """
-    def __init__(self, machine_data, rotation=0):
-        super().__init__(machine_data, num_inputs=2, rotation=rotation)
+    def __init__(self, machine_data, rotation=0, origin=None):
+        super().__init__(machine_data, num_inputs=2, rotation=rotation, origin=origin)
         self.input_roles = ["left", "right"]
 
     def init_ports(self):
