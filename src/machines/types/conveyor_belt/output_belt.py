@@ -4,6 +4,9 @@ from core.theorem_key import TheoremKey
 from entities.port import Port
 from entities.item import Item
 
+from core.formula import Formula
+from core.formula_parser import parse_formula
+
 class OutputBelt(ConveyorBelt):
     """
     This is used to export items from the hub.
@@ -16,6 +19,8 @@ class OutputBelt(ConveyorBelt):
         # However only belts that are hub-outputs act like OutputBelt. Otherwise it is just like a normal ConveyorBelt.
         self.is_active = self._is_output_of_hub()
         self.output_filter: TheoremKey | None = None
+
+        self.output_filter = TheoremKey(parse_formula("a"), frozenset(), False)
 
     def set_filter(self, item: TheoremKey | None):
         self.output_filter = item
@@ -51,8 +56,3 @@ class OutputBelt(ConveyorBelt):
 
         return False
 
-    
-    def receive_item_at_port(self, item: Item, port: Port) -> bool:
-        if self.output_filter is not None and self.output_filter != item.key:
-            return False
-        return super().receive_item_at_port(item, port)

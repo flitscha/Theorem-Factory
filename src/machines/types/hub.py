@@ -104,6 +104,33 @@ class Hub(LogicMachine):
     def handle_backpressure(self, item, port):
         pass
 
+    # custom output-function for the hub
+    def provide_item_using_filter(self, port, filter: TheoremKey | None):
+        if len(self.storage) == 0:
+            return None
+
+        if filter is None:
+            return None
+            # theorem_key, amount = self.storage.popitem()
+            # if amount > 1:
+            #     self.storage[theorem_key] = amount - 1
+            #
+            # item = Item(theorem_key.formula, is_theorem=theorem_key.is_theorem, assumptions=theorem_key.assumptions)
+            # return item
+
+        amount = self.storage.get(filter)
+        if amount and amount >= 1:
+            if amount == 1:
+                self.storage.pop(filter)
+            else:
+                self.storage[filter] = amount - 1
+
+            item = Item(filter.formula, is_theorem=filter.is_theorem, assumptions=filter.assumptions)
+            return item
+        return None
+
+            
+
     # save and load logic
     def _add_custom_data(self, data):
         data["storage"] = [
