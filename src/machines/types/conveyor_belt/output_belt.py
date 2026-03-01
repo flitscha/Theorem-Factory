@@ -1,11 +1,6 @@
 from config.constants import HUB_ORIGIN, HUB_SIZE
 from machines.types.conveyor_belt.conveyor_belt import ConveyorBelt
 from core.theorem_key import TheoremKey
-from entities.port import Port
-from entities.item import Item
-
-from core.formula import Formula
-from core.formula_parser import parse_formula
 
 class OutputBelt(ConveyorBelt):
     """
@@ -20,11 +15,9 @@ class OutputBelt(ConveyorBelt):
         self.is_active = self._is_output_of_hub()
         self.output_filter: TheoremKey | None = None
 
-        self.output_filter = TheoremKey(parse_formula("a"), frozenset(), False)
 
     def set_filter(self, item: TheoremKey | None):
         self.output_filter = item
-
 
     # override the rotate-function
     def rotate(self, n=1):

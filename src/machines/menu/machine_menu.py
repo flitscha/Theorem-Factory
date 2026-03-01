@@ -120,7 +120,7 @@ class MachineMenu(AbstractMenu):
         # Title
         title = self.font.render(self.title_str, True, (255, 255, 255))
         title_x = self.rect.centerx - title.get_width() // 2
-        self.screen.blit(title, (title_x, self.rect.y + 10))
+        self.screen.blit(title, (title_x, self.rect.y + 15))
         
         # item slots
         for slot in self.slots:

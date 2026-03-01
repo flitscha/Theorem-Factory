@@ -1,14 +1,19 @@
 class ButtonColorScheme:
     """color scheme for Buttons"""
     
-    def __init__(self, 
-                 normal=(80, 80, 80),
-                 hover=(120, 120, 120),
-                 pressed=(60, 60, 60),
-                 selected=(100, 100, 255),
-                 selected_hover=(120, 120, 255),
-                 border=(200, 200, 200),
-                 text=(255, 255, 255)):
+    def __init__(
+        self, 
+        normal=(80, 80, 80),
+        hover=(120, 120, 120),
+        pressed=(60, 60, 60),
+        selected=(100, 100, 255),
+        selected_hover=(120, 120, 255),
+        border=(200, 200, 200),
+        text=(255, 255, 255),
+        disabled=(45, 45, 45),
+        disabled_border=(70, 70, 70),
+        disabled_text=(120, 120, 120),
+    ):
         self.normal = normal
         self.hover = hover
         self.pressed = pressed
@@ -16,9 +21,14 @@ class ButtonColorScheme:
         self.selected_hover = selected_hover
         self.border = border
         self.text = text
+        self.disabled = disabled
+        self.disabled_border = disabled_border
+        self.disabled_text = disabled_text
+
 
 # predefined color schemes
 DEFAULT_COLORS = ButtonColorScheme()
+
 GREEN_COLORS = ButtonColorScheme(
     normal=(80, 80, 80),
     hover=(120, 120, 120),

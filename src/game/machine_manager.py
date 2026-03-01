@@ -15,6 +15,7 @@ from machines.base.logic_machine import LogicMachine
 from machines.types.hub import Hub
 from machines.types.conveyor_belt.output_belt import OutputBelt
 from machines.menu.output_belt_menu import OutputBeltMenu
+from config.constants import HUB_ORIGIN
 
 class MachineManager:
     """Handles all machine-related operations. 
@@ -97,7 +98,9 @@ class MachineManager:
         elif isinstance(block, Hub):
             return HubMenu(screen, (800, 500), block)
         elif isinstance(block, OutputBelt) and block.is_active:
-            return OutputBeltMenu(screen, (800, 500), block)
+            hub_origin_x, hub_origin_y = HUB_ORIGIN
+            hub_instance = self.grid.get_block(hub_origin_x, hub_origin_y)
+            return OutputBeltMenu(screen, (800, 500), block, hub_instance)
         elif isinstance(block, LogicMachine):
             return MachineMenu(screen, (500, 300), block)
     

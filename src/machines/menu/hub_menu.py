@@ -36,7 +36,7 @@ class HubMenu(AbstractMenu):
         # title
         title = self.font.render("Hub Inventory", True, (255, 255, 255))
         title_x = self.rect.centerx - title.get_width() // 2
-        self.screen.blit(title, (title_x, self.rect.y + 10))
+        self.screen.blit(title, (title_x, self.rect.y + 15))
 
         self.table.draw(self.screen)
 
